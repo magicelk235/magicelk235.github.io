@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Magic Elk Labs — Mac apps</title>
+<meta name="description" content="Magic Elk Labs builds focused Mac apps.">
+<link rel="icon" href="./spyglass/assets/spyglass-icon.png">
+<style>
+:root{
+  color-scheme:light dark;
+  --brass:#B8945F;--teal-top:#0B3D3A;--teal-bot:#072826;
+  --bg:#f5f5f7;--fg:#1d1d1f;--muted:#6e6e73;--card:#fff;--line:#e5e5e7
+}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1514;--fg:#f5f5f7;--muted:#a1a1a6;--card:#1a2120;--line:#2c3634}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--fg);line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:640px;margin:0 auto;padding:0 24px}
+header{text-align:center;padding:clamp(72px,14vh,160px) 24px clamp(40px,7vh,80px)}
+h1{font-size:clamp(34px,6vw,56px);font-weight:700;letter-spacing:-.02em;margin:0 0 12px}
+.tag{font-size:clamp(17px,2.4vw,20px);color:var(--muted);margin:0}
+h2{font-size:15px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:0 0 16px}
+.app{display:flex;align-items:center;gap:16px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin:12px 0;text-decoration:none;color:inherit;transition:border-color .15s}
+.app:hover{border-color:var(--brass)}
+.app img{width:52px;height:52px;border-radius:24%;flex:none}
+.app .name{font-size:18px;font-weight:600;margin:0}
+.app .desc{font-size:14px;color:var(--muted);margin:2px 0 0}
+footer{text-align:center;padding:clamp(48px,8vh,88px) 0 clamp(40px,6vh,64px);color:var(--muted);font-size:14px}
+footer a{color:var(--brass);text-decoration:none}
+footer a:hover{text-decoration:underline}
+footer .sep{margin:0 8px;opacity:.5}
+</style>
+</head>
+<body>
+
+  <header>
+    <h1>Magic Elk Labs</h1>
+    <p class="tag">Focused Mac apps.</p>
+  </header>
+
+  <div class="wrap">
+    <h2>Apps</h2>
+
+    <a class="app" href="./spyglass/">
+      <img src="./spyglass/assets/spyglass-icon.png" alt="Spyglass icon">
+      <div>
+        <p class="name">Spyglass</p>
+        <p class="desc">Real Quick Look previews for Google Workspace files on macOS.</p>
+      </div>
+    </a>
+  </div>
+
+  <footer>
+    <a href="./about/">About</a>
+    <span class="sep">·</span>
+    <a href="mailto:yehonatan.2350@gmail.com">Contact</a>
+  </footer>
+
+</body>
+</html>
