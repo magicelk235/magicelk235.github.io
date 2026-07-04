@@ -1,115 +1,519 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Spyglass — Real Quick Look previews for Google Workspace files on macOS</title>
-<meta name="description" content="Spyglass gives Google Docs, Sheets, Slides, Drawings, Forms, and Sites real Quick Look previews on macOS — press Space, see the document, not a blob of JSON.">
-<meta property="og:title" content="Spyglass — Real Quick Look previews for Google Workspace files">
-<meta property="og:description" content="Press Space on a Google Drive stub file and see the document, not raw JSON.">
-<meta property="og:type" content="website">
-<link rel="icon" href="./assets/spyglass-icon.png">
+<meta name="description" content="Spyglass gives Google Docs, Sheets, Slides, Drawings, Forms, and Sites real Quick Look previews on macOS. Press Space, see the document, not a blob of JSON." />
+<meta property="og:title" content="Spyglass — Real Quick Look previews for Google Workspace files" />
+<meta property="og:description" content="Press Space on a Google Drive stub file and see the document, not raw JSON." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="./assets/spyglass-icon.png" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://gumroad.com/js/gumroad.js"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          brass: { DEFAULT: '#B8945F', press: '#A47E48' },
+          teal:  { top: '#0B3D3A', bot: '#072826' },
+        },
+        fontFamily: {
+          sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'system-ui', 'sans-serif'],
+          mono: ['ui-monospace', 'SFMono-Regular', 'SF Mono', 'Menlo', 'monospace'],
+        },
+      },
+    },
+  };
+</script>
 <style>
-:root{
-  color-scheme:light dark;
-  --brass:#B8945F;--teal-top:#0B3D3A;--teal-bot:#072826;--ink:#1A1C26;
-  --bg:#f5f5f7;--fg:#1d1d1f;--muted:#6e6e73;--card:#fff;--line:#e5e5e7
-}
-@media(prefers-color-scheme:dark){:root{--bg:#0f1514;--fg:#f5f5f7;--muted:#a1a1a6;--card:#1a2120;--line:#2c3634}}
-*{box-sizing:border-box}
-html,body{margin:0}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--fg);line-height:1.55;-webkit-font-smoothing:antialiased}
-.wrap{max-width:760px;margin:0 auto;padding:0 24px}
+  /* Design tokens */
+  :root {
+    --canvas: #F5F5F7;  --surface: #FFFFFF;  --elevated: #F0F0F2;  --card: #EAEAEC;
+    --ink: #1D1D1F;     --body: #3A3A3C;     --mute: #6E6E73;      --stone: #BFBFC4;
+    --brass: #B8945F;   --brass-press: #A47E48;  --on-brass: #1A1206;
+    --teal-top: #0B3D3A; --teal-bot: #072826; --on-teal: #FFFFFF;
+    --wash-a: #D8B889;  --ok: #1A9D5A;  --bad: #E5484D;
+    --hair: rgba(0,0,0,.10);  --hair-soft: rgba(0,0,0,.05);  --hair-strong: rgba(0,0,0,.16);
+    --glass: rgba(255,255,255,.62);  --glass-brd: rgba(255,255,255,.7);
+    --glow: rgba(184,148,95,.20);
+  }
+  html.dark {
+    --canvas: #0F1514;  --surface: #1A2120;  --elevated: #212927;  --card: #2C3634;
+    --ink: #F5F5F7;     --body: #D4D4D8;     --mute: #A1A1A6;      --stone: #49494E;
+    --brass: #C9A876;   --brass-press: #B8945F;  --on-brass: #1A1206;
+    --teal-top: #0B3D3A; --teal-bot: #072826; --on-teal: #FFFFFF;
+    --wash-a: #C9A876;  --ok: #30D158;  --bad: #FF6369;
+    --hair: rgba(255,255,255,.10); --hair-soft: rgba(255,255,255,.06); --hair-strong: rgba(255,255,255,.18);
+    --glass: rgba(26,33,32,.55);   --glass-brd: rgba(255,255,255,.10);
+    --glow: rgba(201,168,118,.22);
+  }
 
-header{position:relative;text-align:center;color:#fff;border-radius:0 0 32px 32px;background:linear-gradient(160deg,var(--teal-top),var(--teal-bot));padding:clamp(56px,10vh,120px) 24px clamp(48px,7vh,88px);overflow:hidden}
-.icon{width:clamp(104px,16vw,148px);height:clamp(104px,16vw,148px);margin:0 auto clamp(24px,4vh,36px);display:block;border-radius:24%;box-shadow:0 16px 40px rgba(0,0,0,.35)}
-h1{font-size:clamp(38px,6.5vw,68px);font-weight:700;letter-spacing:-.02em;margin:0 0 14px;line-height:1.02}
-.tag{font-size:clamp(17px,2.4vw,22px);color:rgba(255,255,255,.72);margin:0 auto;max-width:30ch}
-.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:clamp(28px,4vh,40px)}
-.btn{display:inline-block;padding:13px 24px;border-radius:12px;font-size:16px;font-weight:600;text-decoration:none;transition:opacity .15s}
-.btn:hover{opacity:.88}
-.btn-primary{background:var(--brass);color:#1a1206}
-.btn-secondary{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25)}
+  * { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  html, body { background: var(--canvas); color: var(--body); }
+  body { overflow-x: hidden; }
+  ::selection { background: var(--brass); color: var(--on-brass); }
 
-section{padding:clamp(32px,5vh,52px) 0;border-top:1px solid var(--line)}
-section:first-of-type{border-top:none}
-h2{font-size:clamp(23px,3.4vw,32px);font-weight:700;letter-spacing:-.01em;margin:0 0 10px}
-.lead{color:var(--muted);margin:0 0 26px;font-size:17px}
-code{background:rgba(128,128,128,.16);padding:1px 6px;border-radius:5px;font-size:.88em}
+  h1,h2,h3 { color: var(--ink); letter-spacing: -0.02em; }
+  header h1, header p { color: #fff; }
+  .ink { color: var(--ink); }
+  .mute { color: var(--mute); }
+  .body { color: var(--body); }
+  .cap { letter-spacing: .04em; }
 
-.tier{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:14px 0}
-.tier h3{margin:0 0 6px;font-size:19px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.badge{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:20px}
-.badge.free{color:var(--brass);background:transparent;border:1px solid var(--brass)}
-.badge.paid{color:#1a1206;background:var(--brass)}
-.tier p{margin:0;color:var(--muted);font-size:15px}
-.price{font-weight:600;color:var(--fg)}
+  /* Glass material, no shadows */
+  .glass {
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    backdrop-filter: blur(20px) saturate(1.4);
+    border: 1px solid var(--glass-brd);
+  }
+  .surface { background: var(--surface); border: 1px solid var(--hair); }
+  .elevated { background: var(--elevated); border: 1px solid var(--hair); }
+  .hair { border-color: var(--hair); }
 
-.data ul{padding-left:20px;margin:0}
-.data li{margin:0 0 14px;color:var(--muted)}
-.data li strong{color:var(--fg);font-weight:600}
+  /* Depth from surface ladder + glow, never drop shadows */
+  .glow-brass { position: relative; }
+  .glow-brass::before {
+    content: ""; position: absolute; inset: -1px; border-radius: inherit; padding: 1px;
+    background: linear-gradient(135deg, var(--wash-a), transparent 60%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude; opacity: .55; pointer-events: none;
+  }
 
-footer{text-align:center;padding:clamp(40px,7vh,72px) 0;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
-footer a{color:var(--brass);text-decoration:none}
-footer a:hover{text-decoration:underline}
-footer .sep{margin:0 8px;opacity:.5}
+  /* Buttons */
+  .btn-brass {
+    background: var(--brass); color: var(--on-brass); font-weight: 600;
+    border-radius: 12px; transition: transform .22s cubic-bezier(.2,.8,.2,1), background .2s;
+  }
+  .btn-brass:hover { background: var(--brass-press); transform: translateY(-1px); }
+  .btn-brass:active { transform: translateY(0) scale(.99); }
+  .btn-ghost {
+    background: transparent; color: var(--ink); border: 1px solid var(--hair-strong);
+    border-radius: 12px; transition: transform .22s, border-color .2s, background .2s;
+  }
+  .btn-ghost:hover { border-color: var(--brass); transform: translateY(-1px); }
+  a.gumroad-button { display: inline-flex !important; background-image: none !important; }
+
+  .btn-teal-ghost {
+    background: rgba(255,255,255,.10); color: #fff; border: 1px solid rgba(255,255,255,.28);
+    border-radius: 12px; transition: transform .22s, background .2s;
+  }
+  .btn-teal-ghost:hover { background: rgba(255,255,255,.18); transform: translateY(-1px); }
+
+  /* Hero crown glow */
+  .crown {
+    position: absolute; top: -10%; left: 50%; transform: translateX(-50%);
+    width: min(900px, 90vw); height: 520px; pointer-events: none; z-index: 0;
+    background: radial-gradient(ellipse at center, var(--glow), transparent 70%);
+    filter: blur(40px); opacity: .9;
+  }
+
+  /* Reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s cubic-bezier(.2,.8,.2,1), transform .7s cubic-bezier(.2,.8,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1 !important; transform: none !important; transition: none; }
+    .scroll-smooth { scroll-behavior: auto; }
+  }
+
+  img[data-icon] { display: block; object-fit: contain; }
+
+  /* FAQ accordion */
+  details summary { list-style: none; cursor: pointer; }
+  details summary::-webkit-details-marker { display: none; }
+  details[open] .chev { transform: rotate(180deg); }
+  .chev { transition: transform .3s; }
+  details + details { border-top: 1px solid var(--hair); }
+
+  a:focus-visible, button:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--brass); outline-offset: 3px; border-radius: 6px;
+  }
+
+  .cmp td, .cmp th { border-color: var(--hair); }
 </style>
 </head>
-<body>
+<body class="font-sans antialiased">
 
-  <header>
-    <picture>
-      <source srcset="./assets/spyglass-appicon-dark-1024.png" media="(prefers-color-scheme:dark)">
-      <img class="icon" src="./assets/spyglass-appicon-light-1024.png" alt="Spyglass app icon" width="148" height="148">
-    </picture>
-    <h1>Spyglass</h1>
-    <p class="tag">Real Quick&nbsp;Look previews for Google&nbsp;Workspace files on macOS.</p>
-    <div class="cta">
-      <a class="btn btn-primary" href="https://github.com/magicelk235/Spyglass/releases">Download</a>
-      <a class="btn btn-secondary" href="https://github.com/magicelk235/Spyglass">View on GitHub</a>
+<!-- NAV -->
+<nav id="nav" class="sticky top-0 z-50 transition-colors">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
+    <a href="#top" class="flex items-center gap-2.5">
+      <img data-icon class="w-8 h-8 rounded-[8px]" alt="Spyglass app icon" width="32" height="32" src="./assets/spyglass-appicon-light-1024.png" />
+      <span class="font-bold ink text-[17px]">Spyglass</span>
+    </a>
+    <div class="flex items-center gap-2 sm:gap-3">
+      <a href="#free-paid" class="hidden sm:inline text-[14px] mute hover:text-[var(--brass)] transition-colors px-2">Free vs Paid</a>
+      <a href="#faq" class="hidden sm:inline text-[14px] mute hover:text-[var(--brass)] transition-colors px-2">FAQ</a>
+      <button id="theme-toggle" class="w-9 h-9 grid place-items-center rounded-full hair border body hover:text-[var(--brass)] transition-colors" aria-label="Toggle dark mode" title="Toggle theme">
+        <svg class="sun w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4l1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+      </button>
     </div>
-  </header>
-
-  <div class="wrap">
-
-  <section>
-    <h2>What it does</h2>
-    <p class="lead">When you sync Google&nbsp;Drive to your Mac, files like Docs, Sheets, Slides, Drawings, Forms and Sites don't download as real files. They land as tiny stub files such as <code>.gdoc</code> and <code>.gsheet</code> that hold only a document ID. Press Space on one and macOS shows a useless blob of JSON. Spyglass shows the actual document instead.</p>
-
-    <div class="tier">
-      <h3>Info card <span class="badge free">Free</span></h3>
-      <p>A branded card for all six file types. It shows the document icon, title, owner, and a link to open the file on Google. Works instantly and offline. No account needed.</p>
-    </div>
-    <div class="tier">
-      <h3>Rendered preview <span class="badge paid">Paid · $9</span></h3>
-      <p>For Docs, Sheets, Slides and Drawings, Spyglass fetches the document from Google&nbsp;Drive and renders a real first-page preview. This needs a Google sign-in. If you're not signed in, or the network is slow, it falls back to the free info card. The preview is never blank and never hangs.</p>
-    </div>
-    <p class="lead" style="margin-top:20px"><span class="price">$9, paid once.</span> No subscription. Runs on macOS&nbsp;14 or later.</p>
-  </section>
-
-  <section>
-    <h2>Why Spyglass needs Google access</h2>
-    <p class="lead">Rendered previews are the optional paid feature. If you enable them and sign in, Spyglass asks permission to read your Google&nbsp;Drive so it can show your documents. Exactly what that means:</p>
-    <div class="data">
-      <ul>
-        <li><strong>Read-only.</strong> Spyglass requests the <code>drive.readonly</code> scope. It can read your files to export them; it can never edit, delete, move, or share anything.</li>
-        <li><strong>Used only to render previews.</strong> The access fetches a document's export so it can be shown in Quick&nbsp;Look. That is the only thing it is used for.</li>
-        <li><strong>Stays on your Mac.</strong> Exports are rendered and cached locally on your device. Spyglass has no server, so your documents are never uploaded to us or sent to any third party.</li>
-        <li><strong>Your email.</strong> Spyglass reads your account email only to show which account is signed in.</li>
-        <li><strong>Reversible.</strong> Signing out clears the saved tokens and revokes the grant at Google, so access ends immediately.</li>
-      </ul>
-    </div>
-  </section>
-
-  <footer>
-    <a href="./privacy.html">Privacy Policy</a>
-    <span class="sep">·</span>
-    <a href="mailto:yehonatan.2350@gmail.com">Contact</a>
-    <span class="sep">·</span>
-    <a href="https://github.com/magicelk235/Spyglass">Source</a>
-    <div style="margin-top:16px">© 2026 Spyglass</div>
-  </footer>
-
   </div>
+</nav>
+
+<main id="top">
+
+<!-- HERO -->
+<header class="relative overflow-hidden text-center text-white" style="background:linear-gradient(160deg,var(--teal-top),var(--teal-bot));border-radius:0 0 40px 40px;">
+  <div class="crown" aria-hidden="true"></div>
+  <div class="relative z-10 max-w-3xl mx-auto px-5 sm:px-8 pt-20 pb-24">
+    <picture>
+      <source srcset="./assets/spyglass-appicon-dark-1024.png" media="(prefers-color-scheme: dark)" />
+      <img data-hero-icon class="w-[clamp(104px,16vw,140px)] h-[clamp(104px,16vw,140px)] mx-auto mb-9 rounded-[24%]" src="./assets/spyglass-appicon-light-1024.png" alt="Spyglass app icon, a brass spyglass" width="140" height="140" />
+    </picture>
+    <h1 class="text-[clamp(2.4rem,6.5vw,4.2rem)] font-bold leading-[1.03] mb-4">Press Space.<br />See the document.</h1>
+    <p class="text-[clamp(1.05rem,2.4vw,1.35rem)] mx-auto max-w-[34ch]" style="color:rgba(255,255,255,.74)">Real Quick Look previews for Google Workspace files on macOS.</p>
+    <div class="flex flex-wrap gap-3 justify-center mt-10">
+      <a class="gumroad-button btn-brass text-[16px] px-7 py-3.5 items-center gap-2" href="https://magicelk235.gumroad.com/l/spyglass?wanted=true" data-gumroad-overlay-checkout="true">Buy · $9</a>
+      <a class="btn-teal-ghost text-[16px] px-7 py-3.5 inline-flex items-center gap-2" href="https://github.com/magicelk235/Spyglass/releases">Download free</a>
+    </div>
+    <p class="text-[13px] mt-5" style="color:rgba(255,255,255,.55)">macOS 14 and later · one-time purchase · free tier included</p>
+  </div>
+</header>
+
+<!-- THE PROBLEM -->
+<section id="problem" class="py-20 px-5 sm:px-8">
+  <div class="max-w-5xl mx-auto">
+    <div class="reveal text-center max-w-2xl mx-auto mb-12">
+      <h2 class="text-[clamp(1.7rem,4vw,2.4rem)] font-bold mb-3">Google Drive turns your files into blobs</h2>
+      <p class="body text-[17px] leading-relaxed">When you sync Google Drive to a Mac, Workspace files download as tiny stub files that hold only a document ID. Press Space in Finder and macOS shows you the raw JSON inside. Spyglass shows the real document instead.</p>
+      <p class="mute text-[14px] mt-4">Six stub types: <code class="mono ink text-[.9em]">.gdoc</code> <code class="mono ink text-[.9em]">.gsheet</code> <code class="mono ink text-[.9em]">.gslides</code> <code class="mono ink text-[.9em]">.gdraw</code> <code class="mono ink text-[.9em]">.gform</code> <code class="mono ink text-[.9em]">.gsite</code></p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-5 items-stretch">
+      <div class="reveal surface rounded-2xl p-6">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="w-2.5 h-2.5 rounded-full" style="background:var(--bad)"></span>
+          <span class="cap text-[12px] font-semibold mute uppercase">Before · what macOS shows</span>
+        </div>
+        <pre class="mono text-[13px] leading-relaxed overflow-x-auto rounded-xl p-4" style="background:var(--elevated);color:var(--body);border:1px solid var(--hair)"><code>{
+  "url": "https://docs.google.com/document/d/1AbC.../edit",
+  "doc_id": "1AbC2dEfGh3IjKlMnOpQrStUvWxYz",
+  "email": "you@gmail.com",
+  "resource_key": ""
+}</code></pre>
+        <p class="mute text-[13px] mt-4">A blob of JSON. No title, no content, nothing useful.</p>
+      </div>
+      <div class="reveal surface glow-brass rounded-2xl p-6">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="w-2.5 h-2.5 rounded-full" style="background:var(--ok)"></span>
+          <span class="cap text-[12px] font-semibold uppercase" style="color:var(--brass)">After · what Spyglass shows</span>
+        </div>
+        <div class="rounded-xl p-5" style="background:var(--elevated);border:1px solid var(--hair)">
+          <div class="flex items-start gap-3.5">
+            <div class="w-11 h-11 shrink-0 rounded-lg grid place-items-center" style="background:rgba(66,133,244,.14)">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#4285F4" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M14 3v4a1 1 0 001 1h4M8 13h8M8 17h6M8 9h2"/><path stroke-linecap="round" stroke-linejoin="round" d="M6 21h12a1 1 0 001-1V8l-5-5H6a1 1 0 00-1 1v16a1 1 0 001 1z"/></svg>
+            </div>
+            <div class="min-w-0">
+              <p class="ink font-semibold text-[15px] truncate">Q3 Planning Notes</p>
+              <p class="mute text-[13px] mt-0.5">Google Docs · owned by you@gmail.com</p>
+              <div class="mt-3 space-y-2">
+                <div class="h-2 rounded" style="background:var(--stone);width:92%"></div>
+                <div class="h-2 rounded" style="background:var(--stone);width:80%"></div>
+                <div class="h-2 rounded" style="background:var(--stone);width:88%"></div>
+                <div class="h-2 rounded" style="background:var(--stone);width:64%"></div>
+              </div>
+              <span class="inline-flex items-center gap-1 mt-4 text-[13px] font-medium" style="color:var(--brass)">Open on Google
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7m0 0H8m9 0v9"/></svg>
+              </span>
+            </div>
+          </div>
+        </div>
+        <p class="mute text-[13px] mt-4">The real first page, the title, the owner, and a link to open it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT IT DOES -->
+<section id="what" class="py-20 px-5 sm:px-8" style="background:var(--surface);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)">
+  <div class="max-w-5xl mx-auto">
+    <div class="reveal text-center max-w-2xl mx-auto mb-12">
+      <h2 class="text-[clamp(1.7rem,4vw,2.4rem)] font-bold mb-3">What Spyglass does</h2>
+      <p class="body text-[17px] leading-relaxed">Spyglass is a Quick Look extension plus a small menu-bar app for macOS 14 and later. It plugs into the same Space-bar preview you already use in Finder. No new app to open, no window to manage. Select a stub file, press Space, and see the document.</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-5">
+      <div class="reveal elevated rounded-2xl p-6">
+        <div class="flex items-center gap-2.5 mb-2">
+          <span class="cap text-[12px] font-semibold uppercase px-2.5 py-1 rounded-full" style="color:var(--brass);border:1px solid var(--brass)">Free</span>
+          <h3 class="text-[18px] font-semibold">No sign-in</h3>
+        </div>
+        <p class="body text-[15px] leading-relaxed">A branded info card for all six file types. Document icon, title, owner, and a link to open it on Google. Instant, offline, no account. This is the whole free app, not a trial.</p>
+      </div>
+      <div class="reveal elevated glow-brass rounded-2xl p-6">
+        <div class="flex items-center gap-2.5 mb-2">
+          <span class="cap text-[12px] font-semibold uppercase px-2.5 py-1 rounded-full" style="color:var(--on-brass);background:var(--brass)">Paid · $9</span>
+          <h3 class="text-[18px] font-semibold">Rendered previews</h3>
+        </div>
+        <p class="body text-[15px] leading-relaxed">Rendered first-page previews for Docs, Sheets, Slides, and Drawings. Spyglass fetches the document's export from Google Drive and draws it. If you are not signed in or the network is slow, it falls back to the free info card. Never blank, never hangs.</p>
+        <p class="mute text-[13px] mt-3">Forms and Sites cannot be exported, so they always show the info card.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FREE VS PAID -->
+<section id="free-paid" class="py-20 px-5 sm:px-8">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="reveal text-[clamp(1.7rem,4vw,2.4rem)] font-bold text-center mb-3">Free vs Paid</h2>
+    <p class="reveal mute text-center text-[16px] mb-10">The free tier is fully usable on its own. Paid adds rendered previews.</p>
+    <div class="reveal surface rounded-2xl overflow-hidden">
+      <table class="cmp w-full text-[14px] sm:text-[15px] border-collapse">
+        <thead>
+          <tr>
+            <th class="text-left ink font-semibold p-4 border-b" scope="col">Feature</th>
+            <th class="text-center ink font-semibold p-4 border-b border-l" scope="col">Free</th>
+            <th class="text-center font-semibold p-4 border-b border-l" scope="col" style="color:var(--brass)">Paid · $9</th>
+          </tr>
+        </thead>
+        <tbody class="body">
+          <tr>
+            <th class="text-left font-medium ink p-4 border-b" scope="row">Price</th>
+            <td class="text-center p-4 border-b border-l">Free</td>
+            <td class="text-center p-4 border-b border-l ink font-semibold">$9 one-time</td>
+          </tr>
+          <tr>
+            <th class="text-left font-medium ink p-4 border-b" scope="row">File types covered</th>
+            <td class="text-center p-4 border-b border-l">All six</td>
+            <td class="text-center p-4 border-b border-l">All six</td>
+          </tr>
+          <tr>
+            <th class="text-left font-medium ink p-4 border-b" scope="row">Works offline</th>
+            <td class="text-center p-4 border-b border-l" style="color:var(--ok)">Yes</td>
+            <td class="text-center p-4 border-b border-l">Info card only</td>
+          </tr>
+          <tr>
+            <th class="text-left font-medium ink p-4 border-b" scope="row">Sign-in needed</th>
+            <td class="text-center p-4 border-b border-l" style="color:var(--ok)">No</td>
+            <td class="text-center p-4 border-b border-l">Yes, for previews</td>
+          </tr>
+          <tr>
+            <th class="text-left font-medium ink p-4 border-b" scope="row">Rendered previews</th>
+            <td class="text-center p-4 border-b border-l mute">Info card</td>
+            <td class="text-center p-4 border-b border-l" style="color:var(--brass)">Docs, Sheets, Slides, Drawings</td>
+          </tr>
+          <tr>
+            <th class="text-left font-medium ink p-4" scope="row">Delivery</th>
+            <td class="text-center p-4 border-l">Direct download</td>
+            <td class="text-center p-4 border-l">License key on Gumroad</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="reveal flex flex-wrap gap-3 justify-center mt-8">
+      <a class="gumroad-button btn-brass text-[16px] px-7 py-3.5 items-center gap-2" href="https://magicelk235.gumroad.com/l/spyglass?wanted=true" data-gumroad-overlay-checkout="true">Buy · $9</a>
+      <a class="btn-ghost text-[16px] px-7 py-3.5 inline-flex items-center gap-2" href="https://github.com/magicelk235/Spyglass/releases">Download free</a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY GOOGLE ACCESS (OAuth) -->
+<section id="privacy" class="py-20 px-5 sm:px-8" style="background:var(--surface);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)">
+  <div class="max-w-3xl mx-auto">
+    <div class="reveal text-center max-w-2xl mx-auto mb-10">
+      <h2 class="text-[clamp(1.7rem,4vw,2.4rem)] font-bold mb-3">Why Spyglass needs Google access</h2>
+      <p class="body text-[17px] leading-relaxed">Rendered previews need to read the document from your Google Drive. That is the only reason Spyglass asks to sign in. Here is exactly what it does and does not do.</p>
+    </div>
+    <ul class="reveal space-y-4">
+      <li class="elevated rounded-xl p-5">
+        <p class="ink font-semibold text-[15px] mb-1">Read-only</p>
+        <p class="body text-[14px] leading-relaxed">Spyglass uses the <code class="mono ink text-[.9em]">drive.readonly</code> scope. It cannot edit, delete, or share your files. It can only read them to draw the preview.</p>
+      </li>
+      <li class="elevated rounded-xl p-5">
+        <p class="ink font-semibold text-[15px] mb-1">Used only to render previews</p>
+        <p class="body text-[14px] leading-relaxed">Access is used for one thing: fetching the document export so Spyglass can show the first page. Nothing else.</p>
+      </li>
+      <li class="elevated rounded-xl p-5">
+        <p class="ink font-semibold text-[15px] mb-1">Stays on your Mac</p>
+        <p class="body text-[14px] leading-relaxed">Previews are cached locally on your machine. There is no Spyglass server. Your documents are never uploaded to us or to any third party.</p>
+      </li>
+      <li class="elevated rounded-xl p-5">
+        <p class="ink font-semibold text-[15px] mb-1">Email only to show the account</p>
+        <p class="body text-[14px] leading-relaxed">Your email is used only to display which Google account is signed in. It is not sent anywhere.</p>
+      </li>
+      <li class="elevated rounded-xl p-5">
+        <p class="ink font-semibold text-[15px] mb-1">Reversible</p>
+        <p class="body text-[14px] leading-relaxed">Sign out at any time. Doing so clears the stored tokens and revokes the grant at Google.</p>
+      </li>
+    </ul>
+    <p class="reveal mute text-[14px] text-center mt-8">Full details in the <a href="./privacy.html" class="font-medium" style="color:var(--brass)">Privacy Policy</a>.</p>
+  </div>
+</section>
+
+<!-- HOW THE LICENSE WORKS -->
+<section id="license" class="py-20 px-5 sm:px-8">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="reveal text-[clamp(1.7rem,4vw,2.4rem)] font-bold text-center mb-12">How the license works</h2>
+    <div class="grid md:grid-cols-3 gap-5">
+      <div class="reveal surface rounded-2xl p-6">
+        <div class="w-9 h-9 rounded-full grid place-items-center font-bold text-[15px] mb-4" style="background:var(--brass);color:var(--on-brass)">1</div>
+        <h3 class="text-[17px] font-semibold mb-1.5">Buy on Gumroad</h3>
+        <p class="body text-[14px] leading-relaxed">Pay $9 once through the secure Gumroad checkout. No subscription, no account with us.</p>
+      </div>
+      <div class="reveal surface rounded-2xl p-6">
+        <div class="w-9 h-9 rounded-full grid place-items-center font-bold text-[15px] mb-4" style="background:var(--brass);color:var(--on-brass)">2</div>
+        <h3 class="text-[17px] font-semibold mb-1.5">Receive your key</h3>
+        <p class="body text-[14px] leading-relaxed">Gumroad emails you a license key right after purchase.</p>
+      </div>
+      <div class="reveal surface rounded-2xl p-6">
+        <div class="w-9 h-9 rounded-full grid place-items-center font-bold text-[15px] mb-4" style="background:var(--brass);color:var(--on-brass)">3</div>
+        <h3 class="text-[17px] font-semibold mb-1.5">Paste it in the app</h3>
+        <p class="body text-[14px] leading-relaxed">Open the Spyglass menu-bar app, paste the key, and rendered previews unlock.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPECS -->
+<section id="specs" class="py-20 px-5 sm:px-8" style="background:var(--surface);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="reveal text-[clamp(1.7rem,4vw,2.4rem)] font-bold text-center mb-12">Specs</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="reveal elevated rounded-xl p-5 text-center">
+        <p class="cap text-[12px] font-semibold uppercase mute mb-2">Requires</p>
+        <p class="ink font-semibold text-[16px]">macOS 14+</p>
+      </div>
+      <div class="reveal elevated rounded-xl p-5 text-center">
+        <p class="cap text-[12px] font-semibold uppercase mute mb-2">Price</p>
+        <p class="ink font-semibold text-[16px]">$9 one-time</p>
+      </div>
+      <div class="reveal elevated rounded-xl p-5 text-center">
+        <p class="cap text-[12px] font-semibold uppercase mute mb-2">Subscription</p>
+        <p class="ink font-semibold text-[16px]">None</p>
+      </div>
+      <div class="reveal elevated rounded-xl p-5 text-center">
+        <p class="cap text-[12px] font-semibold uppercase mute mb-2">Free tier</p>
+        <p class="ink font-semibold text-[16px]">Included</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="py-20 px-5 sm:px-8">
+  <div class="max-w-2xl mx-auto">
+    <h2 class="reveal text-[clamp(1.7rem,4vw,2.4rem)] font-bold text-center mb-12">Questions</h2>
+    <div class="reveal">
+      <details class="py-5">
+        <summary class="flex items-center justify-between gap-4 font-semibold text-[16px] ink">Is my data safe?
+          <svg class="chev w-5 h-5 shrink-0 mute" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg></summary>
+        <p class="body text-[14px] leading-relaxed mt-3">Yes. Spyglass requests read-only access with the <code class="mono text-[.85em]">drive.readonly</code> scope, so it can never edit, delete, or share anything. Previews are cached only on your Mac. There is no server and your documents are never uploaded to us or any third party. See the full <a href="./privacy.html" class="font-medium" style="color:var(--brass)">Privacy Policy</a> for details.</p>
+      </details>
+      <details class="py-5">
+        <summary class="flex items-center justify-between gap-4 font-semibold text-[16px] ink">What do I get for free?
+          <svg class="chev w-5 h-5 shrink-0 mute" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg></summary>
+        <p class="body text-[14px] leading-relaxed mt-3">The free tier shows a branded info card for all six stub types. You get the document icon, title, owner, and a link to open it on Google. It works instantly, offline, with no sign-in. It is a complete app, not a trial.</p>
+      </details>
+      <details class="py-5">
+        <summary class="flex items-center justify-between gap-4 font-semibold text-[16px] ink">How do I unlock the paid features?
+          <svg class="chev w-5 h-5 shrink-0 mute" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg></summary>
+        <p class="body text-[14px] leading-relaxed mt-3">Buy Spyglass on Gumroad for $9. You get a license key by email. Paste the key into the Spyglass menu-bar app and sign in with Google, and rendered previews turn on. One payment, no subscription.</p>
+      </details>
+      <details class="py-5">
+        <summary class="flex items-center justify-between gap-4 font-semibold text-[16px] ink">Which file types work?
+          <svg class="chev w-5 h-5 shrink-0 mute" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg></summary>
+        <p class="body text-[14px] leading-relaxed mt-3">All six Google Drive stub types: <code class="mono text-[.85em]">.gdoc</code>, <code class="mono text-[.85em]">.gsheet</code>, <code class="mono text-[.85em]">.gslides</code>, <code class="mono text-[.85em]">.gdraw</code>, <code class="mono text-[.85em]">.gform</code>, and <code class="mono text-[.85em]">.gsite</code>. Rendered previews cover Docs, Sheets, Slides, and Drawings. Forms and Sites cannot be exported by Google, so they always show the info card.</p>
+      </details>
+      <details class="py-5">
+        <summary class="flex items-center justify-between gap-4 font-semibold text-[16px] ink">Does it work offline?
+          <svg class="chev w-5 h-5 shrink-0 mute" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg></summary>
+        <p class="body text-[14px] leading-relaxed mt-3">The free info card works fully offline. Rendered previews need a connection to fetch the document from Google Drive. If you are offline or the network is slow, Spyglass falls back to the info card, so a preview never hangs or comes up blank.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="py-24 px-5 sm:px-8">
+  <div class="max-w-3xl mx-auto text-center relative">
+    <div class="crown" aria-hidden="true" style="height:340px;top:-30%"></div>
+    <div class="relative z-10">
+      <h2 class="reveal text-[clamp(2rem,5vw,3.4rem)] font-extrabold leading-[1.05] mb-5">Stop previewing JSON.<br />Start seeing your documents.</h2>
+      <p class="reveal body text-lg mb-9 max-w-lg mx-auto">Free to start. $9 once to unlock rendered previews for Docs, Sheets, Slides, and Drawings.</p>
+      <div class="reveal flex flex-wrap gap-3 justify-center">
+        <a class="gumroad-button btn-brass text-[17px] px-8 py-4 items-center gap-2" href="https://magicelk235.gumroad.com/l/spyglass?wanted=true" data-gumroad-overlay-checkout="true">Buy · $9</a>
+        <a class="btn-ghost text-[17px] px-8 py-4 inline-flex items-center gap-2" href="https://github.com/magicelk235/Spyglass/releases">Download free</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="border-t hair py-12 px-5 sm:px-8">
+  <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+    <div class="flex items-center gap-2.5">
+      <img data-icon class="w-7 h-7 rounded-[7px]" alt="Spyglass app icon" width="28" height="28" src="./assets/spyglass-appicon-light-1024.png" />
+      <span class="font-bold ink">Spyglass</span>
+      <span class="text-[13px] mute ml-2 hidden sm:inline">Real Quick Look previews for Google Workspace files.</span>
+    </div>
+    <nav class="flex items-center gap-5 text-[14px]">
+      <a href="./privacy.html" class="mute hover:text-[var(--brass)] transition-colors">Privacy Policy</a>
+      <a href="mailto:yehonatan.2350@gmail.com" class="mute hover:text-[var(--brass)] transition-colors">Contact</a>
+      <a href="https://github.com/magicelk235/Spyglass" class="mute hover:text-[var(--brass)] transition-colors">Source</a>
+    </nav>
+  </div>
+  <p class="max-w-6xl mx-auto mt-8 text-[13px] mute">© 2026 Spyglass · Magic Elk Labs</p>
+</footer>
+
+<script>
+(function () {
+  var icons = document.querySelectorAll('img[data-icon]');
+  var heroIcon = document.querySelector('img[data-hero-icon]');
+  function setIcons(t) {
+    var src = t === 'dark' ? './assets/spyglass-appicon-dark-1024.png' : './assets/spyglass-appicon-light-1024.png';
+    icons.forEach(function (img) { img.src = src; });
+    if (heroIcon) heroIcon.src = src;
+  }
+
+  var root = document.documentElement;
+  function applyTheme(t) {
+    if (t === 'dark') root.classList.add('dark'); else root.classList.remove('dark');
+    var sun = document.querySelector('.sun'), moon = document.querySelector('.moon');
+    if (sun && moon) { sun.classList.toggle('hidden', t === 'dark'); moon.classList.toggle('hidden', t !== 'dark'); }
+    setIcons(t);
+  }
+  var saved = null;
+  try { saved = localStorage.getItem('sg-theme'); } catch (e) {}
+  var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  applyTheme(saved || (sysDark ? 'dark' : 'light'));
+  var tt = document.getElementById('theme-toggle');
+  if (tt) tt.addEventListener('click', function () {
+    var next = root.classList.contains('dark') ? 'light' : 'dark';
+    applyTheme(next);
+    try { localStorage.setItem('sg-theme', next); } catch (e) {}
+  });
+
+  var nav = document.getElementById('nav');
+  var onScroll = function () {
+    if (!nav) return;
+    if (window.scrollY > 12) nav.classList.add('glass', 'border-b', 'hair');
+    else nav.classList.remove('glass', 'border-b', 'hair');
+  };
+  onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) {
+    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+    // Safety: never leave content hidden if the observer misses (non-scrolling
+    // capture, JS hiccup). Reveal anything still hidden shortly after load.
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        document.querySelectorAll('.reveal:not(.in)').forEach(function (el) { el.classList.add('in'); });
+      }, 1200);
+    });
+  }
+})();
+</script>
+
 </body>
 </html>
