@@ -21,21 +21,21 @@
    [data-theme] attribute set by the toggle (attribute wins over system). ---- */
 :root{
   color-scheme:light dark;
-  --accent:#4f46e5;--accent-hover:#4338ca;--accent-ink:#fff;
+  --accent:#6d5efc;--accent-hover:#5646f5;--accent-ink:#fff;
   --bg:#fafafa;--fg:#101014;--muted:#5c5c66;--card:#fff;--line:#e6e6ea;--chip:#f0f0f4;
-  --hero-1:#1b1b2b;--hero-2:#0d0d14;--hero-fg:#f4f4f8;--hero-tag:#b9b9cb;
+  --hero-1:#7c5cff;--hero-2:#4326b0;--hero-fg:#f4f4f8;--hero-tag:#b9b9cb;
   --hero-accent:#a5a0f5
 }
 @media(prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     --accent:#8b85f0;--accent-hover:#a7a2f4;--accent-ink:#0c0c0f;
-    --bg:#0c0c0f;--fg:#f2f2f4;--muted:#9a9aa6;--card:#151519;--line:#26262e;--chip:#1c1c22
+    --bg:#0c0c0f;--fg:#f2f2f4;--muted:#9a9aa6;--card:#151519;--line:#26262e;--chip:#1c1c22;--hero-1:#3a2a7a;--hero-2:#120c2e
   }
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
   --accent:#8b85f0;--accent-hover:#a7a2f4;--accent-ink:#0c0c0f;
-  --bg:#0c0c0f;--fg:#f2f2f4;--muted:#9a9aa6;--card:#151519;--line:#26262e;--chip:#1c1c22
+  --bg:#0c0c0f;--fg:#f2f2f4;--muted:#9a9aa6;--card:#151519;--line:#26262e;--chip:#1c1c22;--hero-1:#3a2a7a;--hero-2:#120c2e
 }
 :root[data-theme="light"]{color-scheme:light}
 *{box-sizing:border-box}
@@ -77,6 +77,10 @@ h2{font-size:clamp(26px,4vw,36px);font-weight:700;letter-spacing:-.02em;margin:0
 .apps h2{margin-bottom:8px}
 .app{display:grid;grid-template-columns:120px 1fr;gap:32px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:36px;margin-top:28px;transition:border-color .15s,transform .15s;color:inherit}
 .app:hover{border-color:var(--accent);transform:translateY(-2px);text-decoration:none}
+/* An app that exists but isn't shippable yet (e.g. awaiting external approval). */
+.app.coming{opacity:.5;cursor:default;pointer-events:none}
+.app.coming:hover{border-color:var(--line);transform:none}
+.soon{font-size:15px;font-weight:700;color:var(--accent);border:1px solid var(--accent);padding:5px 12px;border-radius:8px}
 .app-icon img{width:120px;height:120px;border-radius:26%;display:block}
 .app .name{font-size:24px;font-weight:700;letter-spacing:-.01em;margin:0 0 6px}
 .app .one{font-size:16px;color:var(--muted);margin:0 0 16px;max-width:52ch}
@@ -163,12 +167,12 @@ footer{border-top:1px solid var(--line);padding:48px 0 64px;color:var(--muted);f
     <div class="wrap">
       <div class="reveal">
         <p class="eyebrow">The apps</p>
-        <h2>Two out now.</h2>
-        <p class="lede">Both free to try. Click through for screenshots, details, and the download.</p>
+        <h2>Built for the Mac.</h2>
+        <p class="lede">Free to try. Click through for screenshots, details, and the download.</p>
       </div>
 
-      <!-- Spyglass -->
-      <a class="app reveal" href="./spyglass/">
+      <!-- Spyglass — built, awaiting Google approval; shown but not yet available. -->
+      <div class="app coming reveal" aria-disabled="true">
         <div class="app-icon">
           <img class="icon-light" src="./spyglass/assets/spyglass-appicon-light-1024.png" alt="Spyglass app icon">
           <img class="icon-dark" src="./spyglass/assets/spyglass-appicon-dark-1024.png" alt="Spyglass app icon">
@@ -186,10 +190,10 @@ footer{border-top:1px solid var(--line);padding:48px 0 64px;color:var(--muted);f
           <div class="app-meta">
             <span class="price"><span class="free">Free</span> · Pro $9 one-time</span>
             <span class="badge">macOS 14+</span>
-            <span class="more">Learn more →</span>
+            <span class="soon">Coming soon</span>
           </div>
         </div>
-      </a>
+      </div>
 
       <!-- Viaduct -->
       <a class="app reveal" href="./viaduct/">
@@ -205,7 +209,6 @@ footer{border-top:1px solid var(--line);padding:48px 0 64px;color:var(--muted);f
             <span class="chip">One-click convert</span>
             <span class="chip">Native Safari engine</span>
             <span class="chip">Auto-resign</span>
-            <span class="chip">Beta</span>
           </div>
           <div class="app-meta">
             <span class="price"><span class="free">Free</span> · Pro $19 one-time</span>
@@ -255,7 +258,7 @@ footer{border-top:1px solid var(--line);padding:48px 0 64px;color:var(--muted);f
         var t = root.getAttribute('data-theme');
         return t ? t === 'dark' : mq.matches;
       }
-      function sync(){ btn.textContent = isDark() ? '\u2600' : '\u263e'; } // sun when dark, moon when light
+      function sync(){ btn.textContent = isDark() ? '☀' : '☾'; } // sun when dark, moon when light
       btn.addEventListener('click', function(){
         var next = isDark() ? 'light' : 'dark';
         root.setAttribute('data-theme', next);
