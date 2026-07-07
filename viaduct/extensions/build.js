@@ -1,0 +1,345 @@
+#!/usr/bin/env node
+// Generates the /viaduct/extensions/ SEO pages: one page per popular Chrome
+// extension with no (or partial) Safari presence, plus the hub index.
+// Edit EXTENSIONS or the template below, then re-run:  node build.js
+// Output: ./<slug>/index.html for each extension + ./index.html (hub).
+
+'use strict';
+const fs = require('fs');
+const path = require('path');
+
+const SITE = 'https://magicelklabs.com';
+const STORE = (id) => `https://chromewebstore.google.com/detail/${id}`;
+
+// official = an official Safari version exists; the page must say so and link it.
+const EXTENSIONS = [
+  { slug: 'ublock-origin', name: 'uBlock Origin', id: 'cjpalhdlnbpafiamejdnhcphjbkeiagm',
+    desc: 'the wide-spectrum content blocker', category: 'Privacy & ad blocking' },
+  { slug: 'tampermonkey', name: 'Tampermonkey', id: 'dhdgffkkebhmkfjojejmpbldmpobfkfo',
+    desc: 'the most popular userscript manager', category: 'Userscripts' },
+  { slug: 'violentmonkey', name: 'Violentmonkey', id: 'jinjaccalgkegednnccohejagnlnfdag',
+    desc: 'the open-source userscript manager', category: 'Userscripts' },
+  { slug: 'metamask', name: 'MetaMask', id: 'nkbihfbeogaeaoehlefnkodbefgpgknn',
+    desc: 'the Ethereum wallet that lives in your browser', category: 'Crypto' },
+  { slug: 'return-youtube-dislike', name: 'Return YouTube Dislike', id: 'gebbhagfogifgggkldgodflihgfeippi',
+    desc: 'the extension that restores dislike counts on YouTube', category: 'YouTube' },
+  { slug: 'sponsorblock', name: 'SponsorBlock', id: 'mnjggcdmjocbbbhaepdhchncahnbgone',
+    desc: 'the extension that auto-skips sponsor segments in YouTube videos', category: 'YouTube' },
+  { slug: 'stylus', name: 'Stylus', id: 'clngdbkpkpeebahjckkjfobafhncgmne',
+    desc: 'custom CSS themes for any website', category: 'Customization' },
+  { slug: 'dark-reader', name: 'Dark Reader', id: 'eimadpbcbfnmbkopoojfekhnkhdbieeh',
+    desc: 'dark mode for every website', category: 'Customization',
+    official: { label: 'Dark Reader for Safari (Mac App Store)', url: 'https://apps.apple.com/us/app/dark-reader-for-safari/id1438243180',
+      note: 'Dark Reader ships an official paid Safari version. If you just want Dark Reader, buy it — it supports the developer. Viaduct is for running the free Chrome build, or for the day you want an extension that has no Safari port at all.' } },
+  { slug: 'clearurls', name: 'ClearURLs', id: 'lckanjgmijmafbedllaakclkaicjfmnk',
+    desc: 'the extension that strips tracking parameters from links', category: 'Privacy & ad blocking' },
+  { slug: 'decentraleyes', name: 'Decentraleyes', id: 'ldpochfccmkkmhdbclfhpagapcfdljkj',
+    desc: 'local CDN emulation that blocks tracking requests', category: 'Privacy & ad blocking' },
+  { slug: 'i-still-dont-care-about-cookies', name: "I still don't care about cookies", id: 'edibdbjcniadpccecjdfdjjppcpchdlm',
+    desc: 'the extension that auto-dismisses cookie banners', category: 'Privacy & ad blocking' },
+  { slug: 'video-speed-controller', name: 'Video Speed Controller', id: 'nffaoalbilbmmfgbnbgppjihopabppdk',
+    desc: 'fine-grained speed control for any HTML5 video', category: 'Media' },
+  { slug: 'augmented-steam', name: 'Augmented Steam', id: 'dnhpnfgdlenaccegplpojghhmaamnnfp',
+    desc: 'price history and store upgrades for Steam', category: 'Gaming' },
+  { slug: 'reddit-enhancement-suite', name: 'Reddit Enhancement Suite', id: 'kbmfpngjjgdllneeigpgjifpgocmfgmb',
+    desc: 'the power-user toolkit for Reddit', category: 'Social' },
+  { slug: 'refined-github', name: 'Refined GitHub', id: 'hlepfoohegkhhmjieoechaddaejaokhf',
+    desc: 'dozens of quality-of-life improvements for GitHub', category: 'Developer tools',
+    official: { label: 'Refined GitHub (Mac App Store)', url: 'https://apps.apple.com/us/app/refined-github/id1519867270',
+      note: 'Refined GitHub has an official Safari port on the Mac App Store. If that works for you, use it. Viaduct is for running the Chrome build directly, or for extensions with no port at all.' } },
+  { slug: 'zotero-connector', name: 'Zotero Connector', id: 'ekhagklcjbdpajgpjgmbionohlpdbjgc',
+    desc: 'save references into Zotero from your browser', category: 'Research',
+    official: { label: 'Zotero desktop app (bundles a Safari extension)', url: 'https://www.zotero.org/download/',
+      note: 'Zotero bundles a Safari connector with its desktop app. If you run Zotero anyway, enable that first. Viaduct is for running the standalone Chrome connector, or any extension with no Safari option.' } },
+  { slug: 'ublacklist', name: 'uBlacklist', id: 'pncfbmialoiaghdehhbnbhkkgmjanfhe',
+    desc: 'the extension that removes chosen sites from Google results', category: 'Search',
+    official: { label: 'uBlacklist for Safari (Mac App Store)', url: 'https://apps.apple.com/us/app/ublacklist-for-safari/id1547912640',
+      note: 'uBlacklist has an official Safari port on the Mac App Store. If that covers you, use it. Viaduct is for running the Chrome build directly, or for extensions with no port at all.' } },
+  { slug: 'web-archives', name: 'Web Archives', id: 'hkligngkgcpcolhcnkgccglchdafcnao',
+    desc: 'one-click lookup of archived page versions (Wayback Machine and more)', category: 'Research' },
+  { slug: 'user-agent-switcher', name: 'User-Agent Switcher and Manager', id: 'bhchdcejhohfmigjafbampogmaanbfkg',
+    desc: 'spoof or rotate your browser’s user agent', category: 'Developer tools' },
+  { slug: 'xbrowsersync', name: 'xBrowserSync', id: 'lcbjdhceifofjlpecfpeimnnphbcjgnc',
+    desc: 'encrypted bookmark sync across browsers', category: 'Sync' },
+];
+
+const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+// Shared page chrome — tokens copied from ../index.html (Theme.swift palette).
+const CSS = `
+:root {
+  --canvas:#F5F5F7; --surface:#FFFFFF; --elevated:#F0F0F2;
+  --ink:#1D1D1F; --body:#3A3A3C; --mute:#6E6E73; --stone:#BFBFC4;
+  --teal:#16746F; --teal-press:#0F5551; --on-teal:#FFFFFF;
+  --hair:rgba(0,0,0,.10); --hair-strong:rgba(0,0,0,.16);
+  --glow:rgba(22,116,111,.16);
+}
+html.dark {
+  --canvas:#1A1A1C; --surface:#222225; --elevated:#2A2A2E;
+  --ink:#F5F5F7; --body:#D4D4D8; --mute:#98989F; --stone:#49494E;
+  --teal:#21AF9F; --teal-press:#1B958A; --on-teal:#04201C;
+  --hair:rgba(255,255,255,.12); --hair-strong:rgba(255,255,255,.2);
+  --glow:rgba(33,175,159,.14);
+}
+* { box-sizing:border-box; }
+body {
+  margin:0; background:var(--canvas); color:var(--body);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',system-ui,sans-serif;
+  line-height:1.6; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3 { color:var(--ink); letter-spacing:-.02em; line-height:1.15; }
+a { color:var(--teal); text-decoration:none; }
+a:hover { text-decoration:underline; }
+.wrap { max-width:760px; margin:0 auto; padding:0 24px; }
+nav.top {
+  position:sticky; top:0; z-index:50; height:64px;
+  background:color-mix(in srgb, var(--canvas) 78%, transparent);
+  -webkit-backdrop-filter:blur(16px); backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--hair);
+}
+nav.top .row { max-width:960px; margin:0 auto; padding:0 24px; height:64px; display:flex; align-items:center; justify-content:space-between; }
+nav.top .brand { display:flex; align-items:center; gap:10px; font-weight:700; color:var(--ink); font-size:17px; }
+nav.top .brand img { width:32px; height:32px; border-radius:8px; display:block; }
+.btn {
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  background:var(--teal); color:var(--on-teal); font-weight:600; font-size:15px;
+  border-radius:12px; padding:12px 24px; transition:transform .22s cubic-bezier(.2,.8,.2,1), background .2s;
+}
+.btn:hover { background:var(--teal-press); transform:translateY(-1px); text-decoration:none; }
+.btn.ghost { background:transparent; color:var(--ink); border:1px solid var(--hair-strong); }
+.btn.ghost:hover { background:transparent; border-color:var(--teal); }
+.crumb { font-size:13px; color:var(--mute); margin:40px 0 12px; }
+.crumb a { color:var(--mute); }
+.hero h1 { font-size:clamp(2rem,5.5vw,3.2rem); font-weight:800; margin:0 0 16px; }
+.hero p.lede { font-size:18px; max-width:56ch; }
+.card { background:var(--surface); border:1px solid var(--hair); border-radius:14px; padding:24px; }
+.callout { border-left:3px solid var(--teal); }
+.steps { counter-reset:step; list-style:none; padding:0; margin:0; display:grid; gap:14px; }
+.steps li { counter-increment:step; background:var(--surface); border:1px solid var(--hair); border-radius:14px; padding:18px 20px 18px 62px; position:relative; }
+.steps li::before {
+  content:counter(step); position:absolute; left:18px; top:18px;
+  width:28px; height:28px; border-radius:999px; background:var(--teal); color:var(--on-teal);
+  font-weight:700; font-size:14px; display:grid; place-items:center;
+}
+.steps li strong { color:var(--ink); }
+section { margin:56px 0; }
+h2 { font-size:clamp(1.4rem,3.4vw,1.9rem); margin:0 0 16px; }
+details { border-bottom:1px solid var(--hair); padding:14px 0; }
+details summary { cursor:pointer; font-weight:600; color:var(--ink); list-style:none; }
+details summary::-webkit-details-marker { display:none; }
+details p { margin:10px 0 0; font-size:15px; }
+.cta { text-align:center; padding:48px 24px; background:var(--elevated); border:1px solid var(--hair); border-radius:18px; }
+.cta h2 { margin-bottom:8px; }
+.cta p { margin:0 0 22px; color:var(--mute); }
+footer { border-top:1px solid var(--hair); margin-top:72px; padding:32px 0 48px; font-size:13px; color:var(--mute); }
+footer .links { display:flex; gap:20px; flex-wrap:wrap; margin-bottom:16px; }
+footer .links a { color:var(--mute); }
+footer .links a:hover { color:var(--teal); }
+.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px; padding:0; list-style:none; margin:0; }
+.grid a.tile { display:block; background:var(--surface); border:1px solid var(--hair); border-radius:14px; padding:18px; color:inherit; transition:transform .22s, border-color .2s; }
+.grid a.tile:hover { transform:translateY(-2px); border-color:var(--teal); text-decoration:none; }
+.grid .tile b { color:var(--ink); display:block; margin-bottom:4px; font-size:15px; }
+.grid .tile span { font-size:13px; color:var(--mute); }
+.tag { display:inline-block; font-size:11px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; color:var(--teal); margin-bottom:8px; }
+`;
+
+const THEME_JS = `
+(function(){var s=null;try{s=localStorage.getItem('vd-theme')}catch(e){}
+var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
+var t=s||(d?'dark':'light');if(t==='dark')document.documentElement.classList.add('dark');
+document.querySelectorAll('img[data-icon]').forEach(function(i){i.src='../../assets/viaduct-icon-'+(t==='dark'?'light':'dark')+'.png'});})();
+`;
+
+function head({ title, description, canonical }) {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>${esc(title)}</title>
+<meta name="description" content="${esc(description)}" />
+<link rel="canonical" href="${canonical}" />
+<meta property="og:title" content="${esc(title)}" />
+<meta property="og:description" content="${esc(description)}" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="${canonical}" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>${CSS}</style>
+</head>`;
+}
+
+function chrome(inner, iconDepth) {
+  const themeJs = THEME_JS.replace("'../../assets/", `'${iconDepth}assets/`);
+  return `
+<body>
+<nav class="top"><div class="row">
+  <a class="brand" href="/viaduct/"><img data-icon alt="" width="32" height="32" />Viaduct</a>
+  <a class="btn" style="font-size:14px;padding:9px 18px" href="/viaduct/#get">Get Viaduct</a>
+</div></nav>
+<main class="wrap">
+${inner}
+</main>
+<footer><div class="wrap">
+  <div class="links">
+    <a href="/viaduct/">Viaduct</a>
+    <a href="/viaduct/extensions/">All extensions</a>
+    <a href="/viaduct/#how">How it works</a>
+    <a href="/viaduct/privacy.html">Privacy</a>
+  </div>
+  <p>All extension names are trademarks of their respective owners. Viaduct is not
+  affiliated with or endorsed by the developers of the extensions listed here, nor by
+  Apple or Google. Viaduct converts extensions locally on your Mac; nothing is
+  redistributed.</p>
+  <p>macOS 13+ · Free for 2 conversions, then $19 one-time · <a href="/viaduct/">magicelklabs.com/viaduct</a></p>
+</div></footer>
+<script>${themeJs}</script>
+</body>
+</html>`;
+}
+
+function extensionPage(x) {
+  const store = STORE(x.id);
+  const canonical = `${SITE}/viaduct/extensions/${x.slug}/`;
+  const title = `Run ${x.name} in Safari — Viaduct`;
+  const description = x.official
+    ? `${x.name} on Safari: what the official option covers, and how to run the Chrome version natively in Safari with Viaduct.`
+    : `${x.name} has no Safari version. Viaduct converts the real Chrome extension into a native Safari extension — one click, no terminal.`;
+
+  const officialBlock = x.official ? `
+<section>
+  <div class="card callout">
+    <strong style="color:var(--ink)">Good news first: an official option exists.</strong>
+    <p style="margin:8px 0 0">${esc(x.official.note)}<br />
+    → <a href="${x.official.url}" rel="noopener">${esc(x.official.label)}</a></p>
+  </div>
+</section>` : '';
+
+  const noPortLede = x.official
+    ? `There's an official Safari option for ${x.name} (linked below) — and there's also
+       Viaduct, which runs the actual Chrome build in Safari, the same way it runs the
+       thousands of extensions that never got a port.`
+    : `${x.name} — ${x.desc} — has no official Safari version. Safari can't load Chrome
+       extensions: it uses its own native <code>.appex</code> format that must be built,
+       code-signed, and registered with macOS. Viaduct does all of that for you.`;
+
+  return head({ title, description, canonical }) + chrome(`
+<div class="crumb"><a href="/viaduct/extensions/">Extensions</a> / ${esc(x.name)}</div>
+<div class="hero">
+  <span class="tag">${esc(x.category)}</span>
+  <h1>Run ${esc(x.name)} in Safari</h1>
+  <p class="lede">${noPortLede}</p>
+</div>
+${officialBlock}
+<section>
+  <h2>The whole process, three steps</h2>
+  <ol class="steps">
+    <li><strong><a href="/viaduct/">Get Viaduct</a></strong> — free for your first 2 conversions. It also installs a small Safari extension that upgrades the Chrome Web Store.</li>
+    <li><strong>Open ${esc(x.name)}'s Chrome Web Store page — in Safari.</strong><br />
+        <a href="${store}" rel="noopener">${esc(x.name)} on the Chrome Web Store →</a></li>
+    <li><strong>Click "Add to Safari."</strong> The store's "Add to Chrome" button becomes "Add to Safari." One click: Viaduct fetches ${esc(x.name)}, converts it to a native Safari extension, signs it, and installs it. It appears in Safari's toolbar like any native extension.</li>
+  </ol>
+</section>
+
+<!-- MEDIA-SLOT: ${x.slug} — uncomment and fill after testing this extension.
+<section>
+  <h2>${esc(x.name)} running in Safari</h2>
+  <figure class="card" style="padding:12px">
+    <img src="media/${x.slug}-safari.png" alt="${esc(x.name)} running natively in Safari" style="width:100%;border-radius:8px;display:block" />
+    <figcaption style="font-size:13px;color:var(--mute);margin-top:8px">${esc(x.name)}, converted by Viaduct, running in Safari's own engine.</figcaption>
+  </figure>
+</section>
+-->
+
+<section>
+  <h2>What's actually happening</h2>
+  <p>Viaduct downloads the exact ${esc(x.name)} package published on the Chrome Web
+  Store — same code, same version — and rebuilds it as a native Safari Web Extension
+  (<code>.appex</code>). It handles the conversion, the code-signing, and the macOS
+  registration that normally require Xcode wrangling and a terminal. Because the result
+  runs inside Safari's own engine, you keep Safari's battery life — there's no second
+  Chromium process running in the background.</p>
+  <p>Safari supports the same WebExtension API family that Chrome extensions are built
+  on, so most extensions work as-is. Some Chrome-only APIs have no Safari equivalent —
+  Viaduct's built-in Analyze check tells you before you convert.</p>
+</section>
+<section>
+  <h2>Questions</h2>
+  <details><summary>Is this the real ${esc(x.name)}, or a clone?</summary>
+    <p>The real one. Viaduct converts the exact package its developers published on the
+    Chrome Web Store. Nothing is modified, hosted, or redistributed — the conversion
+    happens locally on your Mac.</p></details>
+  <details><summary>Will it stop working after a week?</summary>
+    <p>Free Apple accounts sign extensions for about 7 days. Viaduct Pro auto-re-signs
+    converted extensions in the background before they lapse, so they never silently
+    disappear.</p></details>
+  <details><summary>What do I need?</summary>
+    <p>macOS 13+. Node is bundled inside Viaduct — nothing to install. Xcode is required
+    (free, from the App Store) because Apple offers no other way to code-sign a Safari
+    extension on a free account; Viaduct checks on first run and links the install if
+    it's missing.</p></details>
+  <details><summary>What does Viaduct cost?</summary>
+    <p>Free for your first 2 conversions. Pro is $19 one-time — unlimited conversions
+    plus auto-re-signing. The conversion engine is open source (MIT).</p></details>
+</section>
+<section>
+  <div class="cta">
+    <h2>${esc(x.name)} in Safari, two minutes from now.</h2>
+    <p>Free for your first 2 conversions · Pro $19 one-time · macOS 13+</p>
+    <a class="btn" href="/viaduct/">Get Viaduct</a>
+  </div>
+</section>`, '../../');
+}
+
+function hubPage() {
+  const canonical = `${SITE}/viaduct/extensions/`;
+  const tiles = EXTENSIONS.map((x) =>
+    `<a class="tile" href="/viaduct/extensions/${x.slug}/"><b>${esc(x.name)}</b><span>${esc(x.desc.charAt(0).toUpperCase() + x.desc.slice(1))}</span></a>`
+  ).join('\n    ');
+  return head({
+    title: 'Chrome extensions you can run in Safari — Viaduct',
+    description: 'Per-extension guides for running popular Chrome extensions natively in Safari with Viaduct: uBlock Origin, Tampermonkey, MetaMask, SponsorBlock, and more.',
+    canonical,
+  }) + chrome(`
+<div class="hero" style="margin-top:48px">
+  <h1>Chrome extensions,<br />running in Safari</h1>
+  <p class="lede">Safari can't load Chrome extensions — Viaduct converts them into
+  native Safari extensions, signed and installed in one click. Guides for the
+  extensions people miss most:</p>
+</div>
+<section>
+  <div class="grid">
+    ${tiles}
+  </div>
+</section>
+<section>
+  <p class="lede" style="font-size:15px;color:var(--mute)">Missing one? Viaduct isn't
+  limited to this list — it converts any extension from a <code>.zip</code>,
+  <code>.crx</code>, or Chrome Web Store link. <a href="/viaduct/">See how it works →</a></p>
+</section>`, '../');
+}
+
+// ── emit ──
+let count = 0;
+for (const x of EXTENSIONS) {
+  const dir = path.join(__dirname, x.slug);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'index.html'), extensionPage(x));
+  count++;
+}
+fs.writeFileSync(path.join(__dirname, 'index.html'), hubPage());
+
+// sitemap for the whole viaduct section
+const urls = [
+  `${SITE}/viaduct/`,
+  `${SITE}/viaduct/extensions/`,
+  ...EXTENSIONS.map((x) => `${SITE}/viaduct/extensions/${x.slug}/`),
+];
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map((u) => `  <url><loc>${u}</loc></url>`).join('\n')}
+</urlset>\n`;
+fs.writeFileSync(path.join(__dirname, '..', '..', 'sitemap.xml'), sitemap);
+
+console.log(`${count} extension pages + hub + sitemap.xml written.`);
