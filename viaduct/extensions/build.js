@@ -30,7 +30,7 @@ const EXTENSIONS = [
   { slug: 'dark-reader', name: 'Dark Reader', id: 'eimadpbcbfnmbkopoojfekhnkhdbieeh',
     desc: 'dark mode for every website', category: 'Customization',
     official: { label: 'Dark Reader for Safari (Mac App Store)', url: 'https://apps.apple.com/us/app/dark-reader-for-safari/id1438243180',
-      note: 'Dark Reader ships an official paid Safari version. If you just want Dark Reader, buy it — it supports the developer. Viaduct is for running the free Chrome build, or for the day you want an extension that has no Safari port at all.' } },
+      note: 'Dark Reader ships an official paid Safari version. If you just want Dark Reader, buy it; it supports the developer. Viaduct is for running the free Chrome build, or for the day you want an extension that has no Safari port at all.' } },
   { slug: 'clearurls', name: 'ClearURLs', id: 'lckanjgmijmafbedllaakclkaicjfmnk',
     desc: 'the extension that strips tracking parameters from links', category: 'Privacy & ad blocking' },
   { slug: 'decentraleyes', name: 'Decentraleyes', id: 'ldpochfccmkkmhdbclfhpagapcfdljkj',
@@ -205,7 +205,7 @@ function extensionPage(x) {
   const title = `Run ${x.name} in Safari — Viaduct`;
   const description = x.official
     ? `${x.name} on Safari: what the official option covers, and how to run the Chrome version natively in Safari with Viaduct.`
-    : `${x.name} has no Safari version. Viaduct converts the real Chrome extension into a native Safari extension — one click, no terminal.`;
+    : `${x.name} has no Safari version. Viaduct converts the real Chrome extension into a native Safari extension. One click, no terminal.`;
 
   const officialBlock = x.official ? `
 <section>
@@ -217,10 +217,10 @@ function extensionPage(x) {
 </section>` : '';
 
   const noPortLede = x.official
-    ? `There's an official Safari option for ${x.name} (linked below) — and there's also
+    ? `There's an official Safari option for ${x.name} (linked below). There's also
        Viaduct, which runs the actual Chrome build in Safari, the same way it runs the
        thousands of extensions that never got a port.`
-    : `${x.name} — ${x.desc} — has no official Safari version. Safari can't load Chrome
+    : `${x.name}, ${x.desc}, has no official Safari version. Safari can't load Chrome
        extensions: it uses its own native <code>.appex</code> format that must be built,
        code-signed, and registered with macOS. Viaduct does all of that for you.`;
 
@@ -235,8 +235,8 @@ ${officialBlock}
 <section>
   <h2>The whole process, three steps</h2>
   <ol class="steps">
-    <li><strong><a href="/viaduct/">Get Viaduct</a></strong> — free for your first 2 conversions. It also installs a small Safari extension that upgrades the Chrome Web Store.</li>
-    <li><strong>Open ${esc(x.name)}'s Chrome Web Store page — in Safari.</strong><br />
+    <li><strong><a href="/viaduct/">Get Viaduct</a></strong>. Free for your first 2 conversions, and it installs a small Safari extension that upgrades the Chrome Web Store.</li>
+    <li><strong>Open ${esc(x.name)}'s Chrome Web Store page in Safari.</strong><br />
         <a href="${store}" rel="noopener">${esc(x.name)} on the Chrome Web Store →</a></li>
     <li><strong>Click "Add to Safari."</strong> The store's "Add to Chrome" button becomes "Add to Safari." One click: Viaduct fetches ${esc(x.name)}, converts it to a native Safari extension, signs it, and installs it. It appears in Safari's toolbar like any native extension.</li>
   </ol>
@@ -255,32 +255,32 @@ ${officialBlock}
 <section>
   <h2>What's actually happening</h2>
   <p>Viaduct downloads the exact ${esc(x.name)} package published on the Chrome Web
-  Store — same code, same version — and rebuilds it as a native Safari Web Extension
+  Store (same code, same version) and rebuilds it as a native Safari Web Extension
   (<code>.appex</code>). It handles the conversion, the code-signing, and the macOS
   registration that normally require Xcode wrangling and a terminal. Because the result
-  runs inside Safari's own engine, you keep Safari's battery life — there's no second
-  Chromium process running in the background.</p>
+  runs inside Safari's own engine, you keep Safari's battery life. No second Chromium
+  process runs in the background.</p>
   <p>Safari supports the same WebExtension API family that Chrome extensions are built
-  on, so most extensions work as-is. Some Chrome-only APIs have no Safari equivalent —
-  Viaduct's built-in Analyze check tells you before you convert.</p>
+  on, so most extensions work as-is. Some Chrome-only APIs have no Safari equivalent,
+  and Viaduct's built-in Analyze check tells you before you convert.</p>
 </section>
 <section>
   <h2>Questions</h2>
   <details><summary>Is this the real ${esc(x.name)}, or a clone?</summary>
     <p>The real one. Viaduct converts the exact package its developers published on the
-    Chrome Web Store. Nothing is modified, hosted, or redistributed — the conversion
+    Chrome Web Store. Nothing is modified, hosted, or redistributed; the conversion
     happens locally on your Mac.</p></details>
   <details><summary>Will it stop working after a week?</summary>
     <p>Free Apple accounts sign extensions for about 7 days. Viaduct Pro auto-re-signs
     converted extensions in the background before they lapse, so they never silently
     disappear.</p></details>
   <details><summary>What do I need?</summary>
-    <p>macOS 13+. Node is bundled inside Viaduct — nothing to install. Xcode is required
+    <p>macOS 13+. Node is bundled inside Viaduct, so there's nothing to install. Xcode is required
     (free, from the App Store) because Apple offers no other way to code-sign a Safari
     extension on a free account; Viaduct checks on first run and links the install if
     it's missing.</p></details>
   <details><summary>What does Viaduct cost?</summary>
-    <p>Free for your first 2 conversions. Pro is $19 one-time — unlimited conversions
+    <p>Free for your first 2 conversions. Pro is $19 one-time: unlimited conversions
     plus auto-re-signing. The conversion engine is open source (MIT).</p></details>
 </section>
 <section>
@@ -304,7 +304,7 @@ function hubPage() {
   }) + chrome(`
 <div class="hero" style="margin-top:48px">
   <h1>Chrome extensions,<br />running in Safari</h1>
-  <p class="lede">Safari can't load Chrome extensions — Viaduct converts them into
+  <p class="lede">Safari can't load Chrome extensions. Viaduct converts them into
   native Safari extensions, signed and installed in one click. Guides for the
   extensions people miss most:</p>
 </div>
@@ -315,7 +315,7 @@ function hubPage() {
 </section>
 <section>
   <p class="lede" style="font-size:15px;color:var(--mute)">Missing one? Viaduct isn't
-  limited to this list — it converts any extension from a <code>.zip</code>,
+  limited to this list. It converts any extension from a <code>.zip</code>,
   <code>.crx</code>, or Chrome Web Store link. <a href="/viaduct/">See how it works →</a></p>
 </section>`, '../');
 }

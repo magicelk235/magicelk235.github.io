@@ -4,10 +4,10 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Run Tampermonkey in Safari — Viaduct</title>
-<meta name="description" content="Tampermonkey has no Safari version. Viaduct converts the real Chrome extension into a native Safari extension — one click, no terminal." />
+<meta name="description" content="Tampermonkey has no Safari version. Viaduct converts the real Chrome extension into a native Safari extension. One click, no terminal." />
 <link rel="canonical" href="https://magicelklabs.com/viaduct/extensions/tampermonkey/" />
 <meta property="og:title" content="Run Tampermonkey in Safari — Viaduct" />
-<meta property="og:description" content="Tampermonkey has no Safari version. Viaduct converts the real Chrome extension into a native Safari extension — one click, no terminal." />
+<meta property="og:description" content="Tampermonkey has no Safari version. Viaduct converts the real Chrome extension into a native Safari extension. One click, no terminal." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://magicelklabs.com/viaduct/extensions/tampermonkey/" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -101,7 +101,7 @@ footer .links a:hover { color:var(--teal); }
 <div class="hero">
   <span class="tag">Userscripts</span>
   <h1>Run Tampermonkey in Safari</h1>
-  <p class="lede">Tampermonkey — the most popular userscript manager — has no official Safari version. Safari can't load Chrome
+  <p class="lede">Tampermonkey, the most popular userscript manager, has no official Safari version. Safari can't load Chrome
        extensions: it uses its own native <code>.appex</code> format that must be built,
        code-signed, and registered with macOS. Viaduct does all of that for you.</p>
 </div>
@@ -109,8 +109,8 @@ footer .links a:hover { color:var(--teal); }
 <section>
   <h2>The whole process, three steps</h2>
   <ol class="steps">
-    <li><strong><a href="/viaduct/">Get Viaduct</a></strong> — free for your first 2 conversions. It also installs a small Safari extension that upgrades the Chrome Web Store.</li>
-    <li><strong>Open Tampermonkey's Chrome Web Store page — in Safari.</strong><br />
+    <li><strong><a href="/viaduct/">Get Viaduct</a></strong>. Free for your first 2 conversions, and it installs a small Safari extension that upgrades the Chrome Web Store.</li>
+    <li><strong>Open Tampermonkey's Chrome Web Store page in Safari.</strong><br />
         <a href="https://chromewebstore.google.com/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo" rel="noopener">Tampermonkey on the Chrome Web Store →</a></li>
     <li><strong>Click "Add to Safari."</strong> The store's "Add to Chrome" button becomes "Add to Safari." One click: Viaduct fetches Tampermonkey, converts it to a native Safari extension, signs it, and installs it. It appears in Safari's toolbar like any native extension.</li>
   </ol>
@@ -129,32 +129,32 @@ footer .links a:hover { color:var(--teal); }
 <section>
   <h2>What's actually happening</h2>
   <p>Viaduct downloads the exact Tampermonkey package published on the Chrome Web
-  Store — same code, same version — and rebuilds it as a native Safari Web Extension
+  Store (same code, same version) and rebuilds it as a native Safari Web Extension
   (<code>.appex</code>). It handles the conversion, the code-signing, and the macOS
   registration that normally require Xcode wrangling and a terminal. Because the result
-  runs inside Safari's own engine, you keep Safari's battery life — there's no second
-  Chromium process running in the background.</p>
+  runs inside Safari's own engine, you keep Safari's battery life. No second Chromium
+  process runs in the background.</p>
   <p>Safari supports the same WebExtension API family that Chrome extensions are built
-  on, so most extensions work as-is. Some Chrome-only APIs have no Safari equivalent —
-  Viaduct's built-in Analyze check tells you before you convert.</p>
+  on, so most extensions work as-is. Some Chrome-only APIs have no Safari equivalent,
+  and Viaduct's built-in Analyze check tells you before you convert.</p>
 </section>
 <section>
   <h2>Questions</h2>
   <details><summary>Is this the real Tampermonkey, or a clone?</summary>
     <p>The real one. Viaduct converts the exact package its developers published on the
-    Chrome Web Store. Nothing is modified, hosted, or redistributed — the conversion
+    Chrome Web Store. Nothing is modified, hosted, or redistributed; the conversion
     happens locally on your Mac.</p></details>
   <details><summary>Will it stop working after a week?</summary>
     <p>Free Apple accounts sign extensions for about 7 days. Viaduct Pro auto-re-signs
     converted extensions in the background before they lapse, so they never silently
     disappear.</p></details>
   <details><summary>What do I need?</summary>
-    <p>macOS 13+. Node is bundled inside Viaduct — nothing to install. Xcode is required
+    <p>macOS 13+. Node is bundled inside Viaduct, so there's nothing to install. Xcode is required
     (free, from the App Store) because Apple offers no other way to code-sign a Safari
     extension on a free account; Viaduct checks on first run and links the install if
     it's missing.</p></details>
   <details><summary>What does Viaduct cost?</summary>
-    <p>Free for your first 2 conversions. Pro is $19 one-time — unlimited conversions
+    <p>Free for your first 2 conversions. Pro is $19 one-time: unlimited conversions
     plus auto-re-signing. The conversion engine is open source (MIT).</p></details>
 </section>
 <section>
