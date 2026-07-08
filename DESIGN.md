@@ -1,7 +1,8 @@
 # Magicelk Labs — Design System
 
-The brand and visual rules for magicelklabs.com. Follow this when editing the
-landing page or any page under this site.
+The brand and visual rules for magicelklabs.com. Follow this when editing any
+page under this site. The voice is **built, precise, structural** (the studio
+sells small engineered tools; Viaduct is literally named after a bridge).
 
 ## Name
 
@@ -10,70 +11,72 @@ Always **Magicelk Labs** — "Magicelk" is one word, capital M. Never "Magic Elk
 
 Individual apps keep their own casing: **Spyglass**, **Viaduct**.
 
-## Identity
+## Typography
 
-Magicelk Labs is a one-person studio building focused, native Mac apps. The
-umbrella brand borrows the **Spyglass palette** (teal + brass) as its house
-colors. There is no separate "Labs" logo mark — the brand is expressed as a
-**wordmark**. Each app shows its own app icon on its own row, never as a stand-in
-for the whole studio.
+- **Display (h1, h2, numerals, wordmarks):** Cabinet Grotesk (Fontshare CDN,
+  weights 500/700/800). Headings weight 800, `letter-spacing:-.02em` to
+  `-.025em`. No italics anywhere (the family has none; synthesized italics are
+  banned).
+- **Body / UI:** Inter on Viaduct + extensions pages; system stack (SF Pro) on
+  Spyglass, root, and about. h3 and smaller stay in the body family unless
+  explicitly `font-display`.
+- Emphasis inside headings: color (brass or teal) + weight. Never a second
+  family, never italic.
 
 ## Colors
 
-| Role         | Hex        | Use                                    |
-|--------------|------------|----------------------------------------|
-| Teal (top)   | `#0B3D3A`  | Hero gradient start, dark accent bands |
-| Teal (bottom)| `#072826`  | Hero gradient end                      |
-| Brass        | `#B8945F`  | Single accent: links, CTA, hovers      |
-| Ink          | `#1d1d1f`  | Body text on light                     |
-| Bg light     | `#f5f5f7`  | Page background, light mode            |
-| Bg dark      | `#0f1514`  | Page background, dark mode             |
+House palette (root, about, privacy chrome): warm-neutral canvas `#FAFAF9`
+(dark `#111413`), ink `#1A1A1C`/`#F4F4F2`, hairlines at ~12% ink, **brass**
+accent `#8A6A38` (dark `#C9A876`).
 
-One accent only: **brass**. Do not introduce a second accent color anywhere.
+**Committed color, not timid accents.** Viaduct's brand surfaces are drenched
+in deep teal (`linear-gradient(168deg,#0F4D48,#093732)` — the `.hero-band` /
+`.pro-panel` / `.cta` gradient), identical in light and dark mode. It carries
+the hero, the Pro pricing panel, and the closing CTA. Spyglass keeps its own
+teal band (`--teal-top`/`--teal-bot`) with brass CTAs. On-band text: near-white
+ink `#F2FBF9`, body `#C6E3DE`, dim `#93C2BB`, bright accent `#6EE0D1`; on-band
+primary buttons are white with dark-teal text.
 
-Light and dark mode via `prefers-color-scheme`. The teal hero band is dark in
-both modes (brass + off-white text on teal) — it is a fixed brand surface, not a
-themed section.
+One accent per page. Light + dark preserved via existing toggles (`theme`,
+`vd-theme`, `sg-theme`).
 
-## Typography
+## Signature moves
 
-System font stack (SF Pro on Apple platforms). No web fonts — keeps the site
-instant and native.
+- **Ruled structure.** Sections are organized by hairline rules: ledger-style
+  feature rows (title 4-col / body 8-col), stat rows split by vertical rules,
+  numbered columns.
+- **Bare numerals.** Process steps use large bare Cabinet Grotesk numerals in
+  the accent color. Never numbers inside circles or chips.
+- **Band bookends.** Product pages open and close on a drenched brand band.
 
-- Display / H1: bold, `letter-spacing:-.02em`, tight leading.
-- Body: regular, `line-height:1.55`, `max-width:~65ch`.
-- Emphasis inside headings: use **bold or the brass color**, never a second
-  typeface.
+## Banned (AI tells — do not reintroduce)
 
-## Motion
-
-Restrained (MOTION dial ~4). CSS only, no JS animation libraries.
-
-- Scroll-reveal: fade + 16px rise as sections enter, via IntersectionObserver.
-- Hover: app rows and buttons lift `translateY(-2px)` / brass border.
-- Everything collapses to static under `prefers-reduced-motion: reduce`.
+- Gradient-stroke "glow" borders on cards (`.glow-*` masks).
+- Radial glow blobs / "crown" halos behind heroes.
+- Glassmorphism pills and glass frames as decoration (nav blur is the only
+  backdrop-filter allowed).
+- Icon-in-rounded-tile bento grids; identical card grids.
+- Progress bars with filled tracks as marketing viz.
+- Traffic-light dots on fake windows/terminals.
+- Floating/looping decorative animation.
+- Em dashes in visible copy (titles/og tags exempt).
+- Italic display type; serif display type.
 
 ## Layout
 
-- Single `index.html`, native CSS in a `<style>` block. Zero build step
-  (GitHub Pages static). Do not add a framework or bundler.
-- Content column `max-width: 960px`, centered, `24px` side padding.
-- Section rhythm: `~96px` vertical padding, generous whitespace (DENSITY ~3).
-- Page order: **Hero → Intro/value → Apps → About → Footer**. Never jump hero
-  straight into the app list; the intro strip bridges them.
+- Content column: `max-width:1080px` (house pages) or existing `max-w-6xl`
+  (product pages); 24px side padding.
+- House pages: masthead (wordmark + small nav + hairline), left-aligned heroes,
+  4fr/8fr side-label grids, index rows with hairlines.
+- Section headers: left-aligned h2, optional hairline `border-top` rule above.
+  Centered composition is reserved for band CTAs and manifesto heroes.
 
-## Sections
+## Motion
 
-1. **Hero** — teal gradient band. Wordmark "Magicelk Labs" + tagline
-   "Focused Mac apps." Two CTAs (see the apps / about). No icon in the hero.
-2. **Intro** — one short paragraph on what the studio is + three value points
-   (e.g. Native · Focused · One-time pricing). Bridges into the apps.
-3. **Apps** — one row per app (alternating image side), each with the app's own
-   icon, name, one-liner, a few feature chips, price, a macOS badge, and a
-   "Learn more →" link to the app's existing page. Two apps today: Spyglass,
-   Viaduct. Not a 3-equal-card grid.
-4. **About** — short maker profile + links + "More about me →" to `/about`.
-5. **Footer** — contact + social links, brass links.
+Restrained. CSS reveals (fade + rise via IntersectionObserver, with a 1.2s
+post-load fallback so content never stays hidden), 1–2px hover lifts, all
+static under `prefers-reduced-motion`. Viaduct keeps its marquee and the
+store-button swap demo.
 
 ## App facts (source of truth: Google Drive media kits)
 
@@ -92,3 +95,8 @@ conversions, then $19 one-time (unlimited + auto-resigning). macOS 13+. Beta.
 - `spyglass/assets/spyglass-appicon-{light,dark}-1024.png` — Spyglass icon.
 - `viaduct/assets/viaduct-icon-{light,dark}.png` — Viaduct icon (256px, web).
 - Use the light icon on dark surfaces and the dark icon on light surfaces.
+
+## Build
+
+Static, zero build step, except `viaduct/extensions/build.js` which generates
+the 20 extension guides + hub + sitemap: `node build.js` after editing it.
