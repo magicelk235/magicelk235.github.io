@@ -120,6 +120,10 @@
   .feat-num { font-family:'Cabinet Grotesk',Inter,sans-serif; font-weight:800; font-size:15px; line-height:1.7; color:var(--hair-strong); font-variant-numeric:tabular-nums; transition:color .2s; }
   .feat-row:hover .feat-num { color:var(--teal); }
   .pro-pill { display:inline-block; margin-left:8px; padding:2px 8px; border-radius:999px; font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; vertical-align:middle; color:var(--teal); background:color-mix(in srgb, var(--teal) 14%, transparent); }
+  /* Supported-input format chips */
+  .fmt-chip { display:inline-flex; align-items:center; gap:6px; padding:9px 16px; border-radius:12px; border:1px solid var(--hair-strong); background:var(--hair-soft); font-size:14px; font-weight:500; color:var(--ink); transition:border-color .2s, transform .2s, background .2s; }
+  .fmt-chip:hover { border-color:var(--teal); transform:translateY(-2px); background:color-mix(in srgb, var(--teal) 6%, transparent); }
+  .fmt-chip code { font-size:13.5px; }
   /* Pro pricing panel: drenched in the brand color */
   .pro-panel { background: linear-gradient(168deg, #0F4D48, #093732); border: 1px solid rgba(255,255,255,.14); }
   .pro-panel .ink { color: #F2FBF9; } .pro-panel .mute { color: #93C2BB; } .pro-panel .body { color: #C6E3DE; }
@@ -237,17 +241,18 @@
 </section>
 
 <!-- ════════════════════ SUPPORTED INPUTS ════════════════════ -->
-<section class="py-10 border-y hair px-5 sm:px-8" aria-label="Supported inputs">
-  <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-3 text-center">
-    <span class="text-[12px] font-semibold uppercase mute shrink-0" style="letter-spacing:.12em">Accepts</span>
-    <div class="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2 text-[14px] body">
-      <code class="font-mono text-[13px] px-2 py-0.5 rounded" style="background:var(--hair-soft)">.crx</code>
-      <code class="font-mono text-[13px] px-2 py-0.5 rounded" style="background:var(--hair-soft)">.zip</code>
-      <span class="mute">unpacked folders</span>
-      <span class="text-[var(--teal)]">·</span>
-      <span class="mute">Chrome Web Store links</span>
-      <span class="text-[var(--teal)]">·</span>
-      <span class="mute">Manifest V2 &amp; V3</span>
+<section class="py-16 sm:py-20 border-y hair px-5 sm:px-8" aria-label="Supported inputs">
+  <div class="max-w-5xl mx-auto text-center">
+    <p class="reveal text-[12px] font-semibold uppercase mute mb-4" style="letter-spacing:.14em">One input, any format</p>
+    <p class="reveal text-[clamp(1.15rem,2.6vw,1.5rem)] ink font-display font-semibold max-w-[24ch] mx-auto mb-10 leading-snug">
+      Drop in whatever you have. Viaduct takes it from there.
+    </p>
+    <div class="reveal flex flex-wrap items-center justify-center gap-2.5">
+      <span class="fmt-chip"><code class="font-mono text-[var(--teal)]">.crx</code></span>
+      <span class="fmt-chip"><code class="font-mono text-[var(--teal)]">.zip</code></span>
+      <span class="fmt-chip">Unpacked folder</span>
+      <span class="fmt-chip">Web Store link</span>
+      <span class="fmt-chip">Manifest <span class="text-[var(--teal)]">V2</span> &amp; <span class="text-[var(--teal)]">V3</span></span>
     </div>
   </div>
 </section>
