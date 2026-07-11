@@ -116,6 +116,10 @@
   .btn-onband-ghost:hover { border-color: rgba(255,255,255,.65); transform: translateY(-1px); }
   /* Pipeline step numerals */
   .step-no { font-family:'Cabinet Grotesk',Inter,sans-serif; font-weight:800; font-size:44px; line-height:1; color:var(--teal); margin-bottom:14px; }
+  /* Numbered feature rows */
+  .feat-num { font-family:'Cabinet Grotesk',Inter,sans-serif; font-weight:800; font-size:15px; line-height:1.7; color:var(--hair-strong); font-variant-numeric:tabular-nums; transition:color .2s; }
+  .feat-row:hover .feat-num { color:var(--teal); }
+  .pro-pill { display:inline-block; margin-left:8px; padding:2px 8px; border-radius:999px; font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; vertical-align:middle; color:var(--teal); background:color-mix(in srgb, var(--teal) 14%, transparent); }
   /* Pro pricing panel: drenched in the brand color */
   .pro-panel { background: linear-gradient(168deg, #0F4D48, #093732); border: 1px solid rgba(255,255,255,.14); }
   .pro-panel .ink { color: #F2FBF9; } .pro-panel .mute { color: #93C2BB; } .pro-panel .body { color: #C6E3DE; }
@@ -291,38 +295,61 @@
   </div>
 </section>
 
-<!-- ════════════════════ FEATURES BENTO ════════════════════ -->
+<!-- ════════════════════ FEATURES ════════════════════ -->
 <section id="features" class="py-24 sm:py-32 px-5 sm:px-8">
   <div class="max-w-6xl mx-auto">
-    <div class="border-t hair pt-12 mb-14">
-      <h2 class="reveal text-[clamp(1.9rem,4.5vw,3rem)] max-w-[20ch]">A precision instrument, not a hack.</h2>
-    </div>
+    <div class="grid lg:grid-cols-12 gap-8 lg:gap-10 border-t hair pt-12">
 
-    <div class="border-t hair">
-
-      <div class="reveal grid md:grid-cols-12 gap-2 md:gap-10 py-8 border-b hair">
-        <h3 class="md:col-span-4 font-display font-bold text-[19px] ink">Keeps Safari's battery life</h3>
-        <p class="md:col-span-8 body text-[15px] leading-relaxed max-w-2xl">Converted extensions run inside Safari's native engine, not a second Chromium process running in the background. Faster, and far easier on your battery.</p>
+      <!-- sticky section head (left) -->
+      <div class="lg:col-span-4">
+        <div class="lg:sticky lg:top-28">
+          <p class="reveal text-[12px] font-semibold uppercase mute mb-4" style="letter-spacing:.12em">Under the hood</p>
+          <h2 class="reveal text-[clamp(1.9rem,4.5vw,3rem)] max-w-[14ch] mb-5">A precision instrument, not a hack.</h2>
+          <p class="reveal body text-[15px] leading-relaxed max-w-sm">Native conversion, done properly. No Chromium sidecar, no expiring hacks, no silent failures.</p>
+        </div>
       </div>
 
-      <div class="reveal grid md:grid-cols-12 gap-2 md:gap-10 py-8 border-b hair">
-        <h3 class="md:col-span-4 font-display font-bold text-[19px] ink">Auto-resign signing <span class="text-[11px] font-bold uppercase align-middle ml-1" style="color:var(--teal);letter-spacing:.06em">Pro</span></h3>
-        <p class="md:col-span-8 body text-[15px] leading-relaxed max-w-2xl">Free Apple signatures lapse every ~7 days. Pro silently re-signs before they do, so your extensions never vanish.</p>
-      </div>
+      <!-- numbered feature rows (right) -->
+      <div class="lg:col-span-8">
+        <div class="feat-row reveal group grid grid-cols-[auto_1fr] gap-x-5 sm:gap-x-7 py-7 border-t hair">
+          <span class="feat-num">01</span>
+          <div>
+            <h3 class="font-display font-bold text-[19px] ink mb-2 transition-colors group-hover:text-[var(--teal)]">Keeps Safari's battery life</h3>
+            <p class="body text-[15px] leading-relaxed">Converted extensions run inside Safari's native engine, not a second Chromium process running in the background. Faster, and far easier on your battery.</p>
+          </div>
+        </div>
 
-      <div class="reveal grid md:grid-cols-12 gap-2 md:gap-10 py-8 border-b hair">
-        <h3 class="md:col-span-4 font-display font-bold text-[19px] ink">Self-updating engine</h3>
-        <p class="md:col-span-8 body text-[15px] leading-relaxed max-w-2xl">The converter keeps itself up to date. New fixes arrive without you reinstalling anything.</p>
-      </div>
+        <div class="feat-row reveal group grid grid-cols-[auto_1fr] gap-x-5 sm:gap-x-7 py-7 border-t hair">
+          <span class="feat-num">02</span>
+          <div>
+            <h3 class="font-display font-bold text-[19px] ink mb-2 transition-colors group-hover:text-[var(--teal)]">Auto-resign signing<span class="pro-pill">Pro</span></h3>
+            <p class="body text-[15px] leading-relaxed">Free Apple signatures lapse every ~7 days. Pro silently re-signs before they do, so your extensions never vanish.</p>
+          </div>
+        </div>
 
-      <div class="reveal grid md:grid-cols-12 gap-2 md:gap-10 py-8 border-b hair">
-        <h3 class="md:col-span-4 font-display font-bold text-[19px] ink">MV2 &amp; MV3 aware</h3>
-        <p class="md:col-span-8 body text-[15px] leading-relaxed max-w-2xl">Detects the manifest version and reports incompatibilities <em>before</em> converting. No silent surprises.</p>
-      </div>
+        <div class="feat-row reveal group grid grid-cols-[auto_1fr] gap-x-5 sm:gap-x-7 py-7 border-t hair">
+          <span class="feat-num">03</span>
+          <div>
+            <h3 class="font-display font-bold text-[19px] ink mb-2 transition-colors group-hover:text-[var(--teal)]">Self-updating engine</h3>
+            <p class="body text-[15px] leading-relaxed">The converter keeps itself up to date. New fixes arrive without you reinstalling anything.</p>
+          </div>
+        </div>
 
-      <div class="reveal grid md:grid-cols-12 gap-2 md:gap-10 py-8 border-b hair">
-        <h3 class="md:col-span-4 font-display font-bold text-[19px] ink">Fills Safari's API gaps</h3>
-        <p class="md:col-span-8 body text-[15px] leading-relaxed max-w-2xl">Safari is missing some of the APIs Chrome extensions rely on. Viaduct fills those gaps itself, so more extensions just work, and tells you exactly what it patched.</p>
+        <div class="feat-row reveal group grid grid-cols-[auto_1fr] gap-x-5 sm:gap-x-7 py-7 border-t hair">
+          <span class="feat-num">04</span>
+          <div>
+            <h3 class="font-display font-bold text-[19px] ink mb-2 transition-colors group-hover:text-[var(--teal)]">MV2 &amp; MV3 aware</h3>
+            <p class="body text-[15px] leading-relaxed">Detects the manifest version and reports incompatibilities <em>before</em> converting. No silent surprises.</p>
+          </div>
+        </div>
+
+        <div class="feat-row reveal group grid grid-cols-[auto_1fr] gap-x-5 sm:gap-x-7 py-7 border-y hair">
+          <span class="feat-num">05</span>
+          <div>
+            <h3 class="font-display font-bold text-[19px] ink mb-2 transition-colors group-hover:text-[var(--teal)]">Fills Safari's API gaps</h3>
+            <p class="body text-[15px] leading-relaxed">Safari is missing some of the APIs Chrome extensions rely on. Viaduct fills those gaps itself, so more extensions just work, and tells you exactly what it patched.</p>
+          </div>
+        </div>
       </div>
 
     </div>
