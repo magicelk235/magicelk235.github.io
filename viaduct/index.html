@@ -157,11 +157,6 @@
   .nav-blur { background: color-mix(in srgb, var(--canvas) 72%, transparent); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border-bottom: 1px solid transparent; transition: border-color .3s; }
   .nav-blur.scrolled { border-color: var(--hair); }
 
-  /* marquee */
-  .marquee { display: flex; gap: 3rem; width: max-content; animation: scroll-x 28s linear infinite; }
-  @keyframes scroll-x { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-  .marquee:hover { animation-play-state: paused; }
-
   /* faq */
   details { border-bottom: 1px solid var(--hair); }
   details summary { list-style: none; cursor: pointer; }
@@ -241,13 +236,18 @@
   </div>
 </section>
 
-<!-- ════════════════════ TRUST MARQUEE ════════════════════ -->
-<section class="py-6 border-y hair overflow-hidden" aria-label="Supported inputs">
-  <div class="relative">
-    <div class="marquee text-[15px] font-medium mute whitespace-nowrap">
-      <!-- duplicated for seamless loop -->
-      <span class="flex items-center gap-3">.crx files <span class="text-[var(--teal)]">·</span> .zip archives <span class="text-[var(--teal)]">·</span> unpacked folders <span class="text-[var(--teal)]">·</span> Chrome Web Store links <span class="text-[var(--teal)]">·</span> Manifest V2 &amp; V3 <span class="text-[var(--teal)]">·</span></span>
-      <span class="flex items-center gap-3" aria-hidden="true">.crx files <span class="text-[var(--teal)]">·</span> .zip archives <span class="text-[var(--teal)]">·</span> unpacked folders <span class="text-[var(--teal)]">·</span> Chrome Web Store links <span class="text-[var(--teal)]">·</span> Manifest V2 &amp; V3 <span class="text-[var(--teal)]">·</span></span>
+<!-- ════════════════════ SUPPORTED INPUTS ════════════════════ -->
+<section class="py-10 border-y hair px-5 sm:px-8" aria-label="Supported inputs">
+  <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-3 text-center">
+    <span class="text-[12px] font-semibold uppercase mute shrink-0" style="letter-spacing:.12em">Accepts</span>
+    <div class="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-2 text-[14px] body">
+      <code class="font-mono text-[13px] px-2 py-0.5 rounded" style="background:var(--hair-soft)">.crx</code>
+      <code class="font-mono text-[13px] px-2 py-0.5 rounded" style="background:var(--hair-soft)">.zip</code>
+      <span class="mute">unpacked folders</span>
+      <span class="text-[var(--teal)]">·</span>
+      <span class="mute">Chrome Web Store links</span>
+      <span class="text-[var(--teal)]">·</span>
+      <span class="mute">Manifest V2 &amp; V3</span>
     </div>
   </div>
 </section>
