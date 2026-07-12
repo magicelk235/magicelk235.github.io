@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" class="js">
+<html lang="en">
 <head>
 <script>
   // Apply saved theme before paint to avoid a flash. No saved value = follow the
   // system preference (handled purely in CSS).
   try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}
+  // Motion gate: hide [data-mm] only when we intend to animate. If GSAP never
+  // arrives, strip the class after 2s so content is never lost.
+  try{
+    if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+      document.documentElement.classList.add('mm');
+      setTimeout(function(){if(!window.__mmReady)document.documentElement.classList.remove('mm');},2000);
+    }
+  }catch(e){}
 </script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -61,6 +69,11 @@ a{color:var(--brass);text-decoration:none}
 a:hover{text-decoration:underline;text-underline-offset:3px}
 .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
 
+/* Motion gate: elements opt in via data-mm; hidden only while the GSAP
+   runtime is expected. /assets/motion.js reveals them. */
+html.mm [data-mm]{visibility:hidden}
+html.mm [data-mm-stagger]>*{visibility:hidden}
+
 /* ---- masthead ---- */
 .masthead{border-bottom:1px solid var(--hair)}
 .masthead .row{display:flex;align-items:baseline;justify-content:space-between;padding:22px 0}
@@ -116,7 +129,8 @@ a:hover{text-decoration:underline;text-underline-offset:3px}
 }
 .app-row:last-child{border-bottom:1px solid var(--hair)}
 a.app-row:hover{background:var(--tint);text-decoration:none}
-.app-icon img{width:108px;height:108px;border-radius:24%;display:block}
+.app-icon img{width:108px;height:108px;border-radius:24%;display:block;transition:transform .45s cubic-bezier(.16,1,.3,1)}
+a.app-row:hover .app-icon img{transform:scale(1.04)}
 .app-name{
   font-family:"Cabinet Grotesk","Inter",sans-serif;font-size:clamp(26px,3vw,34px);
   font-weight:700;letter-spacing:-.015em;color:var(--ink);margin:0 0 6px;line-height:1.15
@@ -145,10 +159,6 @@ footer{border-top:1px solid var(--hair);padding:40px 0 56px;font-size:14px;color
 .foot-links a{color:var(--mute);font-weight:500}
 .foot-links a:hover{color:var(--brass)}
 
-/* ---- scroll reveal ---- */
-.js .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
-.js .reveal.in{opacity:1;transform:none}
-
 @media(max-width:820px){
   .hero-grid,.manifesto-grid,.apps-head,.about-grid{grid-template-columns:1fr;gap:20px}
   .hero-side{padding-bottom:0}
@@ -160,8 +170,8 @@ footer{border-top:1px solid var(--hair);padding:40px 0 56px;font-size:14px;color
 }
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .reveal{opacity:1;transform:none;transition:none}
   a.app-row:hover .app-cue{transform:none}
+  a.app-row:hover .app-icon img{transform:none}
 }
 
 /* app icons: light icon on dark surfaces, dark icon on light. */
@@ -189,8 +199,8 @@ footer{border-top:1px solid var(--hair);padding:40px 0 56px;font-size:14px;color
 
   <section class="hero">
     <div class="wrap hero-grid">
-      <h1 class="reveal">Focused Mac apps,<br>built <em>one at a time.</em></h1>
-      <div class="hero-side reveal">
+      <h1 data-mm="lines" data-mm-load>Focused Mac apps,<br>built <em>one at a time.</em></h1>
+      <div class="hero-side" data-mm="rise" data-mm-load data-mm-delay=".4">
         <p>A one-person studio making small, sharp tools for macOS.</p>
         <a class="go" href="#apps">See the apps ↓</a>
       </div>
@@ -199,12 +209,12 @@ footer{border-top:1px solid var(--hair);padding:40px 0 56px;font-size:14px;color
 
   <section class="manifesto">
     <div class="wrap manifesto-grid">
-      <p class="side-label reveal">The idea</p>
-      <div class="reveal">
-        <p class="big">Each app fixes one annoying thing on macOS and does it
+      <p class="side-label" data-mm="fade">The idea</p>
+      <div>
+        <p class="big" data-mm="lines">Each app fixes one annoying thing on macOS and does it
         <em>natively</em>, offline where it can, with plain one-time pricing.
         No accounts you don't need, no subscriptions, no bloat.</p>
-        <ul class="tenets">
+        <ul class="tenets" data-mm-stagger>
           <li><b>Native</b><span>Built with the system's own frameworks. They feel like Mac apps because they are.</span></li>
           <li><b>Focused</b><span>One job each, done properly. Small surface, few settings, nothing to learn.</span></li>
           <li><b>One-time pricing</b><span>Free to try, pay once to unlock. No subscriptions, ever.</span></li>
@@ -215,15 +225,15 @@ footer{border-top:1px solid var(--hair);padding:40px 0 56px;font-size:14px;color
 
   <section class="apps" id="apps">
     <div class="wrap">
-      <div class="apps-head reveal">
-        <p class="side-label">The apps</p>
+      <div class="apps-head">
+        <p class="side-label" data-mm="fade">The apps</p>
         <div>
-          <h2>Free to try. Pay once, keep forever.</h2>
+          <h2 data-mm="lines">Free to try. Pay once, keep forever.</h2>
         </div>
       </div>
 
       <!-- Spyglass — built, awaiting Google approval; shown but not yet available. -->
-      <div class="app-row coming reveal" aria-disabled="true">
+      <div class="app-row coming" data-mm="rise" aria-disabled="true">
         <div class="app-icon">
           <img class="icon-light" src="./spyglass/assets/spyglass-appicon-light-1024.png" alt="Spyglass app icon" width="108" height="108">
           <img class="icon-dark" src="./spyglass/assets/spyglass-appicon-dark-1024.png" alt="Spyglass app icon" width="108" height="108">
@@ -241,7 +251,7 @@ footer{border-top:1px solid var(--hair);padding:40px 0 56px;font-size:14px;color
       </div>
 
       <!-- Viaduct -->
-      <a class="app-row reveal" href="./viaduct/">
+      <a class="app-row" data-mm="rise" data-mm-delay=".08" href="./viaduct/">
         <div class="app-icon">
           <img class="icon-light" src="./viaduct/assets/viaduct-icon-light.png" alt="Viaduct app icon" width="108" height="108">
           <img class="icon-dark" src="./viaduct/assets/viaduct-icon-dark.png" alt="Viaduct app icon" width="108" height="108">
@@ -262,8 +272,8 @@ footer{border-top:1px solid var(--hair);padding:40px 0 56px;font-size:14px;color
 
   <section class="about">
     <div class="wrap about-grid">
-      <p class="side-label reveal">The maker</p>
-      <div class="reveal">
+      <p class="side-label" data-mm="fade">The maker</p>
+      <div data-mm="rise">
         <p>Every app here started as a personal itch, built and used daily by
         the one person behind the studio.</p>
         <a class="go" href="./about/">About the maker →</a>
@@ -283,28 +293,6 @@ footer{border-top:1px solid var(--hair);padding:40px 0 56px;font-size:14px;color
   </footer>
 
   <script>
-    // Scroll-reveal — skipped entirely under reduced-motion.
-    (function(){
-      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var els = document.querySelectorAll('.reveal');
-      if (reduce || !('IntersectionObserver' in window)) {
-        els.forEach(function(e){ e.classList.add('in'); });
-        return;
-      }
-      var io = new IntersectionObserver(function(entries){
-        entries.forEach(function(en){
-          if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
-        });
-      }, { threshold: 0.12 });
-      els.forEach(function(e){ io.observe(e); });
-      // Safety: reveal anything the observer missed shortly after load.
-      window.addEventListener('load', function(){
-        setTimeout(function(){
-          document.querySelectorAll('.reveal:not(.in)').forEach(function(e){ e.classList.add('in'); });
-        }, 1200);
-      });
-    })();
-
     // Theme toggle: flip data-theme, persist choice, keep the glyph in sync.
     (function(){
       var root = document.documentElement;
@@ -327,6 +315,11 @@ footer{border-top:1px solid var(--hair);padding:40px 0 56px;font-size:14px;color
       sync();
     })();
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+  <script src="/assets/motion.js"></script>
 
 </body>
 </html>

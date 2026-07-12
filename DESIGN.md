@@ -58,7 +58,8 @@ One accent per page. Light + dark preserved via existing toggles (`theme`,
 - Icon-in-rounded-tile bento grids; identical card grids.
 - Progress bars with filled tracks as marketing viz.
 - Traffic-light dots on fake windows/terminals.
-- Floating/looping decorative animation.
+- Floating/looping decorative animation (exception: the low-opacity
+  `data-mm-ambient` band luminance drift; nothing else loops).
 - Em dashes in visible copy (titles/og tags exempt).
 - Italic display type; serif display type.
 
@@ -73,10 +74,48 @@ One accent per page. Light + dark preserved via existing toggles (`theme`,
 
 ## Motion
 
-Restrained. CSS reveals (fade + rise via IntersectionObserver, with a 1.2s
-post-load fallback so content never stays hidden), 1–2px hover lifts, all
-static under `prefers-reduced-motion`. Viaduct keeps its marquee and the
-store-button swap demo.
+Apple-grade scroll choreography via GSAP 3.13 (+ ScrollTrigger + SplitText,
+jsDelivr CDN) driven by the shared runtime **`/assets/motion.js`**. Pages opt
+elements in with data attributes:
+
+- `data-mm="lines"` masked line-by-line headline reveal (SplitText);
+  `data-mm="rise" / "fade" / "media"` for blocks and screenshots;
+  `data-mm-load` runs at load (above the fold), otherwise on scroll-enter.
+- `data-mm-stagger` staggers direct children; `data-mm-parallax` slow drift;
+  `data-mm-counter` count-up numerals.
+- `data-mm-replay` on a section: entrances inside re-run every time it
+  scrolls back into view (used on Viaduct's compat layer); default is once.
+- `data-mm-pin` + `data-mm-pin-stage/-item/-panel`: pinned walkthroughs
+  (Viaduct's Drop → Convert → Done, Spyglass's file-type gallery). Pin engages
+  only ≥1024px + fine pointer; below that the CSS fallback is a static stack
+  with per-panel captions.
+
+Continuous "premium" layer (all fine-pointer-gated, all dead under reduced
+motion):
+
+- **Lenis inertial scroll** (CDN, wired into GSAP's ticker; anchors route
+  through `lenis.scrollTo`).
+- `data-mm-ambient="teal|brass"`: two soft light orbs drift slowly inside
+  brand bands. This is the ONE sanctioned looping animation; it is band
+  luminance, not floating decoration. Keep opacity ≤ .15.
+- `data-mm-scrub`: hero media settles smaller as it scrolls away (nest it
+  inside the entrance element, never on the same node).
+- `data-mm-tilt`: ±4.5° pointer tilt on framed media.
+- `data-mm-magnet`: cursor-magnetic primary CTAs.
+- `data-mm-spot="teal|brass"`: cursor spotlight wash on cards.
+- `.mm-progress`: scroll-progress hairline under the nav (accent color).
+
+Safety contract: an inline head script adds `html.mm` (skipped under
+`prefers-reduced-motion`) and CSS hides `[data-mm]` only under that class;
+motion.js reveals everything, and a 2s failsafe strips the class if GSAP never
+arrives. motion.js also neutralizes CSS `scroll-behavior:smooth` during
+ScrollTrigger refresh, pauses Lenis while ScrollTrigger measures, and calls
+`ScrollTrigger.sort()` before refresh (pins are created after entrance
+triggers; without the sort, everything below a pin fires ~2000px early).
+Re-refreshes on `load`.
+Videos pause off-screen and gain controls (no autoplay/loop) under reduced
+motion. Hover stays 1–2px lifts; no other decorative loops beyond the ambient
+band light.
 
 ## App facts (source of truth: Google Drive media kits)
 
@@ -95,6 +134,17 @@ conversions, then $19 one-time (unlimited + auto-resigning). macOS 13+. Beta.
 - `spyglass/assets/spyglass-appicon-{light,dark}-1024.png` — Spyglass icon.
 - `viaduct/assets/viaduct-icon-{light,dark}.png` — Viaduct icon (256px, web).
 - Use the light icon on dark surfaces and the dark icon on light surfaces.
+- Media-kit screenshots (source: Google Drive → "My Drive/media kits", mounted
+  locally) converted with `cwebp -q 82 -resize 1800 0`:
+  - `spyglass/assets/spyglass-shot-{docs,sheets,slides,drawings}-{light,dark}.webp`
+    (1800×1474) and `spyglass-menubar-{light,dark}.webp` (1400×1567).
+  - `viaduct/assets/viaduct-{main,developer}-{light,dark}.webp` and
+    `viaduct-step-{select,convert,succeed}-{light,dark}.webp` (1800×1324).
+  - `viaduct/assets/viaduct-store-install.mp4` (1600w, ~1.9 MB) + poster: the
+    full uncut Chrome-Web-Store-to-Safari install capture.
+- Light/dark image pairs swap via Tailwind `block dark:hidden` /
+  `hidden dark:block`; never add a bare `display:block` CSS rule on those imgs
+  (it outranks Tailwind's `.hidden` and shows both variants at once).
 
 ## Build
 

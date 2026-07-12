@@ -4,6 +4,13 @@
 <script>
   // Apply saved theme before paint to avoid a flash. No saved value = follow system.
   try{var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}
+  // Motion gate: hide [data-mm] only when we intend to animate.
+  try{
+    if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+      document.documentElement.classList.add('mm');
+      setTimeout(function(){if(!window.__mmReady)document.documentElement.classList.remove('mm');},2000);
+    }
+  }catch(e){}
 </script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -48,6 +55,10 @@ body{
 a{color:var(--brass);text-decoration:none}
 a:hover{text-decoration:underline;text-underline-offset:3px}
 .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+/* Motion gate: /assets/motion.js reveals; head failsafe unhides if it never runs. */
+html.mm [data-mm]{visibility:hidden}
+html.mm [data-mm-stagger]>*{visibility:hidden}
 
 .masthead{border-bottom:1px solid var(--hair)}
 .masthead .row{display:flex;align-items:baseline;justify-content:space-between;padding:22px 0}
@@ -101,13 +112,13 @@ footer{border-top:1px solid var(--hair);padding:40px 0 56px;font-size:14px;color
 
   <main class="page wrap">
 
-    <h1>Yehonatan Cohen</h1>
-    <p class="role">AI and data science student at Tel Aviv University, majoring in
+    <h1 data-mm="lines" data-mm-load>Yehonatan Cohen</h1>
+    <p class="role" data-mm="rise" data-mm-load data-mm-delay=".3">AI and data science student at Tel Aviv University, majoring in
     Cyber, Computer Science, and Physics. Maker of the Magicelk Labs apps.</p>
 
     <div class="sec">
-      <p class="side-label">Projects</p>
-      <ul class="projects">
+      <p class="side-label" data-mm="fade">Projects</p>
+      <ul class="projects" data-mm-stagger>
         <li><b>Viaduct</b><span>Converts Chrome extensions into native Safari extensions.</span></li>
         <li><b>Spyglass</b><span>Real Quick Look previews for Google Workspace files on macOS.</span></li>
         <li><b>HolyC++</b><span>An x86-64 assembly compiler.</span></li>
@@ -118,14 +129,14 @@ footer{border-top:1px solid var(--hair);padding:40px 0 56px;font-size:14px;color
     </div>
 
     <div class="sec">
-      <p class="side-label">Off the desk</p>
-      <p>Skiing, designing complex systems, hiking, solving annoying problems,
+      <p class="side-label" data-mm="fade">Off the desk</p>
+      <p data-mm="rise">Skiing, designing complex systems, hiking, solving annoying problems,
       and playing tennis.</p>
     </div>
 
     <div class="sec">
-      <p class="side-label">Contact</p>
-      <div class="links">
+      <p class="side-label" data-mm="fade">Contact</p>
+      <div class="links" data-mm-stagger>
         <a href="mailto:yehonatan.2350@gmail.com">Email</a>
         <a href="https://www.linkedin.com/in/magicelk235/">LinkedIn</a>
         <a href="https://dev.to/magicelk235">dev.to</a>
@@ -163,6 +174,11 @@ footer{border-top:1px solid var(--hair);padding:40px 0 56px;font-size:14px;color
     sync();
   })();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script src="/assets/motion.js"></script>
 
 </body>
 </html>
