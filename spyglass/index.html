@@ -187,7 +187,7 @@
   <span class="mm-progress" style="background:var(--brass)" aria-hidden="true"></span>
   <div class="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
     <a href="#top" class="flex items-center gap-2.5">
-      <img data-icon class="w-8 h-8 rounded-[8px]" alt="Spyglass app icon" width="32" height="32" src="./assets/spyglass-appicon-light-1024.png" />
+      <img data-icon class="w-8 h-8 rounded-[8px]" alt="Spyglass app icon" width="32" height="32" src="./assets/spyglass-appicon-light-320.png" />
       <span class="font-display font-bold ink text-[18px]">Spyglass</span>
     </a>
     <div class="flex items-center gap-2 sm:gap-3">
@@ -206,7 +206,7 @@
 <!-- HERO -->
 <header class="relative overflow-hidden text-center text-white" style="background:linear-gradient(160deg,var(--teal-top),var(--teal-bot));border-radius:0 0 40px 40px;" data-mm-ambient="teal">
   <div class="relative z-10 max-w-3xl mx-auto px-5 sm:px-8 pt-20 pb-14">
-    <img data-hero-icon data-mm="rise" data-mm-load class="w-[clamp(104px,16vw,140px)] h-[clamp(104px,16vw,140px)] mx-auto mb-9 rounded-[24%]" src="./assets/spyglass-appicon-light-1024.png" alt="Spyglass app icon, a brass spyglass" width="140" height="140" />
+    <img data-hero-icon data-mm="rise" data-mm-load class="w-[clamp(104px,16vw,140px)] h-[clamp(104px,16vw,140px)] mx-auto mb-9 rounded-[24%]" src="./assets/spyglass-appicon-light-320.png" alt="Spyglass app icon, a brass spyglass" width="140" height="140" />
     <h1 data-mm="lines" data-mm-load data-mm-delay=".12" class="text-[clamp(2.4rem,6.5vw,4.2rem)] leading-[1.08] mb-4 pb-1">Press Space.<br /><span style="color:var(--wash-a)">See the document.</span></h1>
     <p data-mm="rise" data-mm-load data-mm-delay=".5" class="text-[clamp(1.05rem,2.4vw,1.35rem)] mx-auto max-w-[34ch]" style="color:rgba(255,255,255,.74)">Real Quick Look previews for Google Workspace files on macOS.</p>
     <div data-mm="rise" data-mm-load data-mm-delay=".62" class="flex flex-wrap gap-3 justify-center mt-10">
@@ -554,7 +554,7 @@
 <footer class="border-t hair py-12 px-5 sm:px-8">
   <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
     <div class="flex items-center gap-2.5">
-      <img data-icon class="w-7 h-7 rounded-[7px]" alt="Spyglass app icon" width="28" height="28" src="./assets/spyglass-appicon-light-1024.png" />
+      <img data-icon class="w-7 h-7 rounded-[7px]" alt="Spyglass app icon" width="28" height="28" src="./assets/spyglass-appicon-light-320.png" />
       <span class="font-display font-bold text-[16px] ink">Spyglass</span>
       <span class="text-[13px] mute ml-2 hidden sm:inline">Real Quick Look previews for Google Workspace files.</span>
     </div>
@@ -572,7 +572,7 @@
   var icons = document.querySelectorAll('img[data-icon]');
   var heroIcon = document.querySelector('img[data-hero-icon]');
   function setIcons(t) {
-    var src = t === 'dark' ? './assets/spyglass-appicon-dark-1024.png' : './assets/spyglass-appicon-light-1024.png';
+    var src = t === 'dark' ? './assets/spyglass-appicon-dark-320.png' : './assets/spyglass-appicon-light-320.png';
     icons.forEach(function (img) { img.src = src; });
     if (heroIcon) heroIcon.src = src;
   }

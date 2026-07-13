@@ -18,15 +18,24 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Magicelk Labs — Focused Mac apps</title>
 <meta name="description" content="Focused, native Mac apps. Meet Spyglass and Viaduct.">
-<link rel="icon" href="data:,">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="apple-touch-icon" href="/assets/favicon.png">
 <meta property="og:title" content="Magicelk Labs — Focused Mac apps">
 <meta property="og:description" content="Focused, native Mac apps.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://magicelklabs.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<!-- Font CSS loads async (media=print swap) so first paint isn't blocked on
+     two third-party stylesheets; display=swap shows fallback text meanwhile. -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800&display=swap" rel="stylesheet">
+</noscript>
 <style>
 /* ---- Magicelk Labs, editorial studio system.
    House palette: neutral canvas, ink, brass accent (Spyglass heritage),
@@ -235,8 +244,8 @@ footer{border-top:1px solid var(--hair);padding:40px 0 56px;font-size:14px;color
       <!-- Spyglass — built, awaiting Google approval; shown but not yet available. -->
       <div class="app-row coming" data-mm="rise" aria-disabled="true">
         <div class="app-icon">
-          <img class="icon-light" src="./spyglass/assets/spyglass-appicon-light-1024.png" alt="Spyglass app icon" width="108" height="108">
-          <img class="icon-dark" src="./spyglass/assets/spyglass-appicon-dark-1024.png" alt="Spyglass app icon" width="108" height="108">
+          <img class="icon-light" src="./spyglass/assets/spyglass-appicon-light-320.png" alt="Spyglass app icon" width="108" height="108" loading="lazy" decoding="async">
+          <img class="icon-dark" src="./spyglass/assets/spyglass-appicon-dark-320.png" alt="Spyglass app icon" width="108" height="108" loading="lazy" decoding="async">
         </div>
         <div>
           <p class="app-name">Spyglass</p>
@@ -253,8 +262,8 @@ footer{border-top:1px solid var(--hair);padding:40px 0 56px;font-size:14px;color
       <!-- Viaduct -->
       <a class="app-row" data-mm="rise" data-mm-delay=".08" href="./viaduct/">
         <div class="app-icon">
-          <img class="icon-light" src="./viaduct/assets/viaduct-icon-light.png" alt="Viaduct app icon" width="108" height="108">
-          <img class="icon-dark" src="./viaduct/assets/viaduct-icon-dark.png" alt="Viaduct app icon" width="108" height="108">
+          <img class="icon-light" src="./viaduct/assets/viaduct-icon-light.png" alt="Viaduct app icon" width="108" height="108" loading="lazy" decoding="async">
+          <img class="icon-dark" src="./viaduct/assets/viaduct-icon-dark.png" alt="Viaduct app icon" width="108" height="108" loading="lazy" decoding="async">
         </div>
         <div>
           <p class="app-name">Viaduct</p>

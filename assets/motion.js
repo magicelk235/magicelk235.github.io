@@ -44,6 +44,13 @@
   if (reduce || !window.gsap || !window.ScrollTrigger) { bail(); return; }
   window.__mmReady = true;
 
+  // If the head script's 2s failsafe already stripped `mm`, content is painted
+  // and visible. Running entrances now would yank it back to hidden and
+  // re-reveal — a visible flash, and Lighthouse re-records LCP at the late
+  // paint (observed 20s+ on throttled mobile). Skip entrances; continuous
+  // effects (parallax, pins, tilt, counters) still run.
+  var late = !docEl.classList.contains('mm');
+
   gsap.registerPlugin(ScrollTrigger);
   var hasSplit = !!window.SplitText;
   if (hasSplit) gsap.registerPlugin(SplitText);
@@ -126,6 +133,7 @@
   }
 
   function run() {
+    if (!late) {
     // ---- lines: masked line-by-line headline reveal with blur-in ----
     document.querySelectorAll('[data-mm="lines"]').forEach(function (el) {
       var immediate = el.hasAttribute('data-mm-load');
@@ -175,6 +183,7 @@
         scrollTrigger: st
       });
     });
+    } // end !late entrances
 
     // ---- parallax drift ----
     document.querySelectorAll('[data-mm-parallax]').forEach(function (el) {
