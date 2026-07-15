@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Security Policy — Spyglass</title>
+<meta name="description" content="Spyglass security policy. How to report a vulnerability and what to expect. Read-only Google Drive access, local-only, no servers.">
+<link rel="icon" href="./assets/spyglass-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;--accent:#B8945F;--bg:#f5f5f7;--fg:#1d1d1f;--muted:#6e6e73;--line:#e5e5e7}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1514;--fg:#f5f5f7;--muted:#a1a1a6;--line:#2c3634}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--fg);line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:680px;margin:0 auto;padding:clamp(48px,8vh,96px) 24px}
+.back{display:inline-block;color:var(--accent);text-decoration:none;font-size:15px;font-weight:600;margin-bottom:28px}
+.back:hover{text-decoration:underline}
+h1{font-family:"Cabinet Grotesk",sans-serif;font-size:clamp(30px,5vw,42px);font-weight:800;letter-spacing:-.02em;margin:0 0 8px}
+.updated{color:var(--muted);font-size:15px;margin:0 0 36px}
+h2{font-family:"Cabinet Grotesk",sans-serif;font-size:clamp(19px,2.6vw,24px);font-weight:700;margin:36px 0 10px}
+p,li{color:var(--fg)}
+p{margin:0 0 14px}
+ul{padding-left:22px;margin:0 0 14px}
+li{margin-bottom:8px}
+.muted{color:var(--muted)}
+code{background:rgba(128,128,128,.15);padding:1px 6px;border-radius:5px;font-size:.9em}
+a{color:var(--accent)}
+footer{margin-top:48px;padding-top:24px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+footer a{text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="back" href="./index.html">← Spyglass</a>
+
+  <h1>Security Policy</h1>
+  <p class="updated">Last updated: July 15, 2026</p>
+
+  <h2>Supported versions</h2>
+  <p>
+    Spyglass is a rolling release. Only the latest published build receives
+    security fixes. If you are running an older build, update before reporting
+    an issue.
+  </p>
+
+  <h2>Reporting a vulnerability</h2>
+  <p><strong>Please do not open a public issue for security vulnerabilities.</strong> Report privately through one of:</p>
+  <ul>
+    <li><strong>GitHub Security Advisories</strong> — open a draft advisory at <a href="https://github.com/magicelk235/Spyglass/security/advisories/new" rel="noopener">the repository's advisories page</a> (preferred).</li>
+    <li><strong>Email</strong> — <a href="mailto:support@magicelklabs.com?subject=SECURITY%3A%20spyglass">support@magicelklabs.com</a> with subject <code>SECURITY: spyglass</code>.</li>
+  </ul>
+  <p>Please include:</p>
+  <ul>
+    <li>A description of the vulnerability and its impact.</li>
+    <li>Steps to reproduce (a proof-of-concept if you have one).</li>
+    <li>Affected version, macOS version, and any relevant configuration.</li>
+  </ul>
+
+  <h2>What to expect</h2>
+  <ul>
+    <li>Acknowledgement within 5 business days.</li>
+    <li>An assessment and, where confirmed, a fix timeline. Most issues are patched in the next release.</li>
+    <li>Credit in the release notes once a fix ships, unless you ask to stay anonymous.</li>
+  </ul>
+  <p>Please give a reasonable window to release a fix before any public disclosure.</p>
+
+  <h2>Scope</h2>
+  <p>
+    Spyglass is a Quick Look Preview Extension plus a host app that signs into
+    Google (OAuth) to fetch rendered previews of Google Workspace files. It uses
+    the read-only <code>drive.readonly</code> scope, caches previews only on your
+    Mac, and has no server. Reports touching credential handling, OAuth token
+    storage, the Google client-secret configuration, or preview fetching are in
+    scope. Do <strong>not</strong> include real secrets, tokens, or personal
+    documents in a report — redact them.
+  </p>
+
+  <footer>
+    © 2026 Spyglass · Magicelk Labs · See also the <a href="./terms.html">Terms of Service</a>, <a href="./license.html">License</a>, and <a href="./privacy.html">Privacy Policy</a>.
+  </footer>
+
+</div>
+</body>
+</html>
