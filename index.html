@@ -172,14 +172,6 @@ footer{border-top:1px solid var(--hair);padding:40px 0 56px;font-size:14px;color
   a.app-row:hover .app-icon img{transform:none}
 }
 
-/* app icons: light icon on dark surfaces, dark icon on light. */
-.app-icon .icon-dark{display:none}
-@media(prefers-color-scheme:dark){
-  :root:not([data-theme="light"]) .app-icon .icon-light{display:none}
-  :root:not([data-theme="light"]) .app-icon .icon-dark{display:block}
-}
-:root[data-theme="dark"] .app-icon .icon-light{display:none}
-:root[data-theme="dark"] .app-icon .icon-dark{display:block}
 </style>
 </head>
 <body>
@@ -231,8 +223,7 @@ footer{border-top:1px solid var(--hair);padding:40px 0 56px;font-size:14px;color
       <!-- Spyglass — built, awaiting Google approval; shown but not yet available. -->
       <div class="app-row coming" data-mm="rise" aria-disabled="true">
         <div class="app-icon">
-          <img class="icon-light" src="./spyglass/assets/spyglass-appicon-light-320.png" alt="Spyglass app icon" width="108" height="108" loading="lazy" decoding="async">
-          <img class="icon-dark" src="./spyglass/assets/spyglass-appicon-dark-320.png" alt="Spyglass app icon" width="108" height="108" loading="lazy" decoding="async">
+          <img src="./spyglass/assets/spyglass-appicon-dark-320.png" alt="Spyglass app icon" width="108" height="108" loading="lazy" decoding="async">
         </div>
         <div>
           <p class="app-name">Spyglass</p>
@@ -249,8 +240,7 @@ footer{border-top:1px solid var(--hair);padding:40px 0 56px;font-size:14px;color
       <!-- Viaduct -->
       <a class="app-row" data-mm="rise" data-mm-delay=".08" href="./viaduct/">
         <div class="app-icon">
-          <img class="icon-light" src="./viaduct/assets/viaduct-icon-light.png" alt="Viaduct app icon" width="108" height="108" loading="lazy" decoding="async">
-          <img class="icon-dark" src="./viaduct/assets/viaduct-icon-dark.png" alt="Viaduct app icon" width="108" height="108" loading="lazy" decoding="async">
+          <img src="./viaduct/assets/viaduct-icon-dark.png" alt="Viaduct app icon" width="108" height="108" loading="lazy" decoding="async">
         </div>
         <div>
           <p class="app-name">Viaduct</p>
