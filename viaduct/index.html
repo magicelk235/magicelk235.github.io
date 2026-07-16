@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth dark">
 <head>
-  <link rel="icon" type="image/png" href="/viaduct/assets/viaduct-icon-dark.png" media="(prefers-color-scheme: dark)" />
-<link rel="icon" type="image/png" href="/viaduct/assets/viaduct-icon-light.png" media="(prefers-color-scheme: light)" />
+  <link rel="icon" type="image/png" href="/viaduct/assets/viaduct-icon-dark.png" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Viaduct — Run Chrome extensions in Safari</title>
@@ -215,7 +214,7 @@
 <header id="nav" class="nav-blur fixed top-0 inset-x-0 z-50">
   <nav class="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between" aria-label="Primary">
     <a href="#top" class="flex items-center gap-2.5 group" aria-label="Viaduct home">
-      <img data-icon class="w-8 h-8 shrink-0 rounded-[8px]" src="assets/viaduct-icon-light.png" alt="" aria-hidden="true" width="32" height="32" />
+      <img data-icon class="w-8 h-8 shrink-0 rounded-[8px]" src="assets/viaduct-icon-dark.png" alt="" aria-hidden="true" width="32" height="32" />
       <span class="font-display font-bold text-[18px] ink tracking-tight">Viaduct</span>
     </a>
     <div class="hidden md:flex items-center gap-7 text-[14px] font-medium body">
@@ -225,10 +224,6 @@
       <a href="#faq" class="hover:text-[var(--teal)] transition-colors">FAQ</a>
     </div>
     <div class="flex items-center gap-2.5">
-      <button id="theme-toggle" class="w-9 h-9 grid place-items-center rounded-full hair border body hover:text-[var(--teal)] transition-colors" aria-label="Toggle dark mode" title="Toggle theme">
-        <svg class="w-[18px] h-[18px] sun hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2m0 16v2M2 12h2m16 0h2m-3.5-6.5L17 7M7 17l-1.5 1.5m0-13L7 7m10 10l1.5 1.5"/></svg>
-        <svg class="w-[18px] h-[18px] moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/></svg>
-      </button>
       <a data-gumroad-action="buy" data-gumroad-price="19" href="https://gumroad.com/l/viaduct" class="btn-teal text-[14px] px-4 py-2 hidden sm:inline-flex items-center" data-mm-magnet>Get Pro</a>
     </div>
   </nav>
@@ -242,8 +237,7 @@
   <div class="max-w-5xl mx-auto relative z-10">
 
     <div data-mm="rise" data-mm-load class="flex items-center gap-4 mb-10">
-      <img data-icon class="w-14 h-14 rounded-[12px]" src="assets/viaduct-icon-light.png" alt="Viaduct app icon" width="56" height="56" />
-      <p class="text-[13px] font-medium cap on-band-dim" style="margin:0">In beta for macOS 13+ · Free tier, then <span data-gumroad-field="price">$19</span> for Pro</p>
+      <img data-icon class="w-14 h-14 rounded-[12px]" src="assets/viaduct-icon-dark.png" alt="Viaduct app icon" width="56" height="56" />
     </div>
 
     <h1 data-mm="lines" data-mm-load data-mm-delay=".1" class="text-[clamp(2.5rem,6.4vw,4.9rem)] leading-[1.02] mb-6 max-w-4xl">
@@ -263,7 +257,6 @@
       </a>
       <a href="#how" class="btn-onband-ghost text-[16px] px-7 py-3.5 w-full sm:w-auto inline-flex items-center justify-center">See how it works</a>
     </div>
-    <p data-mm="rise" data-mm-load data-mm-delay=".68" class="text-[13px] on-band-dim mt-3">Free for 2 conversions · <a data-gumroad-action="buy" data-gumroad-price="19" href="https://gumroad.com/l/viaduct" class="underline hover:no-underline">Get Pro for $19</a> to unlock unlimited.</p>
 
     <!-- hero screenshot -->
     <div data-mm="media" data-mm-load data-mm-delay=".55" data-mm-tilt class="mt-16 relative">
@@ -293,9 +286,9 @@
 </section>
 
 <!-- ════════════════════ THE MAGIC MOMENT ════════════════════ -->
-<section id="how" class="py-24 sm:py-32 px-5 sm:px-8">
+<section id="how" class="py-16 sm:py-20 px-5 sm:px-8">
   <div class="max-w-6xl mx-auto">
-    <div class="border-t hair pt-12 mb-16">
+    <div class="mb-16">
       <h2 data-mm="lines" class="text-[clamp(1.9rem,4.5vw,3rem)] mb-5 max-w-[22ch]">“Add to Chrome” becomes “Add to Safari.”</h2>
       <p data-mm="rise" class="body text-lg leading-relaxed max-w-2xl">
         Browse the Chrome Web Store in Safari, and the green button you know installs to Safari instead. One click; Viaduct fetches, converts, signs, and installs.
@@ -670,7 +663,7 @@
 <footer class="border-t hair py-12 px-5 sm:px-8">
   <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
     <div class="flex items-center gap-2.5">
-      <img data-icon class="w-7 h-7 rounded-[7px]" src="assets/viaduct-icon-light.png" alt="" aria-hidden="true" width="28" height="28" />
+      <img data-icon class="w-7 h-7 rounded-[7px]" src="assets/viaduct-icon-dark.png" alt="" aria-hidden="true" width="28" height="28" />
       <span class="font-display font-bold text-[16px] ink">Viaduct</span>
       <span class="text-[13px] mute ml-2">Run Chrome extensions in Safari.</span>
     </div>
@@ -691,30 +684,6 @@
 <script>
 (function () {
   'use strict';
-
-  // ── Theme: respect saved choice, else system ──
-  var root = document.documentElement;
-  var icons = document.querySelectorAll('img[data-icon]');
-  function setIcons(t) {
-    var src = t === 'dark' ? 'assets/viaduct-icon-dark.png' : 'assets/viaduct-icon-light.png';
-    icons.forEach(function (img) { img.src = src; });
-  }
-  function applyTheme(t) {
-    if (t === 'dark') root.classList.add('dark'); else root.classList.remove('dark');
-    var sun = document.querySelector('.sun'), moon = document.querySelector('.moon');
-    if (sun && moon) { sun.classList.toggle('hidden', t !== 'dark'); moon.classList.toggle('hidden', t === 'dark'); }
-    setIcons(t);
-  }
-  var saved = null;
-  try { saved = localStorage.getItem('vd-theme'); } catch (e) {}
-  var sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  applyTheme(saved || (sysDark ? 'dark' : 'light'));
-  var tt = document.getElementById('theme-toggle');
-  if (tt) tt.addEventListener('click', function () {
-    var next = root.classList.contains('dark') ? 'light' : 'dark';
-    applyTheme(next);
-    try { localStorage.setItem('vd-theme', next); } catch (e) {}
-  });
 
   // ── Nav border on scroll ──
   var nav = document.getElementById('nav');

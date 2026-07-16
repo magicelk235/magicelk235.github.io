@@ -150,19 +150,17 @@ footer .links a:hover { color:var(--teal); }
 `;
 
 const THEME_JS = `
-(function(){var s=null;try{s=localStorage.getItem('vd-theme')}catch(e){}
-var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
-var t=s||(d?'dark':'light');if(t==='dark')document.documentElement.classList.add('dark');
-document.querySelectorAll('img[data-icon]').forEach(function(i){i.src='../../assets/viaduct-icon-'+(t==='dark'?'light':'dark')+'.png'});})();
+(function(){document.querySelectorAll('img[data-icon]').forEach(function(i){i.src='../../assets/viaduct-icon-dark.png'});})();
 `;
 
 function head({ title, description, canonical }) {
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>${esc(title)}</title>
+<link rel="icon" type="image/png" href="/viaduct/assets/viaduct-icon-dark.png" />
 <meta name="description" content="${esc(description)}" />
 <link rel="canonical" href="${canonical}" />
 <meta property="og:title" content="${esc(title)}" />
