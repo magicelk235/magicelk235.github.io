@@ -286,7 +286,7 @@ ${officialBlock}
     it's missing.</p></details>
   <details><summary>What does Viaduct cost?</summary>
     <p>Free for your first 2 conversions. Pro is $19 one-time: unlimited conversions
-    plus auto-re-signing. The conversion engine is open source (MIT).</p></details>
+    plus auto-re-signing. The conversion engine is source-available (PolyForm Shield).</p></details>
 </section>
 <section>
   <div class="cta">
