@@ -186,14 +186,18 @@
 <!-- NAV -->
 <nav id="nav" class="sticky top-0 z-50 transition-colors">
   <span class="mm-progress" style="background:var(--brass)" aria-hidden="true"></span>
-  <div class="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
-    <a href="#top" class="flex items-center gap-2.5">
-      <img data-icon class="w-8 h-8 rounded-[8px]" alt="Spyglass app icon" width="32" height="32" src="./assets/spyglass-appicon-dark-320.png" />
-      <span class="font-display font-bold ink text-[18px]">Spyglass</span>
+  <div class="max-w-7xl mx-auto px-4 sm:px-5 h-16 flex items-center justify-between relative">
+    <a href="#top" class="flex items-center gap-1.5">
+      <img data-icon class="w-[26px] h-[26px] shrink-0" alt="Spyglass app icon" width="26" height="26" src="./assets/spyglass-mark.png" />
+      <span class="font-display font-bold ink text-[26px] tracking-tight leading-none">Spyglass</span>
     </a>
+    <div class="hidden md:flex items-center gap-7 text-[14px] absolute left-1/2 -translate-x-1/2">
+      <a href="#free-paid" class="mute hover:text-[var(--brass)] transition-colors">Free vs Paid</a>
+      <a href="#faq" class="mute hover:text-[var(--brass)] transition-colors">FAQ</a>
+    </div>
     <div class="flex items-center gap-2 sm:gap-3">
-      <a href="#free-paid" class="hidden sm:inline text-[14px] mute hover:text-[var(--brass)] transition-colors px-2">Free vs Paid</a>
-      <a href="#faq" class="hidden sm:inline text-[14px] mute hover:text-[var(--brass)] transition-colors px-2">FAQ</a>
+      <a href="https://github.com/magicelk235/Spyglass/releases" class="btn-ghost text-[14px] px-4 py-2 hidden sm:inline-flex items-center" data-mm-magnet>Download free</a>
+      <a data-mm-magnet href="https://magicelk235.gumroad.com/l/spyglass?wanted=true" class="btn-brass text-[14px] px-4 py-2 hidden sm:inline-flex items-center">Buy · $9</a>
     </div>
   </div>
 </nav>
@@ -203,13 +207,8 @@
 <!-- HERO -->
 <header class="relative overflow-hidden text-center text-white" style="background:linear-gradient(160deg,var(--teal-top),var(--teal-bot));border-radius:0 0 40px 40px;" data-mm-ambient="teal">
   <div class="relative z-10 max-w-3xl mx-auto px-5 sm:px-8 pt-20 pb-14">
-    <img data-hero-icon data-mm="rise" data-mm-load class="w-[clamp(104px,16vw,140px)] h-[clamp(104px,16vw,140px)] mx-auto mb-9 rounded-[24%]" src="./assets/spyglass-appicon-dark-320.png" alt="Spyglass app icon, a brass spyglass" width="140" height="140" />
     <h1 data-mm="lines" data-mm-load data-mm-delay=".12" class="text-[clamp(2.4rem,6.5vw,4.2rem)] leading-[1.08] mb-4 pb-1">Press Space.<br /><span style="color:var(--wash-a)">See the document.</span></h1>
     <p data-mm="rise" data-mm-load data-mm-delay=".5" class="text-[clamp(1.05rem,2.4vw,1.35rem)] mx-auto max-w-[34ch]" style="color:rgba(255,255,255,.74)">Real Quick Look previews for Google Workspace files on macOS.</p>
-    <div data-mm="rise" data-mm-load data-mm-delay=".62" class="flex flex-wrap gap-3 justify-center mt-10">
-      <a class="btn-brass text-[16px] px-7 py-3.5 items-center gap-2" data-mm-magnet href="https://magicelk235.gumroad.com/l/spyglass?wanted=true">Buy · $9</a>
-      <a class="btn-teal-ghost text-[16px] px-7 py-3.5 inline-flex items-center gap-2" data-mm-magnet href="https://github.com/magicelk235/Spyglass/releases">Download free</a>
-    </div>
   </div>
   <div class="relative z-10 max-w-4xl mx-auto px-5 sm:px-8 pb-16">
     <div data-mm="media" data-mm-load data-mm-delay=".55" data-mm-tilt>
@@ -235,7 +234,6 @@
       <div class="type-chip"><code>.gform</code><span class="tname">Forms</span><span class="tier info">Info card</span></div>
       <div class="type-chip"><code>.gsite</code><span class="tname">Sites</span><span class="tier info">Info card</span></div>
     </div>
-    <p data-mm="rise" class="mute text-[13px] mb-12 max-w-2xl">All six get the free info card. Rendered first-page previews are the $9 tier; Forms and Sites can't be exported by Google, so they always show the card.</p>
     <div data-mm-stagger class="grid md:grid-cols-2 gap-5 items-stretch">
       <div class="surface rounded-2xl p-6" data-mm-spot="brass">
         <div class="flex items-center gap-2 mb-4">
@@ -248,7 +246,6 @@
   "email": "you@gmail.com",
   "resource_key": ""
 }</code></pre>
-        <p class="mute text-[13px] mt-4">A blob of JSON. No title, no content, nothing useful.</p>
       </div>
       <div class="surface rounded-2xl p-6" data-mm-spot="brass">
         <div class="flex items-center gap-2 mb-4">
@@ -258,7 +255,6 @@
         <div class="rounded-xl overflow-hidden" style="border:1px solid var(--hair)">
           <img src="./assets/spyglass-rendered-dark.webp" alt="Quick Look showing the real first page of a Google Doc" class="w-full block" loading="lazy" decoding="async" width="1200" height="983" />
         </div>
-        <p class="mute text-[13px] mt-4">The real document, rendered, with a link to open it on Google.</p>
       </div>
     </div>
   </div>
@@ -287,7 +283,6 @@
         </div>
         <p class="body text-[15px] leading-relaxed">Rendered first-page previews for Docs, Sheets, Slides, and Drawings. Spyglass fetches the document's export from Google Drive and draws it. If you are not signed in or the network is slow, it falls back to the free info card. Never blank, never hangs.</p>
         <img src="./assets/spyglass-rendered-sheets-dark.webp" alt="A rendered Google Sheet preview" class="rounded-xl w-full mt-5 block" loading="lazy" decoding="async" width="1200" height="1036" style="border:1px solid var(--hair)" />
-        <p class="mute text-[13px] mt-3">Forms and Sites cannot be exported, so they always show the info card.</p>
       </div>
     </div>
   </div>
@@ -332,25 +327,25 @@
             <div class="pin-frame">
               <img src="./assets/spyglass-shot-docs-dark.webp" alt="Quick Look rendering the first page of a Google Doc" class="block" loading="lazy" decoding="async" width="1800" height="1474" />
             </div>
-            <figcaption class="pin-cap"><b>Docs · .gdoc</b> The full first page, laid out like the page you would open.</figcaption>
+            <figcaption class="pin-cap"><b>Docs</b></figcaption>
           </figure>
           <figure data-mm-pin-panel class="pin-panel">
             <div class="pin-frame">
               <img src="./assets/spyglass-shot-sheets-dark.webp" alt="Quick Look rendering a Google Sheet as a grid" class="block" loading="lazy" decoding="async" width="1800" height="1474" />
             </div>
-            <figcaption class="pin-cap"><b>Sheets · .gsheet</b> Your first sheet rendered as a grid, headers and all.</figcaption>
+            <figcaption class="pin-cap"><b>Sheets</b></figcaption>
           </figure>
           <figure data-mm-pin-panel class="pin-panel">
             <div class="pin-frame">
               <img src="./assets/spyglass-shot-slides-dark.webp" alt="Quick Look rendering the title slide of a Google Slides deck" class="block" loading="lazy" decoding="async" width="1800" height="1474" />
             </div>
-            <figcaption class="pin-cap"><b>Slides · .gslides</b> The title slide, full fidelity, straight from the deck.</figcaption>
+            <figcaption class="pin-cap"><b>Slides</b></figcaption>
           </figure>
           <figure data-mm-pin-panel class="pin-panel">
             <div class="pin-frame">
               <img src="./assets/spyglass-shot-drawings-dark.webp" alt="Quick Look rendering a Google Drawing" class="block" loading="lazy" decoding="async" width="1800" height="1474" />
             </div>
-            <figcaption class="pin-cap"><b>Drawings · .gdraw</b> Vector canvases drawn exactly as you left them.</figcaption>
+            <figcaption class="pin-cap"><b>Drawings</b></figcaption>
           </figure>
         </div>
 
@@ -365,7 +360,6 @@
     <div>
       <h2 data-mm="lines" class="text-[clamp(1.7rem,4vw,2.4rem)] mb-4 max-w-[16ch]">The whole app fits in your menu bar.</h2>
       <p data-mm="rise" class="body text-[16px] leading-relaxed mb-4 max-w-[52ch]">No dock icon, no windows to manage. The menu-bar panel is where you paste your license key, sign in with Google, and see which tier is active. That's the entire surface area.</p>
-      <p data-mm="rise" class="mute text-[14px] leading-relaxed max-w-[52ch]">Previews themselves live where they always did: in Finder, on the Space bar.</p>
     </div>
     <div data-mm="media" class="max-w-[380px] w-full mx-auto lg:ml-auto">
       <div class="pin-frame" data-mm-tilt>
@@ -378,8 +372,7 @@
 <!-- FREE VS PAID -->
 <section id="free-paid" class="py-20 px-5 sm:px-8">
   <div class="max-w-3xl mx-auto">
-    <h2 data-mm="lines" class="text-[clamp(1.7rem,4vw,2.4rem)] border-t pt-10 mb-3" style="border-color:var(--hair)">Free vs Paid</h2>
-    <p data-mm="rise" class="mute text-[16px] mb-10">The free tier is fully usable on its own. Paid adds rendered previews.</p>
+    <h2 data-mm="lines" class="text-[clamp(1.7rem,4vw,2.4rem)] border-t pt-10 mb-10" style="border-color:var(--hair)">Free vs Paid</h2>
     <div data-mm="media" class="surface rounded-2xl overflow-hidden">
       <table class="cmp w-full text-[14px] sm:text-[15px] border-collapse">
         <thead>
@@ -459,7 +452,6 @@
         <p>Sign out at any time. Doing so clears the stored tokens and revokes the grant at Google.</p>
       </div>
     </div>
-    <p data-mm="rise" class="mute text-[14px] text-center mt-8">Full details in the <a href="./privacy.html" class="font-medium" style="color:var(--brass)">Privacy Policy</a>.</p>
   </div>
 </section>
 
@@ -542,9 +534,8 @@
 <footer class="border-t hair py-12 px-5 sm:px-8">
   <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
     <div class="flex items-center gap-2.5">
-      <img data-icon class="w-7 h-7 rounded-[7px]" alt="Spyglass app icon" width="28" height="28" src="./assets/spyglass-appicon-dark-320.png" />
+      <img data-icon class="w-7 h-7" alt="Spyglass app icon" width="28" height="28" src="./assets/spyglass-mark.png" />
       <span class="font-display font-bold text-[16px] ink">Spyglass</span>
-      <span class="text-[13px] mute ml-2 hidden sm:inline">Real Quick Look previews for Google Workspace files.</span>
     </div>
     <nav class="flex items-center gap-5 text-[14px]">
       <a href="./privacy.html" class="mute hover:text-[var(--brass)] transition-colors">Privacy Policy</a>
