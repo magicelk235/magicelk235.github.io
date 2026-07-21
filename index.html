@@ -16,9 +16,9 @@
 <title>Magicelk Labs — Focused Mac apps</title>
 <meta name="description" content="Focused, native Mac apps. Meet Spyglass and Viaduct.">
 <link rel="canonical" href="https://magicelklabs.com/">
-<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-<link rel="icon" type="image/png" href="/assets/favicon.png">
-<link rel="apple-touch-icon" href="/assets/favicon.png">
+<link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+<link rel="icon" type="image/png" href="./assets/favicon.png">
+<link rel="apple-touch-icon" href="./assets/favicon.png">
 <meta property="og:title" content="Magicelk Labs — Focused Mac apps">
 <meta property="og:description" content="Focused, native Mac apps.">
 <meta property="og:type" content="website">
@@ -100,8 +100,9 @@ html.mm [data-mm-stagger]>*{visibility:hidden}
   letter-spacing:-.025em;color:var(--ink);margin:0;text-wrap:balance
 }
 .hero h1 em{font-style:normal;font-weight:800;color:var(--brass)}
-.hero-side{padding-bottom:10px}
-.hero-side p{font-size:16px;color:var(--mute);margin:0 0 20px;max-width:34ch}
+.hero-side{padding-bottom:10px;position:relative}
+.hero-side p.lead{font-size:19px;line-height:1.5;color:var(--body);margin:0 0 22px;max-width:32ch}
+.hero-side p.lead::before{content:"";display:block;width:32px;height:2px;background:var(--brass);margin:0 0 18px}
 .hero-side a.go{font-weight:600;font-size:15px;color:var(--ink);border-bottom:1px solid var(--brass);padding-bottom:2px}
 .hero-side a.go:hover{color:var(--brass);text-decoration:none}
 
@@ -180,7 +181,7 @@ footer{border-top:1px solid var(--hair);padding:40px 0 56px;font-size:14px;color
 
   <header class="masthead">
     <div class="wrap row">
-      <a class="wordmark" href="/"><img src="/assets/favicon.svg" alt="" width="24" height="24" class="wordmark-icon">Magicelk Labs</a>
+      <a class="wordmark" href="/">Magicelk Labs</a>
       <nav class="mast-nav" aria-label="Primary">
         <a href="#apps">Apps</a>
       </nav>
@@ -191,7 +192,7 @@ footer{border-top:1px solid var(--hair);padding:40px 0 56px;font-size:14px;color
     <div class="wrap hero-grid">
       <h1 data-mm="lines" data-mm-load>Focused Mac apps,<br>built <em>one at a time.</em></h1>
       <div class="hero-side" data-mm="rise" data-mm-load data-mm-delay=".4">
-        <p>A one-person studio making small, sharp tools for macOS.</p>
+        <p class="lead">Small, sharp tools for macOS. Native, focused, one-time pricing.</p>
         <a class="go" href="#apps">See the apps ↓</a>
       </div>
     </div>
@@ -272,7 +273,7 @@ footer{border-top:1px solid var(--hair);padding:40px 0 56px;font-size:14px;color
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
-  <script src="/assets/motion.js"></script>
+  <script src="./assets/motion.js"></script>
 
 </body>
 </html>

@@ -4,7 +4,7 @@
   <link rel="icon" type="image/png" href="/viaduct/assets/viaduct-icon-dark.png" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Viaduct — Run Chrome extensions in Safari</title>
+  <title>Viaduct</title>
   <meta name="description" content="Viaduct converts any Chrome extension into a native Safari Web Extension. One click. No terminal, no Xcode." />
   <link rel="canonical" href="https://magicelklabs.com/viaduct/" />
   <meta property="og:title" content="Viaduct — Run Chrome extensions in Safari" />
@@ -123,9 +123,14 @@
   .feat-row:hover .feat-num { color:var(--teal); }
   .pro-pill { display:inline-block; margin-left:8px; padding:2px 8px; border-radius:999px; font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; vertical-align:middle; color:var(--teal); background:color-mix(in srgb, var(--teal) 14%, transparent); }
   /* Supported-input format chips */
-  .fmt-chip { display:inline-flex; align-items:center; gap:6px; padding:9px 16px; border-radius:12px; border:1px solid var(--hair-strong); background:var(--hair-soft); font-size:14px; font-weight:500; color:var(--ink); transition:border-color .2s, transform .2s, background .2s; }
-  .fmt-chip:hover { border-color:var(--teal); transform:translateY(-2px); background:color-mix(in srgb, var(--teal) 6%, transparent); }
-  .fmt-chip code { font-size:13.5px; }
+  /* Input funnel — the formats Viaduct accepts, shown as source tiles */
+  .in-tile { position:relative; display:flex; flex-direction:column; gap:10px; padding:18px; border-radius:16px; border:1px solid var(--hair); background:color-mix(in srgb, var(--ink) 2.5%, transparent); transition:border-color .25s cubic-bezier(.2,.8,.2,1), transform .25s cubic-bezier(.2,.8,.2,1), background .25s; }
+  .in-tile:hover { border-color:color-mix(in srgb, var(--teal) 55%, transparent); transform:translateY(-3px); background:color-mix(in srgb, var(--teal) 5%, transparent); }
+  .in-tile .in-ico { width:34px; height:34px; display:grid; place-items:center; border-radius:9px; color:var(--teal); background:color-mix(in srgb, var(--teal) 12%, transparent); }
+  .in-tile .in-ico svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:1.5; }
+  .in-name { font-weight:600; color:var(--ink); font-size:15px; line-height:1.15; }
+  .in-role { font-size:12.5px; color:var(--mute); line-height:1.35; }
+  .in-name code { font-family:ui-monospace,'SF Mono',monospace; color:var(--teal); font-size:14px; }
   /* Pro pricing panel: drenched in the brand color */
   .pro-panel { background: linear-gradient(168deg, #0F4D48, #093732); border: 1px solid rgba(255,255,255,.14); }
   .pro-panel .ink { color: #F2FBF9; } .pro-panel .mute { color: #93C2BB; } .pro-panel .body { color: #C6E3DE; }
@@ -213,10 +218,10 @@
 
 <!-- ════════════════════ NAV ════════════════════ -->
 <header id="nav" class="nav-blur fixed top-0 inset-x-0 z-50">
-  <nav class="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between" aria-label="Primary">
-    <a href="#top" class="flex items-center gap-2.5 group" aria-label="Viaduct home">
-      <img data-icon class="w-8 h-8 shrink-0 rounded-[8px]" src="assets/viaduct-icon-dark.png" alt="" aria-hidden="true" width="32" height="32" />
-      <span class="font-display font-bold text-[18px] ink tracking-tight">Viaduct</span>
+  <nav class="max-w-7xl mx-auto px-4 sm:px-5 h-16 flex items-center justify-between" aria-label="Primary">
+    <a href="#top" class="flex items-center gap-1.5 group" aria-label="Viaduct home">
+      <img data-icon class="w-[22px] h-[22px] shrink-0 relative -top-px" src="assets/viaduct-appicon.png" alt="" aria-hidden="true" width="22" height="22" />
+      <span class="font-display font-bold text-[26px] ink tracking-tight leading-none">Viaduct</span>
     </a>
     <div class="hidden md:flex items-center gap-7 text-[14px] font-medium body">
       <a href="#how" class="hover:text-[var(--teal)] transition-colors">How it works</a>
@@ -225,10 +230,7 @@
       <a href="#faq" class="hover:text-[var(--teal)] transition-colors">FAQ</a>
     </div>
     <div class="flex items-center gap-2.5">
-      <a href="https://github.com/magicelk235/viaduct-app/releases/latest/download/Viaduct.dmg" class="text-[14px] font-medium body hover:text-[var(--teal)] transition-colors hidden sm:inline-flex items-center gap-1.5" data-mm-magnet>
-        Download
-        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg>
-      </a>
+      <a href="https://github.com/magicelk235/viaduct-app/releases/latest/download/Viaduct.dmg" class="btn-ghost text-[14px] px-4 py-2 hidden sm:inline-flex items-center" data-mm-magnet>Download</a>
       <a data-gumroad-action="buy" data-gumroad-price="19" href="https://gumroad.com/l/viaduct" class="btn-teal text-[14px] px-4 py-2 hidden sm:inline-flex items-center" data-mm-magnet>Get Pro</a>
     </div>
   </nav>
@@ -248,7 +250,6 @@
 
     <p data-mm="rise" data-mm-load data-mm-delay=".45" class="text-[clamp(1.05rem,2.4vw,1.3rem)] on-band max-w-2xl mb-10 leading-relaxed">
       <span data-gumroad-field="name">Viaduct</span> converts any Chrome extension into a native Safari Web Extension.
-      Drop in a <code class="font-mono text-[.85em] px-1.5 py-0.5 rounded code-band">.zip</code>, a <code class="font-mono text-[.85em] px-1.5 py-0.5 rounded code-band">.crx</code>, or a Web Store link. One click.
     </p>
 
     <!-- hero screenshot -->
@@ -262,17 +263,40 @@
 
 <!-- ════════════════════ SUPPORTED INPUTS ════════════════════ -->
 <section class="py-16 sm:py-20 border-y hair px-5 sm:px-8" aria-label="Supported inputs">
-  <div class="max-w-5xl mx-auto text-center">
-    <p data-mm="fade" class="text-[12px] font-semibold uppercase mute mb-4" style="letter-spacing:.14em">One input, any format</p>
-    <p data-mm="rise" class="text-[clamp(1.15rem,2.6vw,1.5rem)] ink font-display font-semibold max-w-[24ch] mx-auto mb-10 leading-snug">
-      Drop in whatever you have. Viaduct takes it from there.
-    </p>
-    <div data-mm-stagger class="flex flex-wrap items-center justify-center gap-2.5">
-      <span class="fmt-chip"><code class="font-mono text-[var(--teal)]">.crx</code></span>
-      <span class="fmt-chip"><code class="font-mono text-[var(--teal)]">.zip</code></span>
-      <span class="fmt-chip">Unpacked folder</span>
-      <span class="fmt-chip">Web Store link</span>
-      <span class="fmt-chip">Manifest <span class="text-[var(--teal)]">V2</span> &amp; <span class="text-[var(--teal)]">V3</span></span>
+  <div class="max-w-6xl mx-auto">
+    <div class="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)] gap-y-10 gap-x-14 items-center">
+
+      <!-- left: pitch -->
+      <div>
+        <p data-mm="fade" class="text-[12px] font-semibold uppercase mute mb-4" style="letter-spacing:.14em">One input, any format</p>
+        <h2 data-mm="rise" class="text-[clamp(1.7rem,3.6vw,2.5rem)] leading-[1.08] mb-4">Drop in whatever<br>you already have.</h2>
+        <p data-mm="rise" data-mm-delay=".1" class="text-[15px] body max-w-[42ch] leading-relaxed">Five ways in, one way out. Viaduct reads any of these, then hands you a signed Safari extension with no repackaging and no manual steps.</p>
+      </div>
+
+      <!-- right: the accepted inputs -->
+      <div data-mm-stagger class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <div class="in-tile">
+          <span class="in-ico"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4 8 4 8-4z"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10l8 4 8-4V7"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 11v10"/></svg></span>
+          <div><div class="in-name"><code>.crx</code></div><div class="in-role">Packed Chrome build</div></div>
+        </div>
+        <div class="in-tile">
+          <span class="in-ico"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5a2 2 0 012-2h9l5 5v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 3v5h5"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h1m-1 3h1"/></svg></span>
+          <div><div class="in-name"><code>.zip</code></div><div class="in-role">Any zipped extension</div></div>
+        </div>
+        <div class="in-tile">
+          <span class="in-ico"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg></span>
+          <div><div class="in-name">Unpacked folder</div><div class="in-role">Straight from source</div></div>
+        </div>
+        <div class="in-tile">
+          <span class="in-ico"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 13a5 5 0 007.5.5l3-3a5 5 0 00-7-7l-1.5 1.5"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 11a5 5 0 00-7.5-.5l-3 3a5 5 0 007 7l1.5-1.5"/></svg></span>
+          <div><div class="in-name">Web Store link</div><div class="in-role">Paste the URL</div></div>
+        </div>
+        <div class="in-tile col-span-2 sm:col-span-1">
+          <span class="in-ico"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5h16M4 12h16M4 19h16"/></svg></span>
+          <div><div class="in-name">Manifest <span class="text-[var(--teal)]">V2</span> &amp; <span class="text-[var(--teal)]">V3</span></div><div class="in-role">Both handled</div></div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -558,7 +582,6 @@
           <span>Download for macOS</span>
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg>
         </a>
-        <p class="text-[12px] mute text-center">Free · <a href="#get" style="color:var(--teal)">upgrade anytime</a></p>
       </div>
 
       <!-- PRO -->
@@ -584,7 +607,6 @@
             <span>Get Viaduct Pro for $19</span>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6l6 6-6 6"/></svg>
           </a>
-          <p id="gr-hint" class="text-[12px] mute text-center">Secure checkout via Gumroad · instant download</p>
         </div>
       </div>
 
@@ -647,9 +669,8 @@
 <footer class="border-t hair py-12 px-5 sm:px-8">
   <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
     <div class="flex items-center gap-2.5">
-      <img data-icon class="w-7 h-7 rounded-[7px]" src="assets/viaduct-icon-dark.png" alt="" aria-hidden="true" width="28" height="28" />
+      <img data-icon class="w-[18px] h-[18px]" src="assets/viaduct-appicon.png" alt="" aria-hidden="true" width="18" height="18" />
       <span class="font-display font-bold text-[16px] ink">Viaduct</span>
-      <span class="text-[13px] mute ml-2">Run Chrome extensions in Safari.</span>
     </div>
     <div class="flex items-center gap-6 text-[13px] mute">
       <a href="#how" class="hover:text-[var(--teal)] transition-colors">How it works</a>

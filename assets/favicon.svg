@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
   <!-- Magicelk Labs favicon: brass M on ink, mirrors the wordmark palette. -->
   <rect width="128" height="128" rx="30" fill="#1a1a1c"/>
-  <path d="M 38 90 L 38 42 L 64 74 L 90 42 L 90 90"
+  <path d="M 36 86 L 36 42 L 64 70 L 92 42 L 92 86"
         fill="none" stroke="#c9a876" stroke-width="12"
         stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
