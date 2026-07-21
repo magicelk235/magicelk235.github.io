@@ -83,8 +83,9 @@ html.mm [data-mm-stagger]>*{visibility:hidden}
 
 /* ---- masthead ---- */
 .masthead{border-bottom:1px solid var(--hair)}
-.masthead .row{display:flex;align-items:baseline;justify-content:space-between;padding:22px 0}
-.wordmark{font-family:"Cabinet Grotesk","Inter",sans-serif;font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+.masthead .row{display:flex;align-items:center;justify-content:space-between;padding:22px 0}
+.wordmark{display:inline-flex;align-items:center;gap:9px;font-family:"Cabinet Grotesk","Inter",sans-serif;font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+.wordmark-icon{width:24px;height:24px;border-radius:6px;flex-shrink:0}
 .wordmark:hover{text-decoration:none}
 .mast-nav{display:flex;align-items:center;gap:22px;font-size:14px}
 .mast-nav a{color:var(--mute);font-weight:500}
@@ -179,7 +180,7 @@ footer{border-top:1px solid var(--hair);padding:40px 0 56px;font-size:14px;color
 
   <header class="masthead">
     <div class="wrap row">
-      <a class="wordmark" href="/">Magicelk Labs</a>
+      <a class="wordmark" href="/"><img src="/assets/favicon.svg" alt="" width="24" height="24" class="wordmark-icon">Magicelk Labs</a>
       <nav class="mast-nav" aria-label="Primary">
         <a href="#apps">Apps</a>
       </nav>
