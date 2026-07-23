@@ -1085,25 +1085,29 @@
       }
 
       var fill = state.querySelector('.demo-prog-fill');
-      var DURATION = 3200;                // total convert time (ms)
-      var start = 0, curPhase = -1;
-      // The build step (index 4) is the slow one; give it more of the bar's time
-      // so the fill eases through it instead of sprinting. Weighted phase edges:
-      var edges = [0, 0.12, 0.24, 0.36, 0.5, 0.86, 1];
-      // easeInOutQuad keeps the bar from starting or ending abruptly
-      function ease(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+      var N = PHASES.length;
+      // Each phase is on screen long enough to read; the build step lingers.
+      var DWELL = [900, 850, 850, 900, 1500, 950];   // ms per phase
+      var TOTAL = DWELL.reduce(function (a, b) { return a + b; }, 0);
+      // Cumulative end time for each phase, so we can swap the label on schedule
+      // WITHOUT tying the bar's speed to phase boundaries.
+      var marks = []; (function () { var s = 0; for (var k = 0; k < N; k++) { s += DWELL[k]; marks.push(s); } })();
+      var start = 0, curIdx = -1;
+      // Gentle ease over the WHOLE run (not per phase), so the bar never stutters
+      // at a boundary — one continuous glide from 0 to 100%.
+      function ease(t) { return 1 - Math.pow(1 - t, 1.8); }
 
       function frame(now) {
         if (!start) start = now;
-        var t = Math.min(1, (now - start) / DURATION);
-        var p = ease(t);
-        fill.style.width = (p * 100).toFixed(1) + '%';
-        // which phase does this progress fall into?
+        var elapsed = now - start;
+        var t = Math.min(1, elapsed / TOTAL);
+        fill.style.width = (ease(t) * 100).toFixed(1) + '%';
+        // advance the phase label when we cross each cumulative mark
         var idx = 0;
-        for (var k = 0; k < PHASES.length; k++) { if (p >= edges[k]) idx = k; }
-        if (idx !== curPhase) { curPhase = idx; updatePhase(idx); }
+        while (idx < N - 1 && elapsed >= marks[idx]) idx++;
+        if (idx !== curIdx) { curIdx = idx; updatePhase(idx); }
         if (t < 1) { raf = requestAnimationFrame(frame); }
-        else { later(function () { renderDone(picked.name, picked.color); busy = false; }, 260); }
+        else { later(function () { renderDone(picked.name, picked.color); busy = false; }, 300); }
       }
       raf = requestAnimationFrame(frame);
     }
