@@ -206,6 +206,147 @@
   details[open] .chev { transform: rotate(180deg); }
   .chev { transition: transform .3s; }
 
+  /* ───────────────────────── Live hero demo — a web copy of the real Viaduct app ─────────────────────────
+     Mirrors the shipping macOS app's User mode 1:1: the neutral system window,
+     the Liquid-Glass drop-card that morphs empty → ready → converting → done,
+     the phase glyph, the emerald step dots, the glass progress bar. Tokens track
+     the app's Theme.swift (teal #12A594/#2DD4BF, green #1A9D5A/#30D158, SF Pro).
+     Keeps data-mm-tilt / data-mm-scrub from motion.js. */
+  .demo-win {
+    --d-canvas:#F5F5F7; --d-surface:rgba(255,255,255,.7); --d-ink:#1D1D1F; --d-body:#3A3A3C; --d-mute:#6E6E73; --d-stone:#BFBFC4;
+    --d-hair:rgba(0,0,0,.10); --d-hair-strong:rgba(0,0,0,.18); --d-teal:#12A594; --d-green:#1A9D5A;
+    --d-glass:rgba(255,255,255,.55); --d-glass-edge:rgba(255,255,255,.7);
+    background:var(--d-canvas); border:1px solid rgba(255,255,255,.28); border-radius:16px; overflow:hidden;
+    font-family:'Inter',-apple-system,'SF Pro Text',system-ui,sans-serif;
+  }
+  html.dark .demo-win {
+    --d-canvas:#1A1A1C; --d-surface:rgba(40,40,44,.55); --d-ink:#F5F5F7; --d-body:#D4D4D8; --d-mute:#98989F; --d-stone:#49494E;
+    --d-hair:rgba(255,255,255,.10); --d-hair-strong:rgba(255,255,255,.18); --d-teal:#2DD4BF; --d-green:#30D158;
+    --d-glass:rgba(40,40,44,.5); --d-glass-edge:rgba(255,255,255,.12);
+  }
+  /* window title bar */
+  .demo-bar { display:flex; align-items:center; gap:8px; padding:11px 14px; border-bottom:1px solid var(--d-hair); }
+  .demo-dot { width:11px; height:11px; border-radius:50%; }
+  .demo-title { margin-left:6px; font-size:13px; font-weight:600; color:var(--d-body); letter-spacing:-.01em; }
+  .demo-body { padding:26px 24px 28px; }
+  /* brand lockup */
+  .demo-brand { text-align:center; margin-bottom:20px; }
+  .demo-brand-name { font-size:18px; font-weight:600; color:var(--d-ink); letter-spacing:.01em; }
+  .demo-brand-sub { font-size:12px; color:var(--d-mute); letter-spacing:.02em; margin-top:2px; }
+  /* the glass drop-card that morphs through every phase */
+  .demo-card {
+    position:relative; min-height:230px; display:flex; align-items:center; justify-content:center; text-align:center;
+    border-radius:16px; padding:24px; cursor:pointer;
+    background:var(--d-glass); -webkit-backdrop-filter:blur(20px) saturate(140%); backdrop-filter:blur(20px) saturate(140%);
+    box-shadow:inset 0 1px 0 var(--d-glass-edge);
+    transition:transform .25s cubic-bezier(.2,.8,.2,1);
+  }
+  .demo-card::before {
+    content:""; position:absolute; inset:0; border-radius:16px; pointer-events:none;
+    border:1px dashed var(--d-hair-strong); transition:border-color .2s, border-style .2s;
+  }
+  .demo-card.filled::before { border-style:solid; border-color:var(--d-hair); }
+  .demo-card.busy { cursor:default; }
+  .demo-card.dragging { transform:scale(1.02); }
+  .demo-card.dragging::before { border-style:solid; border-color:var(--d-teal); border-width:2px; }
+  .demo-card.dragging::after {
+    content:""; position:absolute; inset:0; border-radius:16px; pointer-events:none;
+    background:color-mix(in srgb, var(--d-teal) 10%, transparent); filter:blur(8px);
+  }
+  /* the content wrapper inside the card; paint() crossfades it between faces */
+  .demo-state { width:100%; will-change:opacity, transform; }
+  /* glass tile shared by the drop glyph, extension icon, and phase glyph */
+  .demo-tile { width:60px; height:60px; margin:0 auto; display:grid; place-items:center; border-radius:10px;
+    background:var(--d-glass); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+    border:1px solid var(--d-hair); box-shadow:inset 0 1px 0 var(--d-glass-edge); position:relative; }
+  .demo-tile svg { width:26px; height:26px; }
+  .demo-drop-glyph svg { color:var(--d-teal); }
+  .demo-h { font-size:16px; font-weight:500; color:var(--d-ink); margin-top:12px; }
+  .demo-sub { font-size:12px; color:var(--d-mute); letter-spacing:.02em; margin-top:3px; }
+  /* extension-icon tile */
+  .demo-extico { width:60px; height:60px; margin:0 auto; display:grid; place-items:center; border-radius:16px;
+    background:var(--d-glass); border:1px solid var(--d-hair); box-shadow:inset 0 1px 0 var(--d-glass-edge); }
+  .demo-extico svg { width:30px; height:30px; }
+  .demo-name { font-size:18px; font-weight:600; color:var(--d-ink); margin-top:12px; }
+  /* phase glyph — breathing green glow + swapping symbol */
+  .demo-glyph-wrap { position:relative; width:64px; height:64px; margin:0 auto; display:grid; place-items:center; }
+  .demo-glyph-glow { position:absolute; width:64px; height:64px; border-radius:50%; background:color-mix(in srgb, var(--d-green) 18%, transparent);
+    filter:blur(12px); animation:demo-breathe 1.2s ease-in-out infinite alternate; }
+  @keyframes demo-breathe { from { transform:scale(.9); opacity:.5; } to { transform:scale(1.15); opacity:.9; } }
+  .demo-glyph { color:var(--d-ink); }
+  .demo-phase-title { font-size:16px; font-weight:500; color:var(--d-ink); margin-top:12px; }
+  .demo-phase-sub { font-size:12px; color:var(--d-mute); letter-spacing:.02em; margin-top:2px; min-height:15px; }
+  /* step dots — one capsule per track phase, fills emerald, active widens */
+  .demo-dots { display:flex; gap:8px; justify-content:center; margin-top:14px; }
+  .demo-dots i { width:6px; height:6px; border-radius:99px; background:var(--d-stone); transition:width .3s cubic-bezier(.2,.8,.2,1), background .3s; }
+  .demo-dots i.done { background:var(--d-green); }
+  .demo-dots i.active { width:16px; background:var(--d-green); }
+  /* glass progress bar */
+  .demo-prog { width:220px; height:6px; margin:16px auto 0; border-radius:99px; overflow:hidden;
+    background:var(--d-glass); border:1px solid var(--d-hair); position:relative; }
+  .demo-prog-fill { height:100%; border-radius:99px; background:var(--d-green); width:0;
+    transition:width .5s cubic-bezier(.3,.7,.2,1); position:relative; }
+  .demo-prog-fill::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);
+    transform:translateX(-100%); animation:demo-shine 1.4s ease-in-out infinite; }
+  @keyframes demo-shine { to { transform:translateX(200%); } }
+  /* done badge */
+  .demo-badge { display:inline-flex; align-items:center; gap:6px; margin-top:12px; padding:4px 11px; border-radius:99px;
+    font-size:12px; font-weight:500; color:#fff; background:var(--d-green); }
+  .demo-badge svg { width:14px; height:14px; }
+  /* the morphing CTA below the card */
+  .demo-cta { display:block; width:100%; margin-top:16px; padding:11px; border-radius:8px; border:none; cursor:pointer;
+    font-family:inherit; font-size:13px; font-weight:500; letter-spacing:.01em;
+    background:var(--d-teal); color:#fff;
+    transition:transform .2s cubic-bezier(.2,.8,.2,1), filter .2s ease, background .2s ease, color .2s ease, opacity .2s ease; }
+  /* dark mode: teal fill takes dark text — but NOT the ghost variant, which is
+     transparent and must keep light body text or it vanishes on the canvas */
+  html.dark .demo-cta:not(.ghost) { color:#04201C; }
+  .demo-cta:hover:not(:disabled) { filter:brightness(1.06); }
+  .demo-cta:active:not(:disabled) { transform:scale(.97); }
+  .demo-cta:disabled { cursor:default; opacity:.6; filter:none; }
+  .demo-cta.ghost { background:transparent; color:var(--d-body); border:1px solid var(--d-hair-strong); }
+  html.dark .demo-cta.ghost { color:var(--d-body); }
+  .demo-cta.ghost:hover { filter:none; border-color:var(--d-teal); color:var(--d-teal); }
+  /* sample chips under the window */
+  .demo-samples { display:flex; flex-wrap:wrap; gap:9px; justify-content:center; margin-top:16px; }
+  .demo-chip { display:inline-flex; align-items:center; gap:7px; padding:7px 13px; border-radius:999px; font-size:13px; font-weight:600; color:#DDF2EE;
+    background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); cursor:pointer;
+    transition:border-color .2s, background .2s, transform .2s cubic-bezier(.2,.8,.2,1); }
+  .demo-chip:hover { border-color:rgba(110,224,209,.55); background:rgba(110,224,209,.09); transform:translateY(-1px); }
+  .demo-chip:active { transform:translateY(0) scale(.98); }
+  .demo-chip svg { width:15px; height:15px; }
+  @media (prefers-reduced-motion:reduce){
+    .demo-glyph-glow, .demo-prog-fill::after { animation:none; }
+    .demo-prog-fill { transition:none; }
+  }
+
+  /* ───────────────────────── Compat playground (chrome.* API checker) ───────────────────────── */
+  .cx-lab { border:1px solid var(--hair); border-radius:16px; background:color-mix(in srgb, var(--ink) 2.5%, transparent); padding:22px; margin-top:22px; }
+  .cx-lab-h { font-size:13px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--mute); margin-bottom:4px; }
+  .cx-lab-sub { font-size:13.5px; color:var(--body); margin-bottom:16px; }
+  .cx-input-wrap { position:relative; display:flex; align-items:center; }
+  .cx-prefix { position:absolute; left:14px; font-family:ui-monospace,'SF Mono',monospace; font-size:15px; color:var(--mute); pointer-events:none; }
+  .cx-input { width:100%; padding:12px 14px 12px 74px; border-radius:11px; border:1px solid var(--hair-strong); background:var(--surface);
+    font-family:ui-monospace,'SF Mono',monospace; font-size:15px; color:var(--ink); transition:border-color .2s; }
+  .cx-input:focus { outline:none; border-color:var(--teal); }
+  .cx-input::placeholder { color:var(--ash); }
+  .cx-tries { display:flex; flex-wrap:wrap; gap:7px; margin-top:12px; }
+  .cx-try { padding:5px 11px; border-radius:8px; font-family:ui-monospace,'SF Mono',monospace; font-size:12.5px; color:var(--body);
+    background:transparent; border:1px solid var(--hair); cursor:pointer; transition:border-color .2s, color .2s, background .2s; }
+  .cx-try:hover { border-color:var(--teal); color:var(--teal); background:color-mix(in srgb, var(--teal) 6%, transparent); }
+  .cx-result { margin-top:16px; min-height:52px; }
+  .cx-verdict { display:flex; align-items:flex-start; gap:12px; padding:14px 16px; border-radius:12px; border:1px solid var(--hair); background:var(--surface);
+    opacity:0; transform:translateY(6px); transition:opacity .3s, transform .3s; }
+  .cx-verdict.show { opacity:1; transform:none; }
+  .cx-vmark { width:26px; height:26px; flex-shrink:0; display:grid; place-items:center; border-radius:7px; }
+  .cx-vmark svg { width:15px; height:15px; stroke-width:2.4; }
+  .cx-vbody b { display:block; font-size:14.5px; font-weight:700; color:var(--ink); margin-bottom:2px; }
+  .cx-vbody span { font-size:13px; line-height:1.5; color:var(--body); }
+  .cx-v-ok   .cx-vmark { color:var(--ok);  background:color-mix(in srgb, var(--ok) 14%, transparent); }
+  .cx-v-shim .cx-vmark { color:var(--teal);background:color-mix(in srgb, var(--teal) 14%, transparent); }
+  .cx-v-no   .cx-vmark { color:var(--bad); background:color-mix(in srgb, var(--bad) 13%, transparent); }
+  @media (prefers-reduced-motion:reduce){ .cx-verdict{ transition:none; } }
+
   /* sr */
   .sr-only { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
   a:focus-visible, button:focus-visible, summary:focus-visible {
@@ -252,10 +393,54 @@
       <span data-gumroad-field="name">Viaduct</span> converts any Chrome extension into a native Safari Web Extension.
     </p>
 
-    <!-- hero screenshot -->
-    <div data-mm="media" data-mm-load data-mm-delay=".55" data-mm-tilt class="mt-16 relative">
-      <div data-mm-scrub class="max-w-4xl mx-auto rounded-2xl overflow-hidden" style="border:1px solid rgba(255,255,255,.28)">
-        <img src="assets/viaduct-main-dark.webp" alt="Viaduct app: drop a Chrome extension to convert it for Safari" class="w-full block" loading="eager" decoding="async" width="1800" height="1324" />
+    <!-- a working web copy of the Viaduct app's User mode: drop an extension (or pick a sample) and it runs the real conversion flow -->
+    <!-- no data-mm-tilt here: this panel is interactive, and a live 3D tilt warps the
+         buttons' hit-boxes under the cursor, flickering the pointer. Keep it flat. -->
+    <div data-mm="media" data-mm-load data-mm-delay=".55" class="mt-16 relative">
+      <div data-mm-scrub class="demo-win max-w-md mx-auto" id="hero-demo">
+        <div class="demo-bar">
+          <span class="demo-dot" style="background:#FF5F57"></span>
+          <span class="demo-dot" style="background:#FEBC2E"></span>
+          <span class="demo-dot" style="background:#28C840"></span>
+          <span class="demo-title">Viaduct</span>
+        </div>
+        <div class="demo-body">
+          <div class="demo-brand">
+            <div class="demo-brand-name">Viaduct</div>
+            <div class="demo-brand-sub">Convert a Chrome extension and install it in Safari.</div>
+          </div>
+
+          <!-- the one glass card that morphs through every phase; JS swaps its contents -->
+          <div class="demo-card" id="hero-card" role="button" tabindex="0"
+               aria-label="Drop a Chrome extension, or pick a sample below, to run a conversion">
+            <!-- filled by JS; empty state as initial content -->
+            <div class="demo-state">
+              <div class="demo-tile demo-drop-glyph" aria-hidden="true">
+                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M13.5 2a2.5 2.5 0 012.5 2.5V6h2a2 2 0 012 2v3.5h-1.5a2.25 2.25 0 100 4.5H20V19a2 2 0 01-2 2h-3.5v-1.5a2.25 2.25 0 10-4.5 0V21H6a2 2 0 01-2-2v-3.5h1.5a2.25 2.25 0 100-4.5H4V8a2 2 0 012-2h3.5V4.5A2.5 2.5 0 0113.5 2z"/></svg>
+              </div>
+              <div class="demo-h">Drop extension here</div>
+              <div class="demo-sub">or click to browse · .zip, .crx, or folder</div>
+            </div>
+          </div>
+
+          <!-- morphing CTA below the card -->
+          <button class="demo-cta" type="button" id="hero-cta">Choose extension</button>
+
+          <div class="demo-samples">
+            <button class="demo-chip" type="button" data-sample="Claude for Chrome" data-color="#D97757">
+              <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18M3 12h18M6 6l12 12M18 6L6 18"/></svg>
+              Claude for Chrome
+            </button>
+            <button class="demo-chip" type="button" data-sample="Dark Reader" data-color="#C9A876">
+              <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+              Dark Reader
+            </button>
+            <button class="demo-chip" type="button" data-sample="Grammarly" data-color="#21AF9F">
+              <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7V5a1 1 0 011-1h14a1 1 0 011 1v2M9 20h6M12 4v16"/></svg>
+              Grammarly
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -391,6 +576,25 @@
         <div class="lg:sticky lg:top-28">
           <p data-mm="rise" class="stat-num"><span data-mm-counter="60" data-mm-counter-suffix="+">60+</span></p>
           <p data-mm="rise" class="text-[15px] body mt-3 max-w-[26ch]"><code class="font-mono text-[.9em] ink">chrome.*</code> namespaces normalized by the runtime layer. This is the product. The scaffolding around it is table stakes.</p>
+
+          <!-- the same compatibility check the app runs before it converts -->
+          <div class="cx-lab" data-mm="rise" data-mm-delay=".1">
+            <div class="cx-lab-h">Compatibility check</div>
+            <p class="cx-lab-sub">Before it converts, Viaduct reads every <code class="font-mono text-[.9em]">chrome.*</code> call an extension makes. Try one:</p>
+            <div class="cx-input-wrap">
+              <span class="cx-prefix" aria-hidden="true">chrome.</span>
+              <input class="cx-input" id="cx-input" type="text" spellcheck="false" autocomplete="off" autocapitalize="off"
+                placeholder="storage" aria-label="chrome API namespace to check" />
+            </div>
+            <div class="cx-tries" id="cx-tries" aria-hidden="true">
+              <button class="cx-try" type="button" data-api="tabs">tabs</button>
+              <button class="cx-try" type="button" data-api="webRequest">webRequest</button>
+              <button class="cx-try" type="button" data-api="storage">storage</button>
+              <button class="cx-try" type="button" data-api="gcm">gcm</button>
+              <button class="cx-try" type="button" data-api="runtime">runtime</button>
+            </div>
+            <div class="cx-result" id="cx-result" aria-live="polite"></div>
+          </div>
         </div>
       </div>
       <div data-mm-stagger class="lg:col-span-8">
@@ -411,7 +615,7 @@
         <div class="fix-row">
           <b>Service workers</b>
           <div>
-            <p><span class="fix-lbl brk">Breaks</span>Safari omits <code class="font-mono text-[.85em]">onInstalled</code>, the lifecycle enums, and parts of <code class="font-mono text-[.85em]">self.registration</code> — the worker throws at load and dies.</p>
+            <p><span class="fix-lbl brk">Breaks</span>Safari omits <code class="font-mono text-[.85em]">onInstalled</code>, the lifecycle enums, and parts of <code class="font-mono text-[.85em]">self.registration</code>, so the worker throws at load and dies.</p>
             <p><span class="fix-lbl okk">Fixed</span>Viaduct backfills them.</p>
           </div>
         </div>
@@ -717,6 +921,315 @@
   }
   tabs.forEach(function (t) { t.addEventListener('click', function () { setMode(t.getAttribute('data-mode'), true); }); });
   setMode('user', false);
+
+  // ── Live hero demo: a working web copy of the Viaduct app's User mode ──
+  // The card morphs empty → ready → converting → done through the app's real
+  // phases (Sources/AppMode.swift ConvertPhase). CTA morphs to match.
+  (function () {
+    var win = document.getElementById('hero-demo');
+    if (!win) return;
+    var card = document.getElementById('hero-card');
+    var cta  = document.getElementById('hero-cta');
+    var state = card.querySelector('.demo-state');
+    var timers = [];
+    var busy = false;
+    var raf = 0;
+    var picked = null;
+
+    // The six on-screen track phases, verbatim from the shipping app.
+    var PHASES = [
+      { title: 'Unpacking extension',      sub: 'Opening the package',        sym: 'box' },
+      { title: 'Reading manifest',         sub: 'Checking compatibility',     sym: 'doc' },
+      { title: 'Preparing assets',         sub: 'Cleaning and shimming',      sym: 'shield' },
+      { title: 'Generating Safari project',sub: 'Wiring up the Xcode project',sym: 'layers' },
+      { title: 'Building & signing',       sub: 'This is the slow part',      sym: 'hammer' },
+      { title: 'Installing to Safari',     sub: 'Registering with Safari',    sym: 'install' }
+    ];
+    // Clean line icons, one per phase. Kept simple so they read at 26px.
+    var SYM = {
+      box:'<path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5v-9z"/><path d="M3.5 7.5L12 12m0 0l8.5-4.5M12 12v9"/>',
+      doc:'<path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8l-5-5z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',
+      shield:'<path d="M12 3l7 3v5c0 4.2-3 7.4-7 9-4-1.6-7-4.8-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/>',
+      hammer:'<path d="M14.5 5.5l4 4-2 2-4-4 2-2z"/><path d="M12.5 7.5L4 16v4h4l8.5-8.5"/>',
+      layers:'<path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3.5 12L12 16.5 20.5 12M3.5 15.5L12 20l8.5-4.5"/>',
+      install:'<path d="M12 4v10m0 0l-3.5-3.5M12 14l3.5-3.5"/><path d="M5 15v3a2 2 0 002 2h10a2 2 0 002-2v-3"/>'
+    };
+    function glyphSvg(sym) {
+      return '<svg fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">' + SYM[sym] + '</svg>';
+    }
+    function extSvg(color) {
+      return '<svg fill="' + color + '" viewBox="0 0 24 24"><path d="M13.5 2a2.5 2.5 0 012.5 2.5V6h2a2 2 0 012 2v3.5h-1.5a2.25 2.25 0 100 4.5H20V19a2 2 0 01-2 2h-3.5v-1.5a2.25 2.25 0 10-4.5 0V21H6a2 2 0 01-2-2v-3.5h1.5a2.25 2.25 0 100-4.5H4V8a2 2 0 012-2h3.5V4.5A2.5 2.5 0 0113.5 2z"/></svg>';
+    }
+
+    function clearTimers() { timers.forEach(clearTimeout); timers = []; if (raf) { cancelAnimationFrame(raf); raf = 0; } }
+    function later(fn, ms) { var id = setTimeout(fn, ms); timers.push(id); return id; }
+    function dots(idx) {
+      var out = '';
+      for (var i = 0; i < PHASES.length; i++) {
+        var cls = i < idx ? 'done' : (i === idx ? 'active' : '');
+        out += '<i class="' + cls + '"></i>';
+      }
+      return '<div class="demo-dots">' + out + '</div>';
+    }
+
+    // Swap the card's contents with a short crossfade so phases don't snap.
+    // Only the phase glyph/title/subtitle animate; the progress bar and dots
+    // update in place (they carry continuity, so a fade would fight them).
+    function paint(html) {
+      if (reduce) { state.innerHTML = html; return; }
+      state.style.transition = 'opacity .16s ease, transform .16s ease';
+      state.style.opacity = '0';
+      state.style.transform = 'translateY(4px)';
+      later(function () {
+        state.innerHTML = html;
+        state.style.opacity = '1';
+        state.style.transform = 'none';
+      }, 150);
+    }
+
+    // ---- the card faces ----
+    function renderEmpty() {
+      card.classList.remove('filled', 'busy');
+      paint(
+        '<div class="demo-tile demo-drop-glyph" aria-hidden="true">' + extSvg('var(--d-teal)') + '</div>' +
+        '<div class="demo-h">Drop extension here</div>' +
+        '<div class="demo-sub">or click to browse · .zip, .crx, or folder</div>');
+      cta.textContent = 'Choose extension';
+      cta.className = 'demo-cta';
+      cta.disabled = false;
+    }
+    function renderReady(name, color) {
+      card.classList.add('filled', 'busy');   // card itself isn't clickable here; the CTA drives it
+      paint(
+        '<div class="demo-extico" aria-hidden="true">' + extSvg(color) + '</div>' +
+        '<div class="demo-name">' + name + '</div>' +
+        '<div class="demo-sub">Ready to convert</div>');
+      cta.textContent = 'Convert & Install';
+      cta.className = 'demo-cta';
+      cta.disabled = false;
+    }
+    // Build the converting UI once, then mutate it in place. The progress bar
+    // fills continuously (driven by rAF in convert); the glyph/title/dots only
+    // change when progress crosses a phase boundary, so nothing hops or resets.
+    // Set synchronously (no paint fade) so convert() can grab the live progress
+    // element on the same tick. A quick self-contained fade keeps it smooth.
+    function buildConvertUI() {
+      card.classList.add('filled');
+      state.innerHTML =
+        '<div class="demo-glyph-wrap"><span class="demo-glyph-glow"></span>' +
+          '<span class="demo-tile demo-glyph" aria-hidden="true">' + glyphSvg(PHASES[0].sym) + '</span></div>' +
+        '<div class="demo-phase-title">' + PHASES[0].title + '</div>' +
+        '<div class="demo-phase-sub">' + PHASES[0].sub + '</div>' +
+        dots(0) +
+        '<div class="demo-prog"><div class="demo-prog-fill" style="width:0%;transition:none"></div></div>';
+      if (!reduce) {
+        state.style.transition = 'none';
+        state.style.opacity = '0'; state.style.transform = 'translateY(4px)';
+        requestAnimationFrame(function () {
+          state.style.transition = 'opacity .18s ease, transform .18s ease';
+          state.style.opacity = '1'; state.style.transform = 'none';
+        });
+      }
+      cta.textContent = 'Converting…';
+      cta.className = 'demo-cta';
+      cta.disabled = true;
+    }
+    // Swap the glyph + title + subtitle + active dot for a new phase, crossfading
+    // just the glyph/text so the phase change reads without a hard cut.
+    function updatePhase(idx) {
+      var p = PHASES[idx];
+      var g = state.querySelector('.demo-glyph');
+      var t = state.querySelector('.demo-phase-title');
+      var s = state.querySelector('.demo-phase-sub');
+      var ds = state.querySelectorAll('.demo-dots i');
+      if (!g) return;
+      if (!reduce) {
+        g.style.transition = t.style.transition = s.style.transition = 'opacity .2s ease';
+        g.style.opacity = t.style.opacity = s.style.opacity = '0';
+        later(function () {
+          g.innerHTML = glyphSvg(p.sym); t.textContent = p.title; s.textContent = p.sub;
+          g.style.opacity = t.style.opacity = s.style.opacity = '1';
+        }, 190);
+      } else {
+        g.innerHTML = glyphSvg(p.sym); t.textContent = p.title; s.textContent = p.sub;
+      }
+      ds.forEach(function (d, i) { d.className = i < idx ? 'done' : (i === idx ? 'active' : ''); });
+    }
+    function renderDone(name, color) {
+      card.classList.add('filled');
+      card.classList.remove('busy');
+      paint(
+        '<div class="demo-extico" aria-hidden="true">' + extSvg(color) + '</div>' +
+        '<div class="demo-name">' + name + '</div>' +
+        '<span class="demo-badge"><svg fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>Installed in Safari</span>');
+      cta.textContent = 'Convert another';
+      cta.className = 'demo-cta ghost';
+      cta.disabled = false;
+    }
+
+    // ---- flow ----
+    function pick(name, color) {
+      if (busy) return;
+      picked = { name: name, color: color || '#12A594' };
+      renderReady(picked.name, picked.color);
+    }
+    function convert() {
+      if (busy || !picked) return;
+      busy = true;
+      card.classList.add('busy');
+      buildConvertUI();
+
+      if (reduce) {                       // reduced motion: no animation, just resolve
+        later(function () { renderDone(picked.name, picked.color); busy = false; }, 120);
+        return;
+      }
+
+      var fill = state.querySelector('.demo-prog-fill');
+      var DURATION = 3200;                // total convert time (ms)
+      var start = 0, curPhase = -1;
+      // The build step (index 4) is the slow one; give it more of the bar's time
+      // so the fill eases through it instead of sprinting. Weighted phase edges:
+      var edges = [0, 0.12, 0.24, 0.36, 0.5, 0.86, 1];
+      // easeInOutQuad keeps the bar from starting or ending abruptly
+      function ease(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+
+      function frame(now) {
+        if (!start) start = now;
+        var t = Math.min(1, (now - start) / DURATION);
+        var p = ease(t);
+        fill.style.width = (p * 100).toFixed(1) + '%';
+        // which phase does this progress fall into?
+        var idx = 0;
+        for (var k = 0; k < PHASES.length; k++) { if (p >= edges[k]) idx = k; }
+        if (idx !== curPhase) { curPhase = idx; updatePhase(idx); }
+        if (t < 1) { raf = requestAnimationFrame(frame); }
+        else { later(function () { renderDone(picked.name, picked.color); busy = false; }, 260); }
+      }
+      raf = requestAnimationFrame(frame);
+    }
+    // Sample chips and drops go straight from empty to converting in one move,
+    // so the CTA never flashes "Convert & Install" for something the user didn't click.
+    function run(name, color) {
+      if (busy) return;
+      picked = { name: name, color: color || '#12A594' };
+      convert();
+    }
+    function reset() { clearTimers(); busy = false; picked = null; renderEmpty(); }
+
+    // ---- wiring ----
+    // CTA is the single morphing action: pick → convert → reset.
+    cta.addEventListener('click', function () {
+      if (busy) return;
+      if (!picked) { pickRandom(); }
+      else if (cta.classList.contains('ghost')) { reset(); }
+      else { convert(); }
+    });
+
+    var SAMPLES = [['Claude for Chrome', '#D97757'], ['Dark Reader', '#C9A876'], ['Grammarly', '#21AF9F'], ['Stylus', '#12A594']];
+    function pickRandom() { var s = SAMPLES[Math.floor(Math.random() * SAMPLES.length)]; pick(s[0], s[1]); }
+
+    win.querySelectorAll('.demo-chip').forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        if (busy) return;
+        // one click runs the whole thing for that extension
+        run(chip.getAttribute('data-sample'), chip.getAttribute('data-color'));
+      });
+    });
+
+    // card: click to pick (browse) when idle, or reset once done
+    card.addEventListener('click', function () {
+      if (busy) return;
+      if (!picked) pickRandom();
+      else if (cta.classList.contains('ghost')) reset();
+    });
+    card.addEventListener('keydown', function (e) {
+      if ((e.key === 'Enter' || e.key === ' ') && !busy) { e.preventDefault(); if (!picked) pickRandom(); }
+    });
+    ['dragenter', 'dragover'].forEach(function (ev) {
+      card.addEventListener(ev, function (e) { e.preventDefault(); if (!busy) card.classList.add('dragging'); });
+    });
+    ['dragleave', 'drop'].forEach(function (ev) {
+      card.addEventListener(ev, function (e) { e.preventDefault(); card.classList.remove('dragging'); });
+    });
+    card.addEventListener('drop', function (e) {
+      if (busy) return;
+      var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      var name = f ? f.name.replace(/\.(crx|zip)$/i, '') : null;
+      run(name || SAMPLES[0][0], '#12A594');
+    });
+  })();
+
+  // ── Compat playground: check how a chrome.* API fares under conversion ──
+  (function () {
+    var input = document.getElementById('cx-input');
+    if (!input) return;
+    var result = document.getElementById('cx-result');
+    var tries = document.getElementById('cx-tries');
+
+    // Verdict data. Grounded in how Safari Web Extensions actually differ:
+    // native = works as-is, shim = runtime patches it, no = can't be carried over.
+    var MAP = {
+      tabs:        ['ok',  'Supported natively', 'Runs on the native Safari tabs API with no changes.'],
+      runtime:     ['ok',  'Supported natively', 'Messaging and lifecycle work directly.'],
+      storage:     ['ok',  'Supported natively', 'local, sync, and session all carry over.'],
+      scripting:   ['ok',  'Supported natively', 'Programmatic injection maps cleanly.'],
+      i18n:        ['ok',  'Supported natively', 'Locale files load unchanged.'],
+      action:      ['ok',  'Supported natively', 'Toolbar button and popup carry over.'],
+      alarms:      ['ok',  'Supported natively', 'Scheduled wake-ups work as-is.'],
+      webrequest:  ['shim','Shimmed by the runtime', 'Safari narrows blocking webRequest; Viaduct routes it through declarativeNetRequest where it can and flags the rest.'],
+      declarativenetrequest: ['shim','Shimmed by the runtime', 'Rule limits differ on Safari; Viaduct reconciles the ruleset at build time.'],
+      runtime_connect: ['shim','Shimmed by the runtime', 'Ports route by an id Safari reports differently; Viaduct rewrites it.'],
+      contextmenus:['shim','Shimmed by the runtime', 'Partial on Safari; Viaduct backfills the missing calls.'],
+      notifications:['shim','Shimmed by the runtime', 'Reduced surface on Safari; the runtime normalizes what it can.'],
+      commands:    ['shim','Shimmed by the runtime', 'Keyboard shortcuts are re-registered through the Safari API.'],
+      gcm:         ['no',  'Not portable', 'Google Cloud Messaging has no Safari equivalent. Viaduct flags it before you convert, so nothing breaks silently.'],
+      identity:    ['no',  'Not portable', 'The Chrome OAuth sign-in flow cannot survive conversion. Viaduct warns you up front.'],
+      instanceid:  ['no',  'Not portable', 'Tied to Google Cloud Messaging; flagged before convert.'],
+      gcmessaging: ['no',  'Not portable', 'No Safari counterpart; flagged at check time.']
+    };
+    var ICONS = {
+      ok:   '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>',
+      shim: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 12h16M4 12l4-4M4 12l4 4"/></svg>',
+      no:   '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/></svg>'
+    };
+    var CLS = { ok: 'cx-v-ok', shim: 'cx-v-shim', no: 'cx-v-no' };
+
+    function lookup(raw) {
+      var k = raw.toLowerCase().replace(/^chrome\./, '').replace(/[^a-z]/g, '');
+      if (MAP[k]) return MAP[k];
+      // Unknown but plausible namespace: the honest answer is "checked at convert".
+      if (k.length >= 2) return ['shim', 'Checked at conversion', 'Viaduct inspects this namespace when you convert and tells you if any call will not carry over, so nothing fails silently.'];
+      return null;
+    }
+
+    function render(raw) {
+      var v = lookup(raw);
+      if (!v) { result.innerHTML = ''; return; }
+      result.innerHTML =
+        '<div class="cx-verdict ' + CLS[v[0]] + '">' +
+          '<span class="cx-vmark">' + ICONS[v[0]] + '</span>' +
+          '<span class="cx-vbody"><b>' + v[1] + '</b><span>' + v[2] + '</span></span>' +
+        '</div>';
+      // next frame so the transition fires
+      var card = result.querySelector('.cx-verdict');
+      requestAnimationFrame(function () { card.classList.add('show'); });
+    }
+
+    var debounce;
+    input.addEventListener('input', function () {
+      clearTimeout(debounce);
+      var val = input.value.trim();
+      if (!val) { result.innerHTML = ''; return; }
+      debounce = setTimeout(function () { render(val); }, 160);
+    });
+    tries.querySelectorAll('.cx-try').forEach(function (b) {
+      b.addEventListener('click', function () {
+        input.value = b.getAttribute('data-api');
+        render(input.value);
+        input.focus();
+      });
+    });
+  })();
 
   // ── Forward attribution to Gumroad ──
   // Inbound links tag the visit (?ref=macapp.supply or ?utm_source=...). Gumroad

@@ -249,13 +249,29 @@
       });
 
       // ---- magnetic buttons ----
+      // Measure the button's rest position on enter (before it has any
+      // translate) and clamp the pull so the element never slides out from
+      // under the cursor. Measuring the live rect each move fed the transform
+      // back into itself and let the button escape the pointer, which made the
+      // cursor flicker between pointer and default along the edges.
       document.querySelectorAll('[data-mm-magnet]').forEach(function (btn) {
         var xTo = gsap.quickTo(btn, 'x', { duration: 0.4, ease: 'power3' });
         var yTo = gsap.quickTo(btn, 'y', { duration: 0.4, ease: 'power3' });
-        btn.addEventListener('mousemove', function (e) {
+        var cx = 0, cy = 0, maxX = 0, maxY = 0;
+        function measure() {
+          // strip the current translate so we read the true rest center
+          var x = gsap.getProperty(btn, 'x') || 0, y = gsap.getProperty(btn, 'y') || 0;
           var r = btn.getBoundingClientRect();
-          xTo((e.clientX - (r.left + r.width / 2)) * 0.28);
-          yTo((e.clientY - (r.top + r.height / 2)) * 0.38);
+          cx = r.left - x + r.width / 2;
+          cy = r.top - y + r.height / 2;
+          maxX = r.width * 0.18;   // keep the pull well inside the button
+          maxY = r.height * 0.18;
+        }
+        function clamp(v, m) { return v > m ? m : (v < -m ? -m : v); }
+        btn.addEventListener('mouseenter', measure);
+        btn.addEventListener('mousemove', function (e) {
+          xTo(clamp((e.clientX - cx) * 0.22, maxX));
+          yTo(clamp((e.clientY - cy) * 0.3, maxY));
         });
         btn.addEventListener('mouseleave', function () { xTo(0); yTo(0); });
       });
