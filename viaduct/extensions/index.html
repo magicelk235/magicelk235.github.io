@@ -113,6 +113,7 @@ footer .links a:hover { color:var(--teal); }
 </div>
 <section>
   <div class="index">
+    <a class="row" href="/viaduct/extensions/claude-in-chrome/"><b>Claude in Chrome</b><span class="d">Anthropic’s AI assistant that works right in your browser</span><span class="c">AI assistants</span></a>
     <a class="row" href="/viaduct/extensions/ublock-origin/"><b>uBlock Origin</b><span class="d">The wide-spectrum content blocker</span><span class="c">Privacy &amp; ad blocking</span></a>
     <a class="row" href="/viaduct/extensions/tampermonkey/"><b>Tampermonkey</b><span class="d">The most popular userscript manager</span><span class="c">Userscripts</span></a>
     <a class="row" href="/viaduct/extensions/violentmonkey/"><b>Violentmonkey</b><span class="d">The open-source userscript manager</span><span class="c">Userscripts</span></a>
@@ -141,8 +142,19 @@ footer .links a:hover { color:var(--teal); }
   <code>.crx</code>, or Chrome Web Store link. <a href="/viaduct/">See how it works →</a></p>
 </section>
 </main>
-<div id="site-footer"></div>
-<script src="/assets/footer.js" data-product="Viaduct" data-links-only="1" data-links="Viaduct|/viaduct/, All extensions|/viaduct/extensions/, How it works|/viaduct/#how, Privacy|/viaduct/privacy.html"></script>
+<footer><div class="wrap">
+  <div class="links">
+    <a href="/viaduct/">Viaduct</a>
+    <a href="/viaduct/extensions/">All extensions</a>
+    <a href="/viaduct/#how">How it works</a>
+    <a href="/viaduct/privacy.html">Privacy</a>
+  </div>
+  <p>All extension names are trademarks of their respective owners. Viaduct is not
+  affiliated with or endorsed by the developers of the extensions listed here, nor by
+  Apple or Google. Viaduct converts extensions locally on your Mac; nothing is
+  redistributed.</p>
+  <p>macOS 13+ · Free for 2 conversions, then $19 one-time · <a href="/viaduct/">magicelklabs.com/viaduct</a></p>
+</div></footer>
 <script>
 (function(){document.querySelectorAll('img[data-icon]').forEach(function(i){i.src='../assets/viaduct-icon-dark.png'});})();
 </script>

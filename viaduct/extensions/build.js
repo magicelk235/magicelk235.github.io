@@ -13,6 +13,8 @@ const STORE = (id) => `https://chromewebstore.google.com/detail/${id}`;
 
 // official = an official Safari version exists; the page must say so and link it.
 const EXTENSIONS = [
+  { slug: 'claude-in-chrome', name: 'Claude in Chrome', id: 'fcoeoabgfenejglbffodgkkbkcdhcgfn',
+    desc: 'Anthropic’s AI assistant that works right in your browser', category: 'AI assistants' },
   { slug: 'ublock-origin', name: 'uBlock Origin', id: 'cjpalhdlnbpafiamejdnhcphjbkeiagm',
     desc: 'the wide-spectrum content blocker', category: 'Privacy & ad blocking' },
   { slug: 'tampermonkey', name: 'Tampermonkey', id: 'dhdgffkkebhmkfjojejmpbldmpobfkfo',
