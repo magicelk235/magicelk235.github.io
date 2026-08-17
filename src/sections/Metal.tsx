@@ -37,7 +37,10 @@ export default function Metal() {
             <Reveal key={item.name} distance={34} delay={i * 0.05}>
               <article className="grid gap-5 border-t border-rule py-9 md:grid-cols-12 md:gap-8">
                 <div className="md:col-span-4">
-                  <h3>{item.name}</h3>
+                  <div className="flex items-baseline gap-4">
+                    <h3>{item.name}</h3>
+                    <span className="num text-sm text-mute">{item.year}</span>
+                  </div>
                   <ul className="mt-4 list-none space-y-1.5 p-0">
                     {item.facts.map(fact => (
                       <li key={fact} className="num text-sm text-mute">

@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Yehonatan Cohen, CV</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+    <style>
+      @page { size: A4; margin: 11mm 13mm; }
+      * { margin: 0; box-sizing: border-box; }
+      body {
+        font-family: 'Archivo', sans-serif;
+        color: #1b1712;
+        font-size: 9pt;
+        line-height: 1.42;
+        background: #fff;
+      }
+      h1 {
+        font-size: 24pt;
+        font-weight: 800;
+        font-stretch: 115%;
+        letter-spacing: -0.03em;
+        line-height: 1;
+      }
+      .role { margin-top: 6px; font-size: 11pt; color: #4a4239; }
+      .links {
+        margin-top: 10px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 8.4pt;
+        color: #6b6156;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 14px;
+      }
+      .links a { color: #8a5a10; text-decoration: none; }
+      h2 {
+        font-size: 8.6pt;
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 500;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #8a5a10;
+        margin: 11px 0 5px;
+        padding-top: 8px;
+        border-top: 1px solid #e3d9c8;
+      }
+      .row { display: grid; grid-template-columns: 26mm 1fr; gap: 8px; margin-bottom: 5px; }
+      .row .k {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 8.4pt;
+        color: #6b6156;
+        padding-top: 2px;
+      }
+      .row .v strong { font-weight: 700; }
+      .row .v .sub { color: #4a4239; }
+      ul { margin: 3px 0 0; padding-left: 15px; }
+      li { margin-bottom: 2px; }
+      .sum { max-width: 62em; }
+      .mono { font-family: 'JetBrains Mono', monospace; font-size: 8.8pt; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Yehonatan Cohen</h1>
+      <p class="role">
+        Developer. Compilers, native Mac applications, and games. Eleventh grade, majoring in cyber,
+        computer science, and physics.
+      </p>
+      <div class="links">
+        <a href="mailto:yehonatan.2350@gmail.com">yehonatan.2350@gmail.com</a>
+        <a href="https://magicelk235.github.io">magicelk235.github.io</a>
+        <a href="https://github.com/magicelk235">github.com/magicelk235</a>
+        <a href="https://linkedin.com/in/magicelk235">linkedin.com/in/magicelk235</a>
+        <a href="https://magicelklabs.com">magicelklabs.com</a>
+        <span>Israel</span>
+      </div>
+    </header>
+
+    <h2>Summary</h2>
+    <p class="sum">
+      High school student and independent developer, studying in Tel Aviv University's Artificial
+      Intelligence and Data Science program alongside school. I run Magicelk Labs, a Mac app studio,
+      where I own the code, the design, the site, and the distribution. I wrote a compiler in
+      assembly for my own language that emits x86-64 machine code, and a 2D online open world game
+      in Python. I work with AI coding agents daily and know which parts to write by hand.
+    </p>
+
+    <h2>Education</h2>
+    <div class="row">
+      <div class="k">High school</div>
+      <div class="v">
+        <strong>Eleventh grade</strong><br />
+        <span class="sub">Majoring in cyber, computer science, and physics.</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="k">Tel Aviv University</div>
+      <div class="v">
+        <strong>Artificial Intelligence and Data Science program</strong><br />
+        <span class="sub"
+          >Academic program for high school students, running parallel to school. Completed
+          calculus, linear algebra, and statistics. Data science next semester.</span
+        >
+      </div>
+    </div>
+    <div class="row">
+      <div class="k">Self taught</div>
+      <div class="v">
+        <span class="sub"
+          >Systems programming, compilers, and macOS development, learned through the projects
+          below.</span
+        >
+      </div>
+    </div>
+
+    <h2>Magicelk Labs</h2>
+    <div class="row">
+      <div class="k">2026, ongoing</div>
+      <div class="v">
+        <strong>Founder and sole developer</strong><br />
+        <span class="sub"
+          >Independent studio for Mac applications. Full cycle: code, design, website, packaging,
+          notarised distribution, and support. Two products released.</span
+        >
+      </div>
+    </div>
+    <div class="row">
+      <div class="k">Viaduct</div>
+      <div class="v">
+        <span class="sub"
+          >Converts a Chrome extension into a signed Safari web extension without opening Xcode. A
+          JavaScript command line tool plus a Swift macOS app that wraps it. 47 GitHub stars across
+          the two repositories.</span
+        >
+      </div>
+    </div>
+    <div class="row">
+      <div class="k">Spyglass</div>
+      <div class="v">
+        <span class="sub"
+          >Real Quick Look previews for Google Workspace files on macOS. Press Space on a .gdoc and
+          read the document instead of the JSON stub on disk. Written in Swift as a Quick Look
+          extension.</span
+        >
+      </div>
+    </div>
+
+    <h2>Selected projects</h2>
+    <div class="row">
+      <div class="k">HolyC++, 2025</div>
+      <div class="v">
+        <span class="sub"
+          >A compiled language targeting x86-64 Linux. The compiler is written in NASM, 4,284 lines,
+          with 12 standard library modules, and emits native machine code through NASM and ld.</span
+        >
+      </div>
+    </div>
+    <div class="row">
+      <div class="k">Worldspawn, 2024</div>
+      <div class="v">
+        <span class="sub"
+          >A 2D online open world game in Python. Generated world across four biomes, mining,
+          farming, crafting and combat, 83 creatures and 143 items, multiplayer over TCP
+          sockets.</span
+        >
+      </div>
+    </div>
+    <div class="row">
+      <div class="k">NASM extension, 2026</div>
+      <div class="v">
+        <span class="sub"
+          >VS Code extension for NASM x86-64. Macro aware highlighting, hover documentation for 684
+          instructions and directives, and cross file label completion. Published on the
+          Marketplace.</span
+        >
+      </div>
+    </div>
+
+    <h2>Technical skills</h2>
+    <div class="row">
+      <div class="k">Languages</div>
+      <div class="v mono">
+        x86-64 assembly, Python, C, C++, Swift, TypeScript, JavaScript, Java, C#, Bash
+      </div>
+    </div>
+    <div class="row">
+      <div class="k">Technologies</div>
+      <div class="v mono">React, Node, NASM, CMake, Docker, Git, Linux, macOS, Pygame</div>
+    </div>
+    <div class="row">
+      <div class="k">Fields</div>
+      <div class="v mono">
+        Compilers and systems programming, developer tools, macOS applications, game development,
+        cyber
+      </div>
+    </div>
+    <div class="row">
+      <div class="k">Agent workflow</div>
+      <div class="v">
+        <span class="sub"
+          >Daily work with Claude Code: project rules and context, MCP servers and skills, tasks
+          split small, and review of everything the agent produces. Fast prototyping with a model,
+          hand written code where correctness and performance matter.</span
+        >
+      </div>
+    </div>
+
+    <h2>Languages and interests</h2>
+    <div class="row">
+      <div class="k">Spoken</div>
+      <div class="v">Hebrew, native. English, fluent.</div>
+    </div>
+    <div class="row">
+      <div class="k">Interests</div>
+      <div class="v">Complex systems design, skiing, hiking, tennis.</div>
+    </div>
+  </body>
+</html>

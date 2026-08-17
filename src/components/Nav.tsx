@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { CONTACT } from '../data';
 
 const SECTIONS = [
-  { id: 'apps', label: 'Apps' },
-  { id: 'metal', label: 'Metal' },
+  { id: 'work', label: 'Work' },
+  { id: 'metal', label: 'Compilers' },
   { id: 'worldspawn', label: 'Worldspawn' },
-  { id: 'about', label: 'About' },
+  { id: 'background', label: 'Background' },
 ];
 
 export default function Nav() {

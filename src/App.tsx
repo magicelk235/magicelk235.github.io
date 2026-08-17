@@ -1,11 +1,13 @@
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 import Hero from './sections/Hero';
-import Apps from './sections/Apps';
+import Now from './sections/Now';
+import Studio from './sections/Studio';
 import Metal from './sections/Metal';
 import Worldspawn from './sections/Worldspawn';
-import Smaller from './sections/Smaller';
-import About from './sections/About';
+import Workflow from './sections/Workflow';
+import Background from './sections/Background';
+import Index from './sections/Index';
 import Contact from './sections/Contact';
 
 export default function App() {
@@ -17,11 +19,13 @@ export default function App() {
       <Nav />
       <main id="main">
         <Hero />
-        <Apps />
+        <Now />
+        <Studio />
         <Metal />
         <Worldspawn />
-        <Smaller />
-        <About />
+        <Workflow />
+        <Background />
+        <Index />
         <Contact />
       </main>
       <Footer />

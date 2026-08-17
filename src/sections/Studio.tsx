@@ -2,15 +2,15 @@ import { APPS } from '../data';
 import Framed from '../components/Framed';
 import Reveal from '../components/Reveal';
 
-export default function Apps() {
+export default function Studio() {
   return (
-    <section id="apps" className="scroll-mt-24 py-24 md:py-32">
+    <section id="work" className="scroll-mt-24 border-t border-rule py-24 md:py-32">
       <div className="wrap">
         <Reveal distance={30}>
-          <h2>Mac apps in the wild</h2>
-          <p className="mt-5 max-w-[62ch] text-body">
-            Two native apps, sold through Magicelk Labs. Both exist because macOS was missing
-            something small and I got tired of working around it.
+          <h2 className="max-w-[20ch]">Magicelk Labs</h2>
+          <p className="mt-5 max-w-[62ch] text-lg text-ink">
+            My studio. Two Mac apps released so far, both because macOS was missing something small
+            and I got tired of working around it.
           </p>
         </Reveal>
 
@@ -37,14 +37,26 @@ export default function Apps() {
                     className="h-9 w-9"
                   />
                   <h3>{app.name}</h3>
+                  <span className="num ml-auto text-sm text-mute">{app.year}</span>
                 </div>
 
                 <p className="mt-4 text-lg text-ink">{app.line}</p>
                 <p className="mt-3 text-body">{app.detail}</p>
 
+                <dl className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  <div>
+                    <dt className="tag">Built with</dt>
+                    <dd className="mt-1 ml-0 text-sm text-body">{app.stack}</dd>
+                  </div>
+                  <div>
+                    <dt className="tag">Out there</dt>
+                    <dd className="mt-1 ml-0 text-sm text-body">{app.stars}</dd>
+                  </div>
+                </dl>
+
                 <div className="mt-auto flex flex-wrap items-center gap-x-6 gap-y-2 pt-7">
                   <a className="link font-mono text-sm" href={app.site}>
-                    {app.name} at Magicelk Labs
+                    Product page
                   </a>
                   <a className="link font-mono text-sm" href={app.repo}>
                     Source

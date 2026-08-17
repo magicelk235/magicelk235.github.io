@@ -40,10 +40,25 @@ band on real displays; the grain is the fix, and it never scrolls.
 - Radius is 2px on every surface. Buttons are sharp, never pills.
 - Sections are separated by hairlines, not shadows or cards. Grids that need
   cell separation use `gap: 1px` over a rule colored parent.
-- One layout family per section: bottom anchored hero, two up media split,
-  ledger rows with a code specimen, sprite band, three ruled columns, side label
-  grid, drenched closing band.
+- One layout family per section: bottom anchored hero, statement plus two
+  columns, two up media split, ledger rows with a code specimen, sprite band,
+  three ruled columns, side label grid, dense index rows, drenched closing band.
 - Zero section eyebrows. Position on the page already says what a section is.
+
+Page order, and what each section is the only one to say:
+
+1. **Hero.** Who he is, in one line, with the two things a visitor may want:
+   email and the CV.
+2. **Now.** The bio. Stage of school, the TAU program, the studio, and what he
+   is open to.
+3. **Magicelk Labs.** The shipped products, with year, stack, and proof.
+4. **Close to the metal.** The compiler and the assembly tooling.
+5. **Worldspawn.** The game, told through its own art.
+6. **Working with agents.** How he actually builds, which is a differentiator
+   and is on his CV.
+7. **Background.** Education, courses, skills, spoken languages, interests.
+8. **Everything else.** Complete project index with years.
+9. **Say hello.** Contact details as real, copyable rows.
 
 ## Motion
 
@@ -69,10 +84,13 @@ revert GSAP timelines and leave split lines parked at their from state.
 
 ## Content rules
 
-- Every number on the page is counted from a repository. No invented precision.
+- Every number and every claim on the page comes from a repository or from the
+  CV. No invented ages, dates, or precision.
+- The stage of school is stated plainly. It is the most interesting fact here,
+  not something to hide behind "student".
 - No em dashes or en dashes in visible copy.
 - Nothing muted sits under a heading, a button, or an image.
-- One CTA label for one intent: "Email me" in the nav and in the closing band.
+- One CTA label for one intent: "Email me" in the nav, hero, and closing band.
 - Worldspawn is presented as a game. The engine behind it is not a subject here.
 
 ## Assets
@@ -84,6 +102,12 @@ revert GSAP timelines and leave split lines parked at their from state.
 - `public/mathspace/*`: ship and meteor sprites from the MathSpace repo.
 - `public/og.png`: 1200x630 social card, rendered from a temporary HTML file at
   the same tokens as the site.
+- `public/cv.pdf`: one page A4, printed from `cv/cv.html` with headless Chrome
+  (`page.pdf({format:'A4', printBackground:true})`). It carries the same facts
+  as the page, so the two never disagree. Regenerate it whenever Background
+  changes.
+- There is no portrait. Drop a photo at `public/portrait.jpg` and add it to the
+  hero if you want one; the layout does not fake a slot for it.
 
 ## Banned
 
