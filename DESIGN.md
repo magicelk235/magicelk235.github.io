@@ -67,7 +67,7 @@ reason:
 
 | Component | Where | Why |
 | --- | --- | --- |
-| `Threads` | hero background | ambient amber field, lazy loaded, parks itself off screen and on hidden tabs |
+| `FaultyTerminal` | hero background | amber phosphor character field, the palette reference made literal. Lazy loaded, mouse reaction off, patched to park off screen and on hidden tabs, masked to the top right so it never sits under the headline |
 | `SplitText` | hero headline | the single entrance moment |
 | `AnimatedContent` | via `Reveal` | section entrances, varied distance and direction |
 | `DecryptedText` | "Close to the metal" | resolves the heading, which is what a compiler does |

@@ -5,7 +5,7 @@ import { useReducedMotion } from '../hooks/useReducedMotion';
 
 // The WebGL field is decoration behind the headline, so it loads after the
 // text has painted rather than sitting in the critical bundle.
-const Threads = lazy(() => import('../reactbits/Threads'));
+const Field = lazy(() => import('../reactbits/FaultyTerminal'));
 
 const NAME = 'Yehonatan Cohen';
 
@@ -20,15 +20,30 @@ export default function Hero() {
       {!reduced && (
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-25"
+          className="pointer-events-none absolute inset-0 opacity-[0.16]"
           style={{
-            maskImage: 'linear-gradient(to bottom, transparent, #000 22%, #000 72%, transparent)',
+            maskImage:
+              'radial-gradient(120% 95% at 88% 8%, #000 0%, rgba(0,0,0,.55) 42%, transparent 78%)',
             WebkitMaskImage:
-              'linear-gradient(to bottom, transparent, #000 22%, #000 72%, transparent)',
+              'radial-gradient(120% 95% at 88% 8%, #000 0%, rgba(0,0,0,.55) 42%, transparent 78%)',
           }}
         >
           <Suspense fallback={null}>
-            <Threads color={[0.949, 0.651, 0.235]} amplitude={1.1} distance={0.28} />
+            <Field
+              tint="#f2a63c"
+              scale={2.1}
+              digitSize={1.5}
+              timeScale={0.28}
+              scanlineIntensity={0.4}
+              glitchAmount={0.35}
+              flickerAmount={0.35}
+              noiseAmp={0.7}
+              chromaticAberration={0}
+              curvature={0}
+              brightness={0.85}
+              mouseReact={false}
+              pageLoadAnimation
+            />
           </Suspense>
         </div>
       )}
