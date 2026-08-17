@@ -20,12 +20,12 @@ export default function Hero() {
       {!reduced && (
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-[0.16]"
+          className="pointer-events-none absolute inset-0 opacity-50"
           style={{
             maskImage:
-              'radial-gradient(120% 95% at 88% 8%, #000 0%, rgba(0,0,0,.55) 42%, transparent 78%)',
+              'radial-gradient(78% 72% at 94% -2%, #000 0%, rgba(0,0,0,.72) 40%, transparent 78%)',
             WebkitMaskImage:
-              'radial-gradient(120% 95% at 88% 8%, #000 0%, rgba(0,0,0,.55) 42%, transparent 78%)',
+              'radial-gradient(78% 72% at 94% -2%, #000 0%, rgba(0,0,0,.72) 40%, transparent 78%)',
           }}
         >
           <Suspense fallback={null}>
@@ -40,7 +40,7 @@ export default function Hero() {
               noiseAmp={0.7}
               chromaticAberration={0}
               curvature={0}
-              brightness={0.85}
+              brightness={1.05}
               mouseReact={false}
               pageLoadAnimation
             />
