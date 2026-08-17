@@ -72,7 +72,6 @@ reason:
 | `AnimatedContent` | via `Reveal` | section entrances, varied distance and direction |
 | `DecryptedText` | "Close to the metal" | resolves the heading, which is what a compiler does |
 | `CountUp` | Worldspawn stats | real counts from the game repo |
-| `PixelTransition` | player sprite | idle to attack, pixel art wipe on a pixel art game |
 | `TiltedCard` | app screenshots | a few degrees of tilt on framed media, fine pointer only |
 
 Rules that hold: durations 100 to 800ms on exponential ease out curves, no
@@ -92,16 +91,22 @@ revert GSAP timelines and leave split lines parked at their from state.
 - Nothing muted sits under a heading, a button, or an image.
 - One CTA label for one intent: "Email me" in the nav, hero, and closing band.
 - Worldspawn is presented as a game. The engine behind it is not a subject here.
+- The one chart on the page is the language distribution in Background. It is
+  measured bytes from the GitHub languages API over the project repositories,
+  carries its own measurement date, and is drawn in a single hue stepped by
+  lightness. Never a proficiency meter, never a second accent, never a logo
+  wall of tech icons.
 
 ## Assets
 
-- `public/worldspawn/*.gif`: creature and player sprites copied from the
-  Worldspawn game repo, 14 to 24px, rendered with `image-rendering: pixelated`.
+- **Only ship art we own.** The Worldspawn and MathSpace sprites came from third
+  party asset packs used inside the games, so they are not published here. Do
+  not reintroduce them. Where a game needs a visual, use its own source code as
+  the specimen instead.
 - `public/apps/*`: Viaduct and Spyglass icons and dark mode screenshots from the
-  Magicelk Labs media kit.
-- `public/mathspace/*`: ship and meteor sprites from the MathSpace repo.
-- `public/og.png`: 1200x630 social card, rendered from a temporary HTML file at
-  the same tokens as the site.
+  Magicelk Labs media kit. Own work, safe to publish.
+- `public/og.png`: 1200x630 social card, rendered from a temporary
+  `public/og-source.html` at the same tokens as the site, then deleted.
 - `public/cv.pdf`: one page A4, printed from `cv/cv.html` with headless Chrome
   (`page.pdf({format:'A4', printBackground:true})`). It carries the same facts
   as the page, so the two never disagree. Regenerate it whenever Background

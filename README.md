@@ -29,11 +29,14 @@ src/
   sections/     one file per band of the page
   components/   nav, footer, reveal wrapper, code specimen, framed screenshot
   reactbits/    vendored React Bits components
-  data.ts       every fact and string that repeats
+  data.ts       every fact and string on the page
 public/
-  worldspawn/   sprites from the game repo
   apps/         app icons and screenshots
-  mathspace/    ship and meteor sprites
+  cv.pdf        one page CV, printed from cv/cv.html
 ```
+
+Only artwork that is ours ships here. The Worldspawn and MathSpace sprites come
+from third party asset packs used inside those games, so the site shows their
+source code instead.
 
 `DESIGN.md` has the visual rules. Read it before changing anything visible.

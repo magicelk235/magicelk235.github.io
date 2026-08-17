@@ -107,36 +107,22 @@ export const WORLDSPAWN_STATS: { value: number; label: string }[] = [
   { value: 5298, label: 'lines of Python' },
 ];
 
-export const SPRITES = [
-  'player_idle',
-  'knight',
-  'swordman',
-  'skeleton',
-  'zombie',
-  'goblin',
-  'goblin_archer',
-  'troll',
-  'ogre',
-  'cyclops',
-  'golem',
-  'stone_golem',
-  'fire_golem',
-  'water_golem',
-  'sand_golem',
-  'yeti',
-  'witch',
-  'wizard',
-  'phoenix',
-  'demon',
-  'mummy',
-  'ghost',
-  'wolf',
-  'deer',
-  'cow',
-  'chicken',
-  'horse',
-  'scorpion',
-];
+export const WORLDSPAWN_SAMPLE = `def generate_temperature_elevation(self, bx, by):
+    """Temperature and elevation for a biome region, deterministically."""
+    temp = self.seeded_random(bx, by, -20, 50)
+    elev = self.seeded_random(bx + 1000, by - 1000, 0, 60)
+    return temp, elev
+
+def get_biome(self, temp, elev):
+    possible_biomes = []
+    for biome in self.world_data.chunks_data.keys():
+        data = self.world_data.chunks_data[biome]
+        temp_range, elev_range = data.temperature, data.elevation
+        if temp_range[0] <= temp <= temp_range[1] and elev_range[0] <= elev <= elev_range[1]:
+            possible_biomes.append(biome)
+    if possible_biomes:
+        return random.choice(possible_biomes)
+    return list(self.world_data.chunks_data.keys())[0]`;
 
 export const WORKFLOW = [
   {
@@ -178,21 +164,26 @@ export const BACKGROUND: { label: string; items: string[] }[] = [
   },
 ];
 
+/**
+ * Bytes per language as GitHub counts them, summed over the project
+ * repositories only. The two website repos are left out: their generated HTML
+ * would outweigh everything and say nothing. Refresh with the languages API.
+ */
+export const LANGUAGE_BYTES = [
+  { name: 'JavaScript', bytes: 585840, percent: 27.7 },
+  { name: 'Python', bytes: 553051, percent: 26.2 },
+  { name: 'TypeScript', bytes: 471742, percent: 22.3 },
+  { name: 'Swift', bytes: 355006, percent: 16.8 },
+  { name: 'Assembly', bytes: 121599, percent: 5.8 },
+  { name: 'Shell', bytes: 24749, percent: 1.2 },
+];
+
+export const LANGUAGE_MEASURED = { repos: 14, date: 'August 2026' };
+
 export const SKILLS: { label: string; items: string[] }[] = [
   {
-    label: 'Languages',
-    items: [
-      'x86-64 assembly',
-      'Python',
-      'C',
-      'C++',
-      'Swift',
-      'TypeScript',
-      'JavaScript',
-      'Java',
-      'C#',
-      'Bash',
-    ],
+    label: 'Also written in',
+    items: ['C', 'C++', 'Java', 'C#', 'Bash'],
   },
   {
     label: 'Technologies',

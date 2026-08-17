@@ -1,8 +1,13 @@
 import { Fragment } from 'react';
 
-const KEYWORDS = /\b(include|func|new|return|end|qword|byte|global|const|float)\b/g;
+// One pass over each line: comments, strings, keywords, numbers. Enough to read
+// two languages without pulling in a highlighter.
+const TOKEN =
+  /(#.*|;.*|\/\/.*)|("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')|\b(include|func|new|end|global|const|def|class|return|for|in|if|else|elif|import|from|self|True|False|None)\b|\b(qword|byte|word|float|int|long|char|short|bool)\b|\b(-?\d+(?:\.\d+)?)\b/g;
 
-/** Real HolyC++ source, coloured just enough to read: keywords amber, strings soft. */
+const CLASS = ['text-mute', 'text-[#9fd3a0]', 'text-amber', 'text-[#e0b877]', 'text-[#e0b877]'];
+
+/** Real source, coloured just enough to read. No window chrome, no fake terminal. */
 export default function CodeSpecimen({ code, label }: { code: string; label: string }) {
   return (
     <figure className="m-0 rounded-sharp border border-rule bg-panel">
@@ -27,11 +32,13 @@ function highlight(line: string) {
   const parts: React.ReactNode[] = [];
   let cursor = 0;
 
-  for (const match of line.matchAll(KEYWORDS)) {
+  TOKEN.lastIndex = 0;
+  for (const match of line.matchAll(TOKEN)) {
     const start = match.index;
     if (start > cursor) parts.push(line.slice(cursor, start));
+    const group = match.slice(1).findIndex(g => g !== undefined);
     parts.push(
-      <span key={start} className="text-amber">
+      <span key={start} className={CLASS[group]}>
         {match[0]}
       </span>
     );

@@ -1,4 +1,5 @@
 import Reveal from '../components/Reveal';
+import LanguageBar from '../components/LanguageBar';
 import { BACKGROUND, SKILLS } from '../data';
 
 // Education rows carry sentences, so they stack; skill rows are short tokens
@@ -17,6 +18,15 @@ export default function Background() {
         </Reveal>
 
         <div className="mt-12">
+          <Reveal distance={22} duration={0.6}>
+            <div className="grid gap-5 border-t border-rule py-8 md:grid-cols-12 md:gap-8">
+              <p className="tag md:col-span-3">Written in</p>
+              <div className="md:col-span-9">
+                <LanguageBar />
+              </div>
+            </div>
+          </Reveal>
+
           {ROWS.map((row, i) => (
             <Reveal key={row.label} distance={22} duration={0.6} delay={Math.min(i, 4) * 0.04}>
               <div className="grid gap-3 border-t border-rule py-7 last:border-b md:grid-cols-12 md:gap-8">
