@@ -14,7 +14,6 @@ export type App = {
   line: string;
   detail: string;
   stack: string;
-  stars: string;
   icon: string;
   shot: string;
   shotSize: [number, number];
@@ -31,7 +30,6 @@ export const APPS: App[] = [
     detail:
       'Drop in a .zip, a .crx, or a Chrome Web Store link. Viaduct rewrites the manifest, signs the bundle, and installs it into Safari as a real web extension, without opening Xcode.',
     stack: 'Swift app wrapping a JavaScript CLI',
-    stars: '47 stars across both repos',
     icon: '/apps/viaduct-icon.png',
     shot: '/apps/viaduct.webp',
     shotSize: [1000, 712],
@@ -46,7 +44,6 @@ export const APPS: App[] = [
     detail:
       'Press Space on a .gdoc, .gsheet, or .gslides in Finder and read the document. Without it macOS shows you the stub file, which is a few lines of JSON.',
     stack: 'Swift, Quick Look extension',
-    stars: 'Free tier plus a one time upgrade',
     icon: '/apps/spyglass-icon.png',
     shot: '/apps/spyglass.webp',
     shotSize: [1000, 800],

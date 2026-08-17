@@ -43,16 +43,7 @@ export default function Studio() {
                 <p className="mt-4 text-lg text-ink">{app.line}</p>
                 <p className="mt-3 text-body">{app.detail}</p>
 
-                <dl className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
-                  <div>
-                    <dt className="tag">Built with</dt>
-                    <dd className="mt-1 ml-0 text-sm text-body">{app.stack}</dd>
-                  </div>
-                  <div>
-                    <dt className="tag">Out there</dt>
-                    <dd className="mt-1 ml-0 text-sm text-body">{app.stars}</dd>
-                  </div>
-                </dl>
+                <p className="num mt-6 text-sm text-mute">{app.stack}</p>
 
                 <div className="mt-auto flex flex-wrap items-center gap-x-6 gap-y-2 pt-7">
                   <a className="link font-mono text-sm" href={app.site}>
