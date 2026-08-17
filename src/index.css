@@ -1,0 +1,219 @@
+@import 'tailwindcss';
+
+/*
+  Yehonatan Cohen — portfolio.
+  Amber phosphor on machined off-black. One accent, one theme, sharp radius.
+*/
+
+@theme {
+  --color-ground: #0f0d0b;
+  --color-panel: #16130f;
+  --color-ink: #f6f1e8;
+  --color-body: #cac2b5;
+  --color-mute: #a49b8d;
+  --color-amber: #f2a63c;
+  --color-amber-deep: #d98a1f;
+  --color-rule: rgba(242, 166, 60, 0.16);
+  --color-rule-soft: rgba(242, 166, 60, 0.08);
+
+  --font-display: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --radius-sharp: 2px;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    background: var(--color-ground);
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-ground);
+    color: var(--color-body);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Fixed grain: large near-black areas band on real displays. */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.032;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  h1 {
+    font-weight: 800;
+    font-stretch: 118%;
+    letter-spacing: -0.035em;
+    line-height: 0.92;
+    font-size: clamp(2.6rem, 6.4vw, 5.25rem);
+  }
+
+  h2 {
+    font-weight: 800;
+    font-stretch: 112%;
+    letter-spacing: -0.028em;
+    line-height: 1;
+    font-size: clamp(1.9rem, 3.6vw, 3.1rem);
+  }
+
+  h3 {
+    font-weight: 700;
+    font-stretch: 105%;
+    letter-spacing: -0.018em;
+    line-height: 1.15;
+    font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+  }
+
+  p {
+    text-wrap: pretty;
+    margin: 0;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-amber);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--color-amber);
+    color: var(--color-ground);
+  }
+}
+
+@utility wrap {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+/* Mono micro-labels: 11-13px, tracked, used for metadata only. */
+@utility tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-mute);
+}
+
+@utility num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+@utility pixel {
+  image-rendering: pixelated;
+}
+
+/* Buttons: sharp, 44px touch target, no glow. */
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding-inline: 1.35rem;
+  border-radius: var(--radius-sharp);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    background-color 160ms var(--ease-out-quint),
+    color 160ms var(--ease-out-quint),
+    border-color 160ms var(--ease-out-quint),
+    transform 160ms var(--ease-out-quint);
+}
+
+@utility btn-primary {
+  background: var(--color-amber);
+  color: #17120a;
+  border: 1px solid var(--color-amber);
+
+  &:hover {
+    background: #ffbe5c;
+    border-color: #ffbe5c;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
+@utility btn-ghost {
+  background: transparent;
+  color: var(--color-ink);
+  border: 1px solid rgba(246, 241, 232, 0.28);
+
+  &:hover {
+    border-color: var(--color-amber);
+    color: var(--color-amber);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
+/* Text link: underline offset, amber on hover. */
+@utility link {
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--color-rule);
+  text-underline-offset: 4px;
+  transition: color 160ms var(--ease-out-quint), text-decoration-color 160ms var(--ease-out-quint);
+
+  &:hover {
+    color: var(--color-amber);
+    text-decoration-color: var(--color-amber);
+  }
+}
+
+@utility skip-link {
+  position: absolute;
+  left: 24px;
+  top: -100px;
+  z-index: 80;
+  background: var(--color-amber);
+  color: #17120a;
+  padding: 12px 18px;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+
+  &:focus {
+    top: 12px;
+  }
+}
