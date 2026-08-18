@@ -34,7 +34,7 @@ export default function Worldspawn() {
             </a>
           </Reveal>
 
-          <Reveal className="md:col-span-7" distance={40} delay={0.08}>
+          <Reveal className="min-w-0 md:col-span-7" distance={40} delay={0.08}>
             <CodeSpecimen code={WORLDSPAWN_SAMPLE} label="world_generation.py" />
           </Reveal>
         </div>

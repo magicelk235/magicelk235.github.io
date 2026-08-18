@@ -50,7 +50,7 @@ export default function Metal() {
                   </ul>
                 </div>
 
-                <div className="md:col-span-8">
+                <div className="min-w-0 md:col-span-8">
                   <p className="text-lg text-ink">{item.what}</p>
                   <p className="mt-3 max-w-[68ch] text-body">{item.body}</p>
                   <a className="link mt-5 inline-block font-mono text-sm" href={item.href}>
